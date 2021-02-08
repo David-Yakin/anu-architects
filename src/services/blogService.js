@@ -16,6 +16,7 @@ export function getMyBlog(blogId) {
 }
 
 export function createBlog(blog) {
+  // console.log(blog);
   return http.post(`${apiUrl}/blogs`, blog);
 }
 

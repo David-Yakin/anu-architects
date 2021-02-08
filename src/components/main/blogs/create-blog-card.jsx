@@ -90,6 +90,7 @@ class CeateBlog extends Form {
      }
 
      doSubmit = async ()=>{
+         console.log('do submit');
         try{
             
             const data  = {...this.state.data};

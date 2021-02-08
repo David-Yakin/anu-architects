@@ -133,7 +133,6 @@ class EditBlog extends Form {
 }
      doSubmit = async ()=>{
          try{
-
             const { data } = this.state;
             await editBlog(data);
             toast('המאמר עודכן');

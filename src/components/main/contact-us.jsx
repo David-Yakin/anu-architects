@@ -11,6 +11,7 @@ class ContectUs extends Form {
             lastName:'', 
             mail:'', 
             subject:'', 
+            phone:''
         },
         errors: {}
      }
@@ -21,6 +22,7 @@ class ContectUs extends Form {
         lastName: Joi.string().required().min(2).max(255).label('lastName'),
         mail: Joi.string().required().email().label('mail'),
         subject: Joi.string().required().min(2).max(255).label('subject'),
+        phone: Joi.string().required().min(2).max(255).label('phone'),
      }
 
     doSubmit = () => {  };
