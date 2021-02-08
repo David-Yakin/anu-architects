@@ -1,0 +1,22 @@
+.faq {
+    // background-image: url(../images/faq/bg.jpg);
+    // background-position: center center;
+    // background-size: cover;
+    background: $lightBlue;
+    .accordion {
+        .card {
+            .card-header {
+                background: $darkBlue;
+
+                h2 {
+                    .btn {
+                        color: $lightAzure;
+                        // font-size: $fontSize1;
+                    }
+
+                }
+            }
+        }
+    }
+
+}

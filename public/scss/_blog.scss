@@ -1,0 +1,81 @@
+.blog {
+    // background-image: url('../../server/public/images/this.state/bg.jpg');
+    // background-position: center center;
+    // background-size: cover;
+    background: $lightAzure;
+
+    .container {
+        .row {
+            .post {
+                transition: 0.8s;
+                background: $wight;
+                opacity: 0.8;
+
+                &:hover {
+                    transform: scale(1.02);
+                }
+
+                h2 {
+                    font-size: $fontSize2;
+                }
+
+                a {
+                    font-weight: bold;
+                    color: black;
+                }
+            }
+        }
+
+    }
+}
+
+.article {
+    background: $lightAzure;
+    .pic-head{
+position: relative;
+.span-title{
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    z-index: 100;
+color: white;    
+}
+    }
+    .container {
+        .row {
+            .articleBody {
+                background: $wight;
+                margin-top: -20%;
+                padding: 2% 5%;
+
+                .headline {
+                    font-size: $fontSize6;
+                }
+
+                .sub_headline {
+                    font-size: $fontSize2;
+                }
+
+                .Internal_title {
+                    font-size: $fontSize1;
+                }
+            }
+
+        }
+    }
+}
+
+.create-blog {
+    background-image: url('https://cdn.pixabay.com/photo/2014/02/05/11/31/vaulted-cellar-258906_960_720.jpg') ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.edit-blog {
+    background-image: url('https://cdn.pixabay.com/photo/2016/11/24/20/30/architecture-1857175_960_720.jpg') ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+

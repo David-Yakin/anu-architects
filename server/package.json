@@ -1,0 +1,27 @@
+{
+  "name": "app",
+  "version": "2.0.0",
+  "description": "Website of architecture and interior design",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon ."
+  },
+  "author": "David Yakin",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "bcrypt": "^5.0.0",
+    "config": "^3.3.3",
+    "cors": "^2.8.5",
+    "express": "~4.16.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.20",
+    "mongoose": "^5.11.8",
+    "morgan": "^1.10.0"
+  }
+}

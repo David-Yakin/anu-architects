@@ -1,0 +1,41 @@
+.contact {
+    background-image: url('https://cdn.pixabay.com/photo/2018/09/03/23/56/sea-3652697__340.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+        // background: $dark;  
+        .container {
+        
+
+
+        .center {
+            form {
+                i {
+                    position: absolute;
+                    top: 10px;
+                    left: 15px;
+                }
+
+                .form-row {
+                    input {
+                        // background-color: transparent;
+                        color: $darkCayn;
+                    }
+
+                    ::-webkit-input-placeholder {
+                        color: $darkCayn;
+                    }
+                }
+
+                .massege_div {
+                    textarea {
+                        // background: transparent;
+                        color: $dark;
+                    }
+                }
+
+            }
+        }
+    }
+}

@@ -1,0 +1,41 @@
+.theTeam {
+
+    background: $wight;
+
+    .container {
+        .row {
+            .card {
+                border: none;
+                background: $wight;
+
+                .card-body {
+                    background: $wight;
+                }
+
+                img {
+                    width: 100%;
+                    border: 3px solid white;
+                    // border-radius: 10px;
+                }
+
+                .btn {
+                    justify-content: center;
+                }
+            }
+        }
+    }
+}
+
+.create-resume {
+    background-image: url('https://cdn.pixabay.com/photo/2020/11/01/21/45/architecture-5705042_960_720.jpg') ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.edit-resume {
+    background-image: url('https://cdn.pixabay.com/photo/2015/05/16/12/03/escalator-769790_960_720.jpg') ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}

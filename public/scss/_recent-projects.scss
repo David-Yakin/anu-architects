@@ -1,0 +1,20 @@
+.recent-projects {
+    background: $lightLemon;
+    .container{
+        .card {
+            background: none;     
+        }           
+        .center {
+            a {
+                text-decoration: none;
+                color: $black;  
+                
+                &:hover {
+                    transition: 0.5s;
+                    background: $darkCayn;
+                    color: $lightAzure;
+                }
+            }
+        }
+    }
+}

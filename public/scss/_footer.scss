@@ -1,0 +1,42 @@
+footer {
+    .container-fluid {
+        background: $darkBlue;
+
+        .container {
+            .center {
+                .logo {
+                    img {
+                        width: 200px;
+                    }
+
+                }
+
+
+                .row {
+
+                    i,
+                    a {
+                        font-size: $fontSize4;
+                        color: $lightAzure;
+
+                        &:hover {
+                            transform: scale(1.1);
+                            transition: 0.5s;
+                            cursor: pointer;
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+
+
+            .row {
+                color: $lightAzure;
+
+                a {
+                    color: $lightAzure;
+                }
+            }
+        }
+    }
+}

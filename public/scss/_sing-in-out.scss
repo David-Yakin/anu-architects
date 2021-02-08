@@ -1,0 +1,27 @@
+.sign-in{
+    background-image: url('https://cdn.pixabay.com/photo/2015/11/17/18/59/architecture-1048092_960_720.jpg') ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 63.5vh;
+    form{
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.sign-up{
+    background-image: url('https://cdn.pixabay.com/photo/2017/02/02/22/08/tunnel-2033983_960_720.jpg') ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 63.5vh;
+    form{
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}

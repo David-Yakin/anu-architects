@@ -1,0 +1,8 @@
+.openScreen {
+    background: $screen;
+    // margin-top: -5%;
+    .bgVideo {
+        width: 100%;
+        z-index: 1;
+    }
+}

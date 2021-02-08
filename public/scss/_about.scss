@@ -1,0 +1,32 @@
+.about {
+
+    background: $darkBlue;
+
+    .container {
+        .row {
+            .image_container {
+                .about_img {
+                    width: 100%;
+                }
+            }
+
+            .align-self-center {
+                .headLine {
+                    color: $lightAzure;
+
+                    .about_title {
+                        font-size: $fontSize4;
+                    }
+                    a {
+                        text-decoration: none;
+                        color: $lightAzure; 
+                        &:hover {
+                            font-weight: bold;
+                        }
+                    }
+                    
+                }
+            }
+        }
+    }
+}
