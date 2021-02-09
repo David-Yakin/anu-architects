@@ -27,29 +27,30 @@ class Blog extends Component {
                 </div>        
 
                 <div className="container">
-
                     <div className="row mt-0">
                         <div className="articleBody col-12 shadow">
-    
-                                <div className="text-rtl">
-                                    <h1 className="headline display-4">{blog.title}</h1>
-                                </div>
 
-                                <div className="text-rtl">
-                                    <h2 className="sub_headline font-weight-bold text-rtl">{blog.subTitle}</h2>
-                                </div>
+                            <div className="text-rtl">
+                                <h1 className="headline display-4">{blog.title}</h1>
+                            </div>
 
-                                <div className="text-rtl pt-4">
-                                    <span className='font-weight-bold'> {blog.author}</span>
-                                </div>
-                                <hr className='m-1'/>
-                                <div className="text-rtl pb-4">
-                                    <span className='text-rtl'>{getDate(blog.createdAt)} </span>
-                                </div>
+                            <div className="text-rtl">
+                                <h2 className="sub_headline font-weight-bold text-rtl">{blog.subTitle}</h2>
+                            </div>
+
+                            <div className="text-rtl pt-4">
+                                <span className='font-weight-bold'> {blog.author}</span>
+                            </div>
+
+                            <hr className='m-1'/>
+
+                            <div className="text-rtl pb-4">
+                                <span className='text-rtl'>{getDate(blog.createdAt)} </span>
+                            </div>
 
                             <div className="center">
                                 <div className="col-10">
-                                     <h4 className="Internal_title font-weight-bold text-rtl">{blog.firstInnerTitle}</h4>
+                                    <h4 className="Internal_title font-weight-bold text-rtl">{blog.firstInnerTitle}</h4>
                                         <div className="row">
                                              <div className='col-12'>
                                             <p className="text-rtl">{blog.firstP}</p>   
@@ -62,24 +63,19 @@ class Blog extends Component {
                                                <span className="text-secondary">צילום: {blog.landscapeImgCredit}</span> 
                                                <span className="text-secondary"> {blog.landscapeImgAlt}</span> 
                                             </div>
-                                            
                                         </div>
                                       
                                         <p className="text-rtl">{blog.secondP}</p>
                                         <p className="text-rtl">{blog.thirdP}</p>
-
                                         <h4 className="Internal_title font-weight-bold text-rtl">{blog.secondInternalTitle}</h4>
-
-                                        
 
                                         <div className="row">
                                             <div className="post_v_img col-12 col-md-8">
                                                 <img className="img-fluid center" src={blog.profileImgUrl} alt={blog.profileImgAlt} />
-
                                                 <div className=" d-flex justify-content-between pb-2">
-                                               <span className="text-secondary">צילום: {blog.profileImgCredit}</span> 
-                                               <span className="text-secondary"> {blog.profileImgAlt}</span> 
-                                            </div>
+                                                    <span className="text-secondary">צילום: {blog.profileImgCredit}</span> 
+                                                    <span className="text-secondary"> {blog.profileImgAlt}</span> 
+                                                </div>
 
                                             </div>
 
@@ -90,7 +86,6 @@ class Blog extends Component {
                                         
                                         <p className="text-rtl">{blog.fifthP}</p>
                                         <p className="text-rtl">{blog.sixthP}</p>
-
 
                                         <h4 className="Internal_title font-weight-bold text-rtl">{blog.thirdInnerTitle}</h4>
 
@@ -106,19 +101,14 @@ class Blog extends Component {
 
                                             </div>
 
-                                         <p className="text-rtl">{blog.eighthP}</p>  
+                                        <p className="text-rtl">{blog.eighthP}</p>  
                                         <p className="text-rtl"> {blog.ninthP} <i className="fa fa-square"></i></p>
 
                                 </div>
                             </div>
-            
-                               
 
-                                <div className="center">
-
+                            <div className="center">
                                 <ALink to='/blogs/blogs-search-page'  text='למאמרים נוספים' />
-
-
                             </div>
                         </div>
                     </div>

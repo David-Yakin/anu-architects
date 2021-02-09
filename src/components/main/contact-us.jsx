@@ -27,7 +27,6 @@ class ContectUs extends Form {
      }
 
     doSubmit = () => { 
-        // const data = {...this.state.data};
         this.setState({data:{ name: '', lastName:'', mail:'',  subject:'',  phone:'' } })
         document.getElementById('text-erea').value = '';
         toast('ההודעה נשלחה! אנו ניצור עמך קשר בהקדם');

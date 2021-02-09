@@ -8,9 +8,7 @@ import BlogsSummary from "./blogs/blogs-summary";
 import Qna from "./qna";
 import ContectUs from "./contact-us";
 import { getCurrentUser } from "../../services/userService";
-
 import { Link } from 'react-scroll';
-
 
 class Main extends Component {
     state = {  }

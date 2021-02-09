@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 
-
-
 const SideRow = ({ item, toggleSideNav, index }) => {
     const { row, navs } = item;
     return ( 

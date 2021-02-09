@@ -1,6 +1,5 @@
 const express = require('express');
 const { Resume, validateResume } = require('../models/resume');
-
 const auth = require('../middleware/auth');
 const router = express.Router();
 

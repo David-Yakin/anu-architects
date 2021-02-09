@@ -45,7 +45,6 @@ class CreatTeamMemberCard extends Form {
      };
 
     render() { 
-        
         return ( 
             <div className="create-resume">
 
@@ -60,7 +59,6 @@ class CreatTeamMemberCard extends Form {
                      onSubmit={ this.handleSubmit } 
                      autoComplete='off' 
                      method='POST'>
-                         
                         { this.renderInput('title', 'שם מלא *' ) }
                         { this.renderInput('subTitle', ' הגדרת תפקיד בחברה *' ) }
                         { this.renderInput('firstP', 'השכלה *') }
@@ -69,7 +67,6 @@ class CreatTeamMemberCard extends Form {
                         { this.renderInput('fourthP', 'תפקיד ועיסוק בחברה *') }
                         { this.renderInput('profileUrl', 'תמונת פרופיל *') }
                         { this.renderInput('profileAlt', 'תיאור תמונת פרופיל לצורך נגישות *') }
-                        
                         { this.renderButton('צור איש צוות', 'btn btn-lg btn-outline-dark btn-block my-3') }
                     </form>
                 </div>

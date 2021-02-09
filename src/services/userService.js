@@ -35,5 +35,3 @@ export function deleteUser(userId){
 export function changUserStatus(userId) {
   return http.patch(`${apiUrl}/users/${userId}`)
 }
-
-

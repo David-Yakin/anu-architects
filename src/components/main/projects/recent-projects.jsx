@@ -14,8 +14,6 @@ class Recent extends Component {
      }
 
      async componentDidMount(){
-    //     const { data } = await getProjects();
-    //    if( data.length ) this.setState({ projects: data })
        const projectsData = await (await getProjects()).data;
        const usersData = await (await getUsers()).data
        if( projectsData.length && usersData ) this.setState({ 

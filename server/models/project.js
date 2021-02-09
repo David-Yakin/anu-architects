@@ -29,7 +29,6 @@ const projectSchema = new mongoose.Schema({
   altGallery: { type: String, required: true, minlength: 2, maxlength: 255},
   createdAt: { type: Date, default: Date.now },
   counter: { type: String, default: 0},
-  
   isLiked: {type: Boolean, default: false},
 
 });

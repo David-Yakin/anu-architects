@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Titles from '../common/titles';
-import ALink from '../common/a-link';
+// import ALink from '../common/a-link';
+import { Link } from 'react-scroll';
 
 class Qna extends Component {
     state = { 
@@ -46,6 +47,7 @@ class Qna extends Component {
                         <div className="card">
                             <div className="card-header" id="headingOne">
                                 <h2 className="mb-0 text-right">
+
                                     <button className="btn btn-link font-weight-light" 
                                             type="button" 
                                             data-toggle="collapse"
@@ -54,6 +56,7 @@ class Qna extends Component {
                                             aria-controls="collapseOne">
                                         {data.firstQ}
                                     </button>
+
                                 </h2>
                             </div>
 
@@ -73,7 +76,8 @@ class Qna extends Component {
                                         <h2 className="card-title h2Title">{data.firstAnswerHeadline}</h2>
                                         <hr/>
                                         <p>{data.firstAanswer}</p>
-                                        <ALink to='/#contact' text='פרטים נוספים' />
+                                        {/* <ALink to='/#contact' text='פרטים נוספים' /> */}
+                                        <Link className='btn btn-outline-dark' to='contact' smooth={true} duration={1000} >פרטים נוספים</Link>
                                     </div>
 
                                 </div>
@@ -111,8 +115,8 @@ class Qna extends Component {
                                         <h2 className="card-title display-4">{data.secondAnswerHeadline}</h2>
                                         <hr/>
                                         <p>{data.secondAanswer}</p>
-                                        <ALink to='/#contact' text='פרטים נוספים' />
-
+                                        {/* <ALink to='/#contact' text='פרטים נוספים' /> */}
+                                        <Link className='btn btn-outline-dark' to='contact' smooth={true} duration={1000} >פרטים נוספים</Link>
                                     </div>
 
                                 </div>
@@ -148,7 +152,8 @@ class Qna extends Component {
                                             <h2 className="card-title display-4">{data.thirdAnswerHeadline}</h2>
                                             <hr/>
                                             <p>{data.thirdAanswer}</p>
-                                            <ALink to='/#contact' text='פרטים נוספים' />
+                                            {/* <ALink to='/#contact' text='פרטים נוספים' /> */}
+                                            <Link className='btn btn-outline-dark' to='contact' smooth={true} duration={1000} >פרטים נוספים</Link>
                                         </div>
 
                                     </div>
@@ -158,7 +163,8 @@ class Qna extends Component {
                     </div>
 
                     <div className="center pb-4">
-                         <ALink to='/#contact'  text='לפרטים נוספים' />
+                         {/* <ALink to='/#contact'  text='לפרטים נוספים' /> */}
+                         <Link className='btn btn-outline-dark' to='contact' smooth={true} duration={1000} >פרטים נוספים</Link>
                     </div>
 
                 </div>

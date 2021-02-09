@@ -9,15 +9,13 @@ class BlogsSummary extends Component {
         blogs : []
         }
 
-        async componentDidMount(){
+    async componentDidMount(){
             const { data } = await getBlogs();
             if( data.length ) this.setState({ blogs: data })
         }
 
     render() { 
-
         const { blogs } = this.state;
-
         if( blogs.length >= 3){
         return ( 
             <div id="blog" className="blog container-fluid px-0">

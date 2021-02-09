@@ -22,10 +22,8 @@ class Signin extends Form {
         try {
           await login(email,password);
           let user = getCurrentUser();
-
-          if(user && user.admin === true) return window.location = "/private-area/users" ;
-          if(user && !user.admin === true && user.isBloger === true) return window.location = "/private-area/blogs-search-page" ;
-
+          if(user && user.admin) return window.location = "/private-area/users" ;
+          if(user && !user.admin && user.isBloger) return window.location = "/private-area/blogs-search-page" ;
           window.location = '/private-area/my-projects';
           
         }catch(ex){
@@ -47,14 +45,12 @@ class Signin extends Form {
                 <form onSubmit={ this.handleSubmit } 
                           autoComplete='off' 
                           method='POST' 
-                          className="border border-light rounded p-4 bg-light"
-                         >
+                          className="border border-light rounded p-4 bg-light">
 
                         <h1 className="h3 mb-3 font-weight-normal text-dark text-center px-0">טופס הירשמות</h1>
 
                         { this.renderInput('email', 'מייל', 'email') }
                         { this.renderInput('password', 'סיסמה', 'password', ) }
-
                         { this.renderButton('שלח', 'btn btn-lg btn-outline-dark btn-block') }
 
                     </form>

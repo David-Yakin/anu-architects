@@ -41,7 +41,6 @@ class Projects extends Component {
         this.setState({ project: project.isLiked = false })
         toast('הפרוייטק הוצא מרשימת המועדפים שלך');
         changProjectLike(projectId);
-
     }
 
      async handleChange(e){

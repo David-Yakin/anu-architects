@@ -24,9 +24,7 @@ router.patch('/:id', async (req, res) => {
   if(!project) return res.status(404).send('הפרוייקט לא נמצא במאגר המידע');
   let status = project.isLiked;
   let changeStatus = !status;
-  
   project = await Project.findOneAndUpdate( {_id : req.params.id}, { isLiked : changeStatus});
-
   project = await Project.save();
   res.send(project);
 })

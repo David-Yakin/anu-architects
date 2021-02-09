@@ -55,33 +55,6 @@ class MyProjects extends Component {
             </div>
         )
     }
-    //  generateProject( ){
-    //     const { projects } = this.state;
-
-    //     if(projects.length){
-    //         return (
-    //             <div className="row">
-    //                 {projects.map( project => project.isLiked &&
-    //                     < ProjectCard 
-    //                     key={project._id} 
-    //                     project={project} 
-    //                     width={'card mb-3 col-4 py-0 px-2 border-0'}
-    //                     handleProjectDelete={this.handleProjectDelete}
-    //                     handleLike={this.handleLike}
-    //                     />
-    //                 )}
-    //             </div>
-    //         )
-    //     } 
-    //     return (
-    //         <div className="center">
-    //             <div className="row col-8 text-rtl pt-4">
-    //                 <h4>מצטערים לא נמצאו פרויקטים מועדפים במאגר המידע</h4>
-    //                 <p>חפש באתר את הפרויקטים המועדפים עליך ולחץ על סימן הלייק כדי להוסיף אותם לפרויקטים המועדפים  </p> 
-    //             </div>
-    //         </div>
-    //     )
-    // }
 
     render() { 
         return ( 

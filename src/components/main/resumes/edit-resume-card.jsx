@@ -87,7 +87,6 @@ class EditTeamMember extends Form {
                         { this.renderInput('profileUrl', 'תמונת פרופיל *') }
                         { this.renderInput('profileAlt', 'תיאור תמונת פרופיל לצורך נגישות *') }
                         { this.renderButton('שלח', 'btn btn-lg btn-outline-dark btn-block my-3') }
-
                     </form>
                 </div>
             </div>                    

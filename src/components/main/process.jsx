@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Titles from '../common/titles';
-import ALink from '../common/a-link';
-
+// import ALink from '../common/a-link';
+import { Link } from 'react-scroll';
 class Process extends Component {
     state = { 
         counter: 0,
@@ -13,7 +13,7 @@ class Process extends Component {
                 title: "מילוי טופס צור קשר",
                 content: "על מנת שהשיחה הראשונית תהה פרודוקטיבית נשמח לדעת כמה שיותר פרטים על הפרויקט. מה סוג הנכס? מיקומו?  דד ליין לסיומו? אם יש דברים ספציפיים שרוצים להתעכב עליהם בתכנון או בעיצוב הנכס. כמו כן, אם יש לכם שאלה כללית עלינו או על תהליך העבודה או כל שאלה אחרת מלאו את טופס יצירת הקשר ונחזור אליכם עם תשובות בהקדם. ",
                 link: "לטופס יצירת קשר",
-                to: "/#contact"
+                to: "contact"
             },
             {
                 id: 1,
@@ -22,7 +22,7 @@ class Process extends Component {
                 title: "פגישת ייעוץ",
                 content: "בפגישת הייעוץ הראשונית ננסה להבין את הצרכים שלך כלקוח, אענה על כך שאלה שתהיה לך וביחד נחליט על חבילת הצילום המתאימה, בהתאם לגודל הפרויקט ומגבלות התקציב. כמו כן אתן נדבר על מספר נקודות שיעזרו לייעל את יום הצילום, יחסכו זמן ויאפשרו את התנאים הדרושים ליצירת צילום מקצועי של הנכס. נקבע ביחד תאריך ליום הצילום ולאחר מכן הלקוח יעביר מקדמה שתשמש בין היתר לשכירת ציוד צילום מיוחד במקרה ויידרש",
                 link: "לטופס יצירת קשר",
-                to: "/#contact"
+                to: "contact"
             },
             {
                 id: 2,
@@ -31,7 +31,7 @@ class Process extends Component {
                 title: "תוכניות וסקיצות",
                 content: "על מנת שפגישת הייעוץ תהה פרודקטיבית נשמח לדעת כמה פרטים ראשוניים",
                 link: "לטופס יצירת קשר",
-                to: "/#contact"
+                to: "contact"
             },
             {
                 id: 3,
@@ -40,7 +40,7 @@ class Process extends Component {
                 title: "בנייה ושיפוץ",
                 content: "על מנת שפגישת הייעוץ תהה פרודקטיבית נשמח לדעת כמה פרטים ראשוניים",
                 link: "לטופס יצירת קשר",
-                to: "/#contact"
+                to: "contact"
             },
             {
                 id: 4,
@@ -49,7 +49,7 @@ class Process extends Component {
                 title: "עיצוב",
                 content: "על מנת שפגישת הייעוץ תהה פרודקטיבית נשמח לדעת כמה פרטים ראשוניים",
                 link: "לטופס יצירת קשר",
-                to: "/#contact"
+                to: "contact"
             },
         ]
 
@@ -93,7 +93,8 @@ class Process extends Component {
                     <p id="id_process_p" className="">{sliders[counter].content}</p>
                     <div className="mt-2">
 
-                    <ALink to={sliders[counter].to} text={sliders[counter].link} />
+                    <Link className='btn btn-outline-dark' to='contact' smooth={true} duration={1000} >פרטים נוספים</Link>
+                    {/* <ALink to={sliders[counter].to} text={sliders[counter].link} /> */}
 
                     </div>
                 </article>

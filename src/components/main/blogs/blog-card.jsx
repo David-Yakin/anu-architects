@@ -37,9 +37,3 @@ const BlogCard = ({blog, handleBlogDelete }) => {
 }
  
 export default BlogCard;
-
-/*
-import BlogCard from '../../services/blog-card';
-
-<BlogCard blog={blog} />
-*/

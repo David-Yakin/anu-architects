@@ -111,7 +111,6 @@ class EditProject extends Form {
      };
 
     render() { 
- 
         return ( 
             <div className="edit-project">
 

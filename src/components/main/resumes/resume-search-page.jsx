@@ -76,11 +76,8 @@ class TheTeam extends Component {
                             </Link>
                             <p className="card-text text-right">{resume.subTitle}</p>
 
-
                             {user && user.admin && 
-                      <span>
-                        <Link to={`/private-area/edit-resume-card/${resume._id}`} className='far fa-edit text-dark text-decoration-none'></Link> 
-                        <span> | </span>
+                                    <span> <Link to={`/private-area/edit-resume-card/${resume._id}`} className='far fa-edit text-dark text-decoration-none'></Link> <span> | </span>
                         <a href="/" onClick={ (e) => { this.handleResumeDelete(resume._id, e) } } className='fas fa-trash-alt text-dark text-decoration-none'> </a>  
                       </span>
                      
@@ -97,25 +94,20 @@ class TheTeam extends Component {
     render() { 
         return ( 
             <div id="theTeam" className="theTeam container-fluid">
-            <div className="container px-0">
+                <div className="container px-0">
+                    <Titles titleBold='הצוות'
+                            title= 'שלנו'
+                            subTitle='אנחנו באנו אדריכלים שמים דגש על צוות איכותי ומקצועי'/>
 
-                <Titles titleBold='הצוות'
-                        title= 'שלנו'
-                        subTitle='אנחנו באנו אדריכלים שמים דגש על צוות איכותי ומקצועי'/>
-                
-                <div className="center">
-                    <div className="col-10">
-                <div className="row justify-content-between">
-                    {this.generatePerson()}  
-                </div>
+                    <div className="center">
+                        <div className="col-10">
+                            <div className="row justify-content-between">
+                                {this.generatePerson()}  
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
-        </div>
-            
-               
-            
          );
     }
 }

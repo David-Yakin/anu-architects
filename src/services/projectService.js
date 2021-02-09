@@ -13,10 +13,6 @@ export function createProject(project) {
   return http.post(`${apiUrl}/projects`, project);
 }
 
-// export function getMyProjects() {
-//   return http.get(`${apiUrl}/projects/private-area/my-projects`);
-// }
-
 export function editProject(project) {
   const projectId = project._id;
   delete project._id;

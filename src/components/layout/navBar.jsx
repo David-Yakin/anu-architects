@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-scroll';
 import { NavLink } from 'react-router-dom'
-// import { getCurrentUser } from "../../services/userService";
 
 class NavBar extends Component {
 

@@ -29,16 +29,13 @@ router.patch('/:id', auth, async (req, res) => {
   if(!user) return res.status(404).send('לא נמצא המשתמש');
   let status = user.isBloger;
   let changeStatus = !status;
-  
   user = await User.findOneAndUpdate( {_id : req.params.id}, { isBloger : changeStatus});
-
   user = await user.save();
   res.send(user);
 });
 
 
 router.patch('/projects', auth, async (req, res) => {
-
   const { error } = validateProjects(req.body);
   if (error) res.status(400).send(error.details[0].message);
 
@@ -49,7 +46,6 @@ router.patch('/projects', auth, async (req, res) => {
   user.cards = req.body.cards;
   user = await user.save();
   res.send(user);
-
 });
 
 router.get('/me', auth, async (req, res) => {

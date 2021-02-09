@@ -78,9 +78,7 @@ class CreateProject extends Form {
      };
 
     render() { 
-
-        return ( 
-                             
+        return (    
                 <div className="create-project">
 
                     <Titles titleBold='צור'
@@ -118,13 +116,11 @@ class CreateProject extends Form {
                                 { this.renderInput('desConstraction', 'תיאור תהליך הבנייה / השיפוץ' ) }
                                 { this.renderInput('urlGallery', 'תמונה לגלריית התמונות' ) }
                                 { this.renderInput('altGallery', 'תיאור של התמונה לצורך נגישות' ) }
-
                                 { this.renderButton('צור פרויקט', 'btn btn-lg btn-outline-dark btn-block my-3') }
                             </form>
                         </div>
                     </div>                    
                 </div>
-
          );
     }
 }

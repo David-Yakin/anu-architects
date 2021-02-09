@@ -46,8 +46,6 @@ router.get('/private-area/edit-blog-card/:id', auth, async (req, res) => {
 });
 
 router.post('/', auth, async (req, res) => {
-console.log(req.body);
-
   const { error } = validateBlog(req.body);
   if (error)return res.status(400).send(error.details[0].message);
 

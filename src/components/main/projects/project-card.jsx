@@ -27,7 +27,7 @@ const ProjectCard = ({project, width, handleProjectDelete, handleLike}) =>{
 
                     <div className="col-2 pt-1 px-0">
                    
-                       { user && !user.admin && 
+                       { user && !user.admin && !user.isBloger &&
                        <i className={ project.isLiked === true ?
                         "fas fa-thumbs-up text-dark" : "far fa-thumbs-up curser" } 
                         onClick={()=>handleLike( project._id)}></i>}
@@ -50,9 +50,3 @@ const ProjectCard = ({project, width, handleProjectDelete, handleLike}) =>{
 }
  
 export default ProjectCard;
-
-/*
-import ProjectCard from '../../services/projectCard';
-
-    < ProjectCard  project={project} width={card mb-3 col-4 py-0 px-2 border-0}/>
-*/

@@ -33,7 +33,6 @@ const blogSchema = new mongoose.Schema({
     eighthP: { type: String, required: true, minlength: 2, maxlength: 1024},
     ninthP: { type: String, required: true, minlength: 2, maxlength: 1024},
     createdAt: { type: Date, default: Date.now },
-
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
@@ -46,23 +45,18 @@ function validateBlog(blog) {
     subTitle: Joi.string().min(2).max(255).required(),
     author: Joi.string().required().min(2).max(255),
     category: Joi.string().required().min(2).max(255),
-
     cardUrl: Joi.string().required().min(2).max(255),
     cardAlt: Joi.string().required().min(2).max(255),
-
     titleImgUrl: Joi.string().required().min(2).max(255),
     titleImgAlt: Joi.string().required().min(2).max(255),
     titleImgCredit: Joi.string().required().min(2).max(255),
-
     endImgUrl:  Joi.string().required().min(2).max(255),
     endImgAlt:  Joi.string().required().min(2).max(255),
     endImgCredit:  Joi.string().required().min(2).max(255),
-
     firstInnerTitle: Joi.string().required().min(2).max(255),
     firstP: Joi.string().required().min(2).max(1024),
     secondP: Joi.string().min(2).max(1024).required(),
     thirdP: Joi.string().min(2).max(1024).required(),
-
     landscapeImgUrl: Joi.string().min(2).max(255).required(),
     landscapeImgAlt: Joi.string().min(2).max(255).required(),
     landscapeImgCredit: Joi.string().min(2).max(255).required(),
@@ -70,7 +64,6 @@ function validateBlog(blog) {
     foruthP: Joi.string().min(2).max(1024).required(),
     fifthP: Joi.string().min(2).max(1024).required(),
     sixthP: Joi.string().min(2).max(1024).required(),
-
     profileImgUrl: Joi.string().min(2).max(255).required(),
     profileImgAlt: Joi.string().min(2).max(255).required(),
     profileImgCredit: Joi.string().min(2).max(255).required(),
