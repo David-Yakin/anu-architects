@@ -53,8 +53,9 @@ class Signup extends Form {
 
     render() { 
         let user = getCurrentUser();
-        if(user && user.admin === true) return <Redirect to="/private-area/users" />
-        if( user) return <Redirect to="/private-area/my-projects" />
+        if(user && user.admin) return <Redirect to="/private-area/users" />
+        if(user && !user.admin  && user.isBloger ) return window.location = "/private-area/blogs-search-page" ;
+         user && <Redirect to="/private-area/my-projects" />
 
         return ( 
             <div className="container-fluid sign-up">

@@ -23,7 +23,8 @@ class Signin extends Form {
           await login(email,password);
           let user = getCurrentUser();
 
-          if(user && user.admin === true) return window.location = "/private-area/users" 
+          if(user && user.admin === true) return window.location = "/private-area/users" ;
+          if(user && !user.admin === true && user.isBloger === true) return window.location = "/private-area/blogs-search-page" ;
 
           window.location = '/private-area/my-projects';
           

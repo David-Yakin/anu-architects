@@ -110,7 +110,7 @@ class Users extends Component {
                         <td>{user.email}</td>
                         <td>{user.phone}</td>
                         <td> <button className={ user.isBloger ? "btn btn-danger" : "btn btn-outline-dark"}
-                                     onClick={ () => this.changeStatus(user._id) }>
+                                     onClick={ () => this.changeStatus(user._id) }disabled={user.admin ? true : false}>
                             {user.isBloger ? "חיובי" : "שלילי"}
                             </button> </td>
                         <td>{getDate(user.createdAt)}</td>

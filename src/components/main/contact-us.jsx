@@ -2,6 +2,7 @@ import React from 'react';
 import Titles from '../common/titles';
 import Joi from "joi-browser";
 import Form from '../common/form';
+import { toast } from 'react-toastify';
 
 class ContectUs extends Form {
 
@@ -25,7 +26,12 @@ class ContectUs extends Form {
         phone: Joi.string().required().min(2).max(255).label('phone'),
      }
 
-    doSubmit = () => {  };
+    doSubmit = () => { 
+        // const data = {...this.state.data};
+        this.setState({data:{ name: '', lastName:'', mail:'',  subject:'',  phone:'' } })
+        document.getElementById('text-erea').value = '';
+        toast('ההודעה נשלחה! אנו ניצור עמך קשר בהקדם');
+     };
     
     render() { 
         return ( 
@@ -63,11 +69,13 @@ class ContectUs extends Form {
                            </div>
 
                            <div className="p-2 col-12">
-                                <textarea type="text" 
-                                      name="message" 
-                                      className="form-control text-rtl border border-dark"
-                                      placeholder="הודעה" 
-                                      rows="5">
+                                <textarea 
+                                    id='text-erea'
+                                    type="text" 
+                                    name="message" 
+                                    className="form-control text-rtl border border-dark"
+                                    placeholder="הודעה" 
+                                    rows="5">
                                 </textarea>                               
                            </div>
 

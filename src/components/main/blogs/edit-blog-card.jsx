@@ -49,23 +49,18 @@ class EditBlog extends Form {
         subTitle: Joi.string().required().min(2).max(255).label('subTitle'),
         author: Joi.string().required().min(2).max(255).label('author'),
         category: Joi.string().required().min(2).max(255).label('category'),
-
         cardUrl: Joi.string().required().min(2).max(255).label('cardUrl'),
         cardAlt: Joi.string().required().min(2).max(255).label('cardAlt'),
-
         titleImgUrl: Joi.string().required().min(2).max(255).label('titleImgUrl'),
         titleImgAlt: Joi.string().required().min(2).max(255).label('titleImgAlt'),
         titleImgCredit: Joi.string().required().min(2).max(255).label('titleImgCredit'),
-
         endImgUrl: Joi.string().required().min(2).max(255).label('endImgUrl'),
         endImgAlt: Joi.string().required().min(2).max(255).label('endImgAlt'),
         endImgCredit: Joi.string().required().min(2).max(255).label('endImgCredit'),
-
         firstInnerTitle: Joi.string().required().min(2).max(255).label('firstInnerTitle'),
         firstP: Joi.string().required().min(2).max(1024).label('firstP'),
         secondP: Joi.string().required().min(2).max(1024).label('secondP'),
         thirdP: Joi.string().required().min(2).max(1024).label('thirdP'),
-
         landscapeImgUrl: Joi.string().required().min(2).max(255).label('landscapeImgUrl'),
         landscapeImgAlt: Joi.string().required().min(2).max(255).label('landscapeImgAlt'),
         landscapeImgCredit: Joi.string().required().min(2).max(255).label('landscapeImgCredit'),
@@ -73,7 +68,6 @@ class EditBlog extends Form {
         foruthP: Joi.string().required().min(2).max(1024).label('foruthP'),
         fifthP: Joi.string().required().min(2).max(1024).label('fifthP'),
         sixthP: Joi.string().required().min(2).max(1024).label('sixthP'),
-
         profileImgUrl: Joi.string().required().min(2).max(255).label('profileImgUrl'),
         profileImgAlt: Joi.string().required().min(2).max(255).label('profileImgAlt'),
         profileImgCredit: Joi.string().required().min(2).max(255).label('profileImgCredit'),
@@ -81,7 +75,6 @@ class EditBlog extends Form {
         seventhP: Joi.string().required().min(2).max(1024).label('seventhP'),
         eighthP: Joi.string().required().min(2).max(1024).label('eighthP'),
         ninthP: Joi.string().required().min(2).max(1024).label('ninthP'),
-
      }
 
      async componentDidMount(){

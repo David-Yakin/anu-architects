@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SideRow from './side-bar-row';
-
+import { getCurrentUser } from '../../../services/userService';
 class SideBar extends Component {
     
     state = { 
@@ -76,16 +76,19 @@ class SideBar extends Component {
         changeStatus.open = !changeStatus.open ;
         this.setState({ changeStatus })
      }
-
-    render() { 
+     render() { 
+        const user = getCurrentUser()
         const { sideItemes } = this.state;
         return ( 
             sideItemes.length &&
                 <div className="d-flex justify-content-end ">
                     <div className="accordion col-1 col-xl-2 side-bar position-fixed text-rtl">
-                        { sideItemes.map( (item, i) => { 
-                            return ( <SideRow toggleSideNav={this.toggleSideNav} key={i} item={item} index={i}/> )
-                            })}
+
+                        { user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={0} item={sideItemes[0]} index={0}/> }
+                        { user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={1} item={sideItemes[1]} index={1}/> }
+                        { user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={2} item={sideItemes[2]} index={2}/> }
+                        { user.isBloger && <SideRow toggleSideNav={this.toggleSideNav} key={3} item={sideItemes[3]} index={3}/> }
+
                     </div>
                 </div>
          );
