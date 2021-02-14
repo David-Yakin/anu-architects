@@ -61,10 +61,10 @@ class CreatTeamMemberCard extends Form {
                      method='POST'>
                         { this.renderInput('title', 'שם מלא *' ) }
                         { this.renderInput('subTitle', ' הגדרת תפקיד בחברה *' ) }
-                        { this.renderInput('firstP', 'השכלה *') }
-                        { this.renderInput('secondp', 'עבודה כשכירה בתחום *') }
-                        { this.renderInput('thirdP', 'עבודה כעצמאית בתחום *') }
-                        { this.renderInput('fourthP', 'תפקיד ועיסוק בחברה *') }
+                        { this.renderTextarea('firstP', 'השכלה *') }
+                        { this.renderTextarea('secondp', 'עבודה כשכירה בתחום *') }
+                        { this.renderTextarea('thirdP', 'עבודה כעצמאית בתחום *') }
+                        { this.renderTextarea('fourthP', 'תפקיד ועיסוק בחברה *') }
                         { this.renderInput('profileUrl', 'תמונת פרופיל *') }
                         { this.renderInput('profileAlt', 'תיאור תמונת פרופיל לצורך נגישות *') }
                         { this.renderButton('צור איש צוות', 'btn btn-lg btn-outline-dark btn-block my-3') }

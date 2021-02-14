@@ -94,8 +94,14 @@ class CreateProject extends Form {
                                 { this.renderInput('name', 'שם הפרויקט *' ) }
                                 { this.renderInput('year', ' השנה בה הסתיים הפרויקט *', 'number' ) }
                                 { this.renderInput('size', 'גודל הנכס במטר רבוע *', 'number') }
-                                { this.renderInput('category', 'סוג הנכס *' ) }
-                                { this.renderInput('description', 'תיאור הנכס *' ) }
+                                { this.renderSelectBox('category', 'בחר קטגוריה', [
+                                    {text:'דירה', value:'apartment' },
+                                    {text:'וילה', value:'villa' }, 
+                                    {text:'בניין מגורים', value:'Building' },
+                                    {text:'קומפלקס דירות', value:'apartment-complex' },
+                                    {text:'מלון', value:'hotel' }
+                                    ]) }
+                                { this.renderTextarea('description', 'תיאור הנכס *' ) }
                                 { this.renderInput('country', 'הארץ בה מצוי הנכס  *' ) }
                                 { this.renderInput('city', 'העיר בה מצוי הנכס  *' ) }
                                 { this.renderInput('cardUrl', 'תמונה לכרטיס הפרוייקט *' ) }
@@ -104,16 +110,16 @@ class CreateProject extends Form {
                                 { this.renderInput('altPamorama', 'תיאור של התמונה לצורך נגישות *' ) }
                                 { this.renderInput('urlBefore', 'התמונה של הנכס לפני הבניה/ השיפוץ' ) }
                                 { this.renderInput('altBefore', 'תיאור של התמונה לצורך נגישות' ) }
-                                { this.renderInput('desBefore', 'תיאור מצב הנכס לפני תהליך הבניה/ השיפוץ' ) }
+                                { this.renderTextarea('desBefore', 'תיאור מצב הנכס לפני תהליך הבניה/ השיפוץ' ) }
                                 { this.renderInput('urlSketch', 'סקיצה של הפרויקט' ) }
                                 { this.renderInput('altSketch', 'תיאור של הסקיצה לצורך נגישות' ) }
-                                { this.renderInput('desSketch', 'תיאור תהליך העבודה על הסקיצה' ) }
+                                { this.renderTextarea('desSketch', 'תיאור תהליך העבודה על הסקיצה' ) }
                                 { this.renderInput('urlImaging', 'הדמייה של הפרויקט' ) }
                                 { this.renderInput('altImaging', 'תיאור של ההדמייה לצורך נגישות' ) }
-                                { this.renderInput('desImaging', 'תיאור תהליך העבודה על ההדמייה' ) }
+                                { this.renderTextarea('desImaging', 'תיאור תהליך העבודה על ההדמייה' ) }
                                 { this.renderInput('urlConstraction', 'תמונה מהשיפוצים / הבנייה של הפרויקט' ) }
                                 { this.renderInput('altConstraction', 'תיאור של התמונה לצורך נגישות' ) }
-                                { this.renderInput('desConstraction', 'תיאור תהליך הבנייה / השיפוץ' ) }
+                                { this.renderTextarea('desConstraction', 'תיאור תהליך הבנייה / השיפוץ' ) }
                                 { this.renderInput('urlGallery', 'תמונה לגלריית התמונות' ) }
                                 { this.renderInput('altGallery', 'תיאור של התמונה לצורך נגישות' ) }
                                 { this.renderButton('צור פרויקט', 'btn btn-lg btn-outline-dark btn-block my-3') }

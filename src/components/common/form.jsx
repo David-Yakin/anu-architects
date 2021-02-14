@@ -1,6 +1,8 @@
+import Textarea from "./textarea";
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
+import SelectBox from "./selectBox";
 
 class Form extends Component {
   state = {
@@ -9,9 +11,7 @@ class Form extends Component {
   };
 
   renderButton(text, className='btn btn-dark') {
-    
     return (
-     
       <button disabled={this.validate()} className={className}>
         {text}
       </button>
@@ -20,7 +20,6 @@ class Form extends Component {
 
   renderInput(name, placeholder, type = "text", className, divClass) {
     const { data, errors } = this.state;
-
     return (
       <Input
         divClass={divClass}
@@ -34,6 +33,38 @@ class Form extends Component {
       />
     );
   };
+
+    renderTextarea(name, placeholder, divClass, className, rows ){
+    const { data, errors } = this.state;
+    return (
+      <Textarea
+        divClass={divClass}
+        className={className}
+        placeholder={placeholder}
+        name={name}
+        value={data[name]}
+        rows={rows}
+        onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  }
+
+  renderSelectBox(name, defaultText, options, divClass, className){
+    const { data, errors } = this.state;
+    return (
+      <SelectBox
+      options={options}
+      divClass={divClass}
+      className={className}
+      defaultText={defaultText}
+      name={name}
+      value={data[name]}
+      onChange={this.handleChange}
+      error={errors[name]}
+      />
+    );
+  }
 
   validate = () => {
     const options = { abortEarly: false };

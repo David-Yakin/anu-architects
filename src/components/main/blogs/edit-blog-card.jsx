@@ -156,7 +156,10 @@ class EditBlog extends Form {
                             { this.renderInput('title', 'שם המאמר *' ) }
                             { this.renderInput('subTitle', ' כותרת משנה של המאמר *' ) }
                             { this.renderInput('author', 'כותב המאמר *') }
-                            { this.renderInput('category', 'סוג הנכס *' ) }
+                            { this.renderSelectBox('category', 'בחר קטגוריה', [
+                                    {text:'ארכיטקטורה', value:'architecture' },
+                                    {text:'עיצוב פנים', value:'exterior-design' }, 
+                                    {text:'ניהול פרויקטים', value:'Projects-Management' }]) }
 
                             { this.renderInput('cardUrl', 'כתובת תמונה לכרטיס המאמר ביחס של 16:9 *') }
                             { this.renderInput('cardAlt', 'תיאור התמונה לכרטיס המאמר לצורך נגישות') }
@@ -170,25 +173,25 @@ class EditBlog extends Form {
                             { this.renderInput('endImgCredit', 'קרדיט לצלם של התמונה סופית') }
 
                             { this.renderInput('firstInnerTitle', 'כותרת ראשונה בגוף המאמר') }
-                            { this.renderInput('firstP', 'פיסקה ראשונה') }
-                            { this.renderInput('secondP', 'פיסקה שנייה') }
-                            { this.renderInput('thirdP', 'פיסקה שלישית') }
+                            { this.renderTextarea('firstP', 'פיסקה ראשונה') }
+                            { this.renderTextarea('secondP', 'פיסקה שנייה') }
+                            { this.renderTextarea('thirdP', 'פיסקה שלישית') }
 
                             { this.renderInput('landscapeImgUrl', 'כתובת התמונה שנייה') }
                             { this.renderInput('landscapeImgAlt', 'תיאור התמונה שנייה') }
                             { this.renderInput('landscapeImgCredit', 'קרדיט לצלם של התמונה שנייה') }
                             { this.renderInput('secondInnerTitle', 'כותרת שנייה בגוף המאמר') }
-                            { this.renderInput('foruthP', 'פיסקה רביעית') }
-                            { this.renderInput('fifthP', 'פיסקה חמישית') }
-                            { this.renderInput('sixthP', 'פיסקה שישית') }
+                            { this.renderTextarea('foruthP', 'פיסקה רביעית') }
+                            { this.renderTextarea('fifthP', 'פיסקה חמישית') }
+                            { this.renderTextarea('sixthP', 'פיסקה שישית') }
 
                             { this.renderInput('profileImgUrl', 'כתובת התמונה השלישית') }
                             { this.renderInput('profileImgAlt', 'תיאור התמונה השלישית') }
                             { this.renderInput('profileImgCredit', 'קרדיט לצלם של התמונה השלישית') }
                             { this.renderInput('thirdInnerTitle', 'כותרת שלישית בגוף המאמר') }
-                            { this.renderInput('seventhP', 'פיסקה שביעית') }
-                            { this.renderInput('eighthP', 'פיסקה שמינית') }
-                            { this.renderInput('ninthP', 'פיסקה תשיעית') }
+                            { this.renderTextarea('seventhP', 'פיסקה שביעית') }
+                            { this.renderTextarea('eighthP', 'פיסקה שמינית') }
+                            { this.renderTextarea('ninthP', 'פיסקה תשיעית') }
 
                             { this.renderButton('שלח', 'btn btn-lg btn-outline-dark btn-block my-3') }
                         </form>
