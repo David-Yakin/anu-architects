@@ -66,10 +66,9 @@ class CreatQna extends Form {
         return ( 
             <div className="create-qna">
 
-            <Titles titleBold='צור'
-                    title= 'שאלה ותשובה חדשות'
-                    subTitle='כאן תוכל ליצור שאלות ותשובות חדשות' 
-                    subColor='lightgray' />
+            <Titles titleBold='ערוך'
+                    title= 'שאלה ותשובה '
+                    subTitle='כאן תוכל לערוך את השאלה והתשובה ' />
            
             <div className="container">
                 <div className="center">

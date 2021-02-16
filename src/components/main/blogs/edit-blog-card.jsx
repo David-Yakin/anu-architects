@@ -12,13 +12,17 @@ class EditBlog extends Form {
             subTitle: '',
             author:'',
             category:'',
-    
             cardUrl:'',
             cardAlt: '',
 
             titleImgUrl:'',
             titleImgAlt:'',
             titleImgCredit:'',
+
+            endImgUrl: "",
+            endImgAlt: "",
+            endImgCredit: "",
+
             firstInnerTitle:'',
             firstP:'',
             secondP:'',
@@ -27,6 +31,7 @@ class EditBlog extends Form {
             landscapeImgUrl:'',
             landscapeImgAlt:'',
             landscapeImgCredit:'',
+
             secondInnerTitle:'',
             foruthP:'',
             fifthP:'',
@@ -35,6 +40,7 @@ class EditBlog extends Form {
             profileImgUrl:'',
             profileImgAlt:'',
             profileImgCredit:'',
+
             thirdInnerTitle:'',
             seventhP:'',
             eighthP:'',
@@ -57,20 +63,25 @@ class EditBlog extends Form {
         endImgUrl: Joi.string().required().min(2).max(255).label('endImgUrl'),
         endImgAlt: Joi.string().required().min(2).max(255).label('endImgAlt'),
         endImgCredit: Joi.string().required().min(2).max(255).label('endImgCredit'),
+
         firstInnerTitle: Joi.string().required().min(2).max(255).label('firstInnerTitle'),
         firstP: Joi.string().required().min(2).max(1024).label('firstP'),
         secondP: Joi.string().required().min(2).max(1024).label('secondP'),
         thirdP: Joi.string().required().min(2).max(1024).label('thirdP'),
+
         landscapeImgUrl: Joi.string().required().min(2).max(255).label('landscapeImgUrl'),
         landscapeImgAlt: Joi.string().required().min(2).max(255).label('landscapeImgAlt'),
         landscapeImgCredit: Joi.string().required().min(2).max(255).label('landscapeImgCredit'),
+
         secondInnerTitle: Joi.string().required().min(2).max(255).label('secondInnerTitle'),
         foruthP: Joi.string().required().min(2).max(1024).label('foruthP'),
         fifthP: Joi.string().required().min(2).max(1024).label('fifthP'),
         sixthP: Joi.string().required().min(2).max(1024).label('sixthP'),
+
         profileImgUrl: Joi.string().required().min(2).max(255).label('profileImgUrl'),
         profileImgAlt: Joi.string().required().min(2).max(255).label('profileImgAlt'),
         profileImgCredit: Joi.string().required().min(2).max(255).label('profileImgCredit'),
+
         thirdInnerTitle: Joi.string().required().min(2).max(255).label('thirdInnerTitle'),
         seventhP: Joi.string().required().min(2).max(1024).label('seventhP'),
         eighthP: Joi.string().required().min(2).max(1024).label('eighthP'),

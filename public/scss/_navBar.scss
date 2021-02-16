@@ -6,7 +6,7 @@ header {
 
     .up {
         right: 2%;
-        // border: #000 1px solid;
+        border: #000 1px solid;
         border-radius: 3px 0 0 3 px;
         cursor: pointer;
         position: fixed;
@@ -22,6 +22,10 @@ header {
         user-select: none;
         text-decoration: none;
         z-index: 100;
+
+        // &::before{
+
+        // }
 
         &:hover {
             text-decoration: none;

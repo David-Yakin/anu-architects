@@ -49,8 +49,7 @@ class CreatQna extends Form {
 
             <Titles titleBold='צור'
                     title= 'שאלה ותשובה חדשות'
-                    subTitle='כאן תוכל ליצור שאלות ותשובות חדשות' 
-                    subColor='lightgray' />
+                    subTitle='כאן תוכל ליצור שאלות ותשובות חדשות' />
            
             <div className="container">
                 <div className="center">

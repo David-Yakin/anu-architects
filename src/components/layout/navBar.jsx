@@ -4,17 +4,27 @@ import { NavLink } from 'react-router-dom'
 
 class NavBar extends Component {
 
-    state = { }
+    state = {
+        scrolled: false
+     }
 
-    render() { 
+     scollFn = ()=>{
+     if(window.scrollY === 0 || window.scrollY === 1){
+        const { scrolled } = this.state;
+        const onScroll = !scrolled;
+        return this.setState({scrolled: onScroll});
+     } 
+     return this.setState({scrolled: true });
+    } 
     
+     render() { 
         const { user } = this.props;
-       
+        const { scrolled} = this.state;
+        window.addEventListener("scroll", this.scollFn);
         return ( 
 
             <header>
-
-                <Link to="logo" className="up fa fa-chevron-up" smooth={true} duration={1000}> </Link>
+                <Link to="logo" className={ scrolled === true ? "up fa fa-chevron-up" : ''} smooth={true} duration={1000}> </Link>
 
             <div className="container">
                 <div className="row justify-content-between">
