@@ -23,6 +23,9 @@ import Users from './users';
 import ProtectedRoute from '../common/protectedRoute';
 
 import { Switch, Route } from 'react-router-dom';
+import Qna from '../main/qna/qna';
+import createQna  from '../main/qna/creat-qna';
+import EditQna  from '../main/qna/edit-qna';
 
 class Main extends Component {
 
@@ -63,10 +66,14 @@ class Main extends Component {
                     <ProtectedRoute path='/private-area/edit-blog-card/:id' component={EditBlog} title={"isBloger"}/>
                     <ProtectedRoute path='/private-area/create-resume-card' component={CreateTeamMember} title={"admin"}/>
                     <ProtectedRoute path='/private-area/edit-resume-card/:id' component={EditTeamMember} title={"admin"}/>
+                    
+                    <ProtectedRoute path='/private-area/create-qna-card' component={createQna} title={"admin"}/>
+                    <ProtectedRoute path='/private-area/edit-qna-card/:id' component={EditQna} title={"admin"}/>
 
                     <Route path='/private-area/projects-search-page' component={ProjectsSearch}/>
                     <Route path='/private-area/blogs-search-page' component={BlogsSearch}/>
                      <Route path='/private-area/resume-search-page' component={TeamMembersSearch}/>
+                     <Route path='/private-area/qna-search-page' component={Qna}/>
                      </Switch>  
                 </div>
 

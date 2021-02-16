@@ -26,7 +26,6 @@ class Blogs extends Component {
 
     handleBlogDelete = async (blogId, e) => {
        e.preventDefault();
-
         Swal.fire({
             title: '?האם אתה בטוח',
             text: "!המאמר יימחק ממאגר המידע",

@@ -5,7 +5,7 @@ import About from "./about";
 import Process from "./process";
 import Gallery from "./gallerys";
 import BlogsSummary from "./blogs/blogs-summary";
-import Qna from "./qna";
+import Qna from "./qna/qna";
 import ContectUs from "./contact-us";
 import { getCurrentUser } from "../../services/userService";
 import { Link } from 'react-scroll';

@@ -70,7 +70,14 @@ class Process extends Component {
 
     renderDot(){
         const { sliders } = this.state;
-        return sliders.map( slider => <span key={slider.id} className="dot d-none d-lg-block mx-5 mb-3 px-4 shadow" onClick={ ()=> this.onArrowClick(slider.id)}> {slider.dotText}</span>)
+        let { counter } = this.state;   
+        return sliders.map( slider => <span key={slider.id} 
+                                            className={counter === slider.id ? 'btn btn-dark ml-2' : "btn btn-outline-dark ml-2" }   
+                                            onClick={ ()=> this.onArrowClick(slider.id)}
+                                            
+                                            > 
+                                                {slider.dotText}
+                                      </span>)
     }
 
 
@@ -94,7 +101,6 @@ class Process extends Component {
                     <div className="mt-2">
 
                     <Link className='btn btn-outline-dark' to='contact' smooth={true} duration={1000} >פרטים נוספים</Link>
-                    {/* <ALink to={sliders[counter].to} text={sliders[counter].link} /> */}
 
                     </div>
                 </article>
@@ -117,7 +123,7 @@ class Process extends Component {
                         subTitle='הסבר כללי על התהליך העבודה, ממילוי טופס יצירת הקשר ועד עיצוב הפרויקט המוגמר'
                         />
 
-                        <div className="d-none d-lg-flex flex-row-reverse slideNav center py-3">
+                        <div className="d-none d-lg-flex flex-row-reverse slideNav center pb-3">
                             {this.renderDot()}
                         </div>
 

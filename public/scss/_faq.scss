@@ -1,22 +1,25 @@
 .faq {
-    // background-image: url(../images/faq/bg.jpg);
-    // background-position: center center;
-    // background-size: cover;
     background: $lightBlue;
+    min-height: 600px;
     .accordion {
-        .card {
-            .card-header {
-                background: $darkBlue;
-
-                h2 {
-                    .btn {
-                        color: $lightAzure;
-                        // font-size: $fontSize1;
-                    }
-
-                }
-            }
-        }
+        .card-header {
+            background: $darkBlue;
+            h2{
+                color: $lightAzure;
+                font-size: $fontSize2;
+            }   
+        } 
     }
+}
 
+.qna-open{
+    opacity: 1;
+    max-height: 1000px;
+    background: $lightAzure;
+}
+
+.qna-close{
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
 }

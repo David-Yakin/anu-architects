@@ -51,6 +51,23 @@ class SideBar extends Component {
                 open: false
         },
             {
+                row: {text:  'שאלות ותשובות', icon: 'center fas fa-question'},
+                navs: [
+                    {
+                        text: 'צור שאלה',
+                        page:'/private-area/create-qna-card',
+                        icon:'side-nav center fas fa-question-circle'
+                    },
+                    {
+                        text: 'ערוך שאלה',
+                        page:'/private-area/qna-search-page',
+                        icon:'side-nav center far fa-question-circle'
+                    },
+
+                ],
+                open: false
+        },
+            {
                 row: {text:  'מאמרים', icon: 'center fas fa-pencil-alt'},
                 navs: [
                     {
@@ -64,6 +81,7 @@ class SideBar extends Component {
                         icon:'side-nav center far fa-paper-plane'
                     },
 
+
                 ],
                 open: false
         },
@@ -72,10 +90,17 @@ class SideBar extends Component {
      }
 
      toggleSideNav = (index) => {
-        let changeStatus = this.state.sideItemes[index];
-        changeStatus.open = !changeStatus.open ;
-        this.setState({ changeStatus })
-     }
+        const { sideItemes } = this.state;
+        sideItemes.map( (item, i) => {
+         if (i === index) return this.setState({ item: item.open = true });  
+         return this.setState({ item: item.open = false })})}
+
+    //  toggleSideNav = (index) => {
+    //     let changeStatus = this.state.sideItemes[index];
+    //     changeStatus.open = !changeStatus.open ;
+    //     this.setState({ changeStatus })
+    //  }
+
      render() { 
         const user = getCurrentUser()
         const { sideItemes } = this.state;
@@ -87,7 +112,8 @@ class SideBar extends Component {
                         { user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={0} item={sideItemes[0]} index={0}/> }
                         { user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={1} item={sideItemes[1]} index={1}/> }
                         { user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={2} item={sideItemes[2]} index={2}/> }
-                        { user.isBloger && <SideRow toggleSideNav={this.toggleSideNav} key={3} item={sideItemes[3]} index={3}/> }
+                        { user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={3} item={sideItemes[3]} index={3}/> }
+                        { user.isBloger && <SideRow toggleSideNav={this.toggleSideNav} key={4} item={sideItemes[4]} index={4}/> }
 
                     </div>
                 </div>

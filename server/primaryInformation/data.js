@@ -252,6 +252,28 @@ const data ={
             admin: true,
             isBloger:true
         }
+    ],
+    qnas:[
+        {
+            question: "שאלה ראשונה",
+            answer: {
+                title: 'כותרת התשובה של השאלה הראשונה',
+                text: "תשובה מפורטת לשאלה הראשונה",
+                img: "/images/blog/5.jpg",
+                alt: "בלה בלה",
+            },
+            open: true
+        },
+        {
+            question: "שאלה שניה",
+            answer: {
+                title: 'כותרת התשובה של השאלה השניה',
+                text: "תשובה מפורטת לשאלה השניה",
+                img: "/images/blog/5.jpg",
+                alt: "בלה בלה",
+            },
+        },
+
     ]
 }
 

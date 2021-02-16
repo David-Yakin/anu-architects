@@ -2,6 +2,7 @@ const { Blog } = require('../models/blog');
 const { Project } = require('../models/project');
 const { Resume } = require('../models/resume');
 const { User } = require('../models/user');
+const { Qna } = require('../models/qna');
 
 async function primaryProjects({ 
     name, year, size, category, description, country, city, cardUrl, cardAlt, urlPamorama, altPamorama, urlBefore, altBefore, desBefore, urlSketch, altSketch, desSketch, urlImaging, altImaging, desImaging, urlConstraction, altConstraction, desConstraction, urlGallery, altGallery, user_id
@@ -17,6 +18,11 @@ async function primaryResumes({ title, subTitle, profileUrl, profileAlt, firstP,
       title, subTitle, profileUrl, profileAlt, firstP, secondp, thirdP, fourthP   
     });
     await resume.save(); 
+}
+
+async function primaryQnas({ answer, question, open }){
+    let qna = new Qna({ answer, question, open });
+    await qna.save(); 
 }
 
 async function primaryBlogs({ 
@@ -39,3 +45,4 @@ exports.primaryProjects = primaryProjects;
 exports.primaryResumes = primaryResumes;
 exports.primaryBlogs = primaryBlogs;
 exports.primaryUsers = primaryUsers;
+exports.primaryQnas = primaryQnas;

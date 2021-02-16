@@ -25,7 +25,7 @@ const SideRow = ({ item, toggleSideNav, index }) => {
             
             { navs.map( (nav, i) =>{
                 return(
-                    <div key={i} className={ ( item.open ? "side-nav-open m-0" : 'side-nav-close m-0' ) }>
+                    <div key={i} className={ item.open ? "side-nav-open m-0" : 'side-nav-close m-0' }>
                         <div className="row py-2 side-nav">
                             <div className="col-2"><Link className={nav.icon} to={nav.page}> </Link></div>
                             <div className="d-none col-lg-8 d-xl-block">
