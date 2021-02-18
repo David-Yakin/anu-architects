@@ -244,14 +244,41 @@ const data ={
     ],
     users: [
         {
+            userID: "000000000",
+            name: "user",
+            lastName: "user", 
+            email: "user@gmail.com",
+            phone: "0507244442",
+            adress: {
+                country: "ישראל",
+                city: "תל אביב",
+                street: "הבלונים",
+                houseNumber : "26",
+                zip: "6766339",
+              },
+            password: "$2b$10$wtmDgFgnTq7cmEn.yGjGXeme34WT91B7RDRPWgOb4Q9KFguCMaiLy",
+            admin: false,
+            isBloger:false,
+            isProjectManager: false,
+        },
+        {
+            userID: "000000001",
             name: "admin",
             lastName: "admin", 
             email: "admin@gmail.com",
             phone: "0507233332",
+            adress: {
+                country: "ישראל",
+                city: "תל אביב",
+                street: "הבלונים",
+                houseNumber : "25",
+                zip: "6766339",
+              },
             password: "$2b$10$wtmDgFgnTq7cmEn.yGjGXeme34WT91B7RDRPWgOb4Q9KFguCMaiLy",
             admin: true,
-            isBloger:true
-        }
+            isBloger:true,
+            isProjectManager: true,
+        },
     ],
     qnas:[
         {

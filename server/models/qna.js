@@ -1,12 +1,7 @@
 const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
 
-const string255 = {
-  type: String, 
-  required: true, 
-  minlength: 2, 
-  maxlength: 255
-}
+const string255 = { type: String,  required: true,  minlength: 2,  maxlength: 255 }
 
 const qnaSchema = new mongoose.Schema({
     question: string255,
@@ -23,7 +18,6 @@ const qnaSchema = new mongoose.Schema({
 const Qna = mongoose.model('Qna', qnaSchema);
 
 function validateQna(qna) {
-
 const qnaSchema = Joi.object({
   question: Joi.string().required().min(2).max(255),
   answer: {
@@ -31,21 +25,7 @@ const qnaSchema = Joi.object({
     text:Joi.string().required().min(2).max(255),
     img: Joi.string().required().min(2).max(255),
     alt:Joi.string().required().min(2).max(255)
-  }
-
-})
-
-// const schema = Joi.object({
-//   answer: answerSchema,
-
-// })
-  // const schema = Joi.object({
-  //   question: Joi.string().required().min(2).max(255),
-  //   title: Joi.string().required().min(2).max(255),
-  //   text: Joi.string().min(2).max(255).required(),
-  //   img: Joi.string().required().min(2).max(1024),
-  //   alt: Joi.string().required().min(2).max(255),
-  // });
+  }})
 
   return qnaSchema.validate(qna);
 }

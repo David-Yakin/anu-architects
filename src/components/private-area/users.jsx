@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SearchInput from '../common/search-input';
 import Titles from '../common/titles';
-import { getUsers, deleteUser, changUserStatus } from '../../services/userService';
+import { getUsers, deleteUser, changUserStatus, changUserProjectManagerStatus } from '../../services/userService';
 import { getDate } from '../../services/timeService';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
@@ -30,6 +30,33 @@ class Users extends Component {
             || (user.lastName.toLowerCase().includes(searchTerm.toLowerCase()))
             || (user.isBloger.toString().includes(searchTerm))); 
         this.setState({ users: filertUsers });
+    }
+    changeProjectManagerStatus = async (userId) => {
+        let users = [...this.state.users];
+        let user = users.find( user => user._id === userId);
+
+        if(!user.isProjectManager){
+            return (
+                Swal.fire({
+                    title: '?האם אתה בטוח',
+                    text: "!המשתמש יוכל לשנות למחוק או ליצור פרויקטים",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'שנה הרשאה למנהל פרויקטים',
+                    cancelButtonText:'בטל'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.setState({ user: user.isProjectManager = true })
+                        toast('ההרשאה עודכנה');
+                        changUserProjectManagerStatus(userId);
+                    }
+                }))
+            }   
+                    
+        toast('ההרשאה עודכנה');
+        this.setState({ user: user.isProjectManager = false });
+        changUserProjectManagerStatus(userId); 
     }
 
     changeStatus = async (userId) => {
@@ -93,9 +120,11 @@ class Users extends Component {
                     <th scope="col">מס'</th>
                     <th scope="col">שם פרטי</th>
                     <th scope="col">שם משפחה</th>
+                    <th scope="col">ת.ז</th>
                     <th scope="col">כתובת מייל</th>
                     <th scope="col">טלפון</th>
-                    <th scope="col">האם בלוגר</th>
+                    <th scope="col">בלוגר</th>
+                    <th scope="col">מנהל פרויקטים</th>
                     <th scope="col">נוצר בתאריך</th>
                     <th scope="col">מחק</th>
                   </tr>
@@ -107,16 +136,23 @@ class Users extends Component {
                         <td>{index + 1}</td>
                         <td>{user.name}</td>
                         <td>{user.lastName}</td>
+                        <td>{user.userID}</td>
                         <td>{user.email}</td>
                         <td>{user.phone}</td>
                         <td> <button className={ user.isBloger ? "btn btn-danger" : "btn btn-outline-dark"}
                                      onClick={ () => this.changeStatus(user._id) }disabled={user.admin ? true : false}>
                             {user.isBloger ? "חיובי" : "שלילי"}
-                            </button> </td>
+                            </button> 
+                        </td>
+                        <td> <button className={ user.isProjectManager ? "btn btn-danger" : "btn btn-outline-dark"}
+                                     onClick={ () => this.changeProjectManagerStatus(user._id) } disabled={user.admin ? true : false}>
+                            {user.isProjectManager ? "חיובי" : "שלילי"}
+                            </button> 
+                        </td>
                         <td>{getDate(user.createdAt)}</td>
 
                         <td>
-                            {!user.admin &&  <a href="/" onClick={ e => { this.handleUserDelete(user._id, e) } } className='fas fa-user-slash text-dark text-decoration-none'> </a> }
+                            {!user.admin && <a href="/" onClick={ e => { this.handleUserDelete(user._id, e) } } className='fas fa-user-slash text-dark text-decoration-none'> </a> }
                         </td>
                     </tr>
                     ) )}
@@ -124,6 +160,7 @@ class Users extends Component {
             </table>
             )
         } 
+
         return (
             <div className="center">
                 <div className="row col-8 text-rtl pt-4">
@@ -133,6 +170,7 @@ class Users extends Component {
         )
 
      }
+
     render() { 
 
         const { categories } = this.state;

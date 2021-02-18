@@ -48,8 +48,6 @@ router.put('/private-area/edit-project-card/:id', auth, async (req, res) => {
 
 router.get('/private-area/edit-project-card/:id', auth, async (req, res) => {
   const project = await Project.findOne({ _id: req.params.id });
-  console.log(project);
-
   if (!project) return res.status(404).send('The project with the given ID was not found.');
   res.send(project);
 });

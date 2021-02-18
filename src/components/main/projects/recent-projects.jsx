@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import ALink from '../../common/a-link';
 import ProjectCard from './project-card';
 import Titles from '../../common/titles';
-import { getProjects, changProjectLike } from '../../../services/projectService';
+import { getProjects } from '../../../services/projectService';
 import { getUsers } from '../../../services/userService';
-import { toast } from 'react-toastify';
 
 class Recent extends Component {
 
@@ -22,20 +21,6 @@ class Recent extends Component {
      });
     }
 
-    handleLike = async(projectId) => {
-        let projects = [...this.state.projects];
-        let project = projects.find( project => project._id === projectId);
-
-        if(!project.isLiked) {
-            this.setState({ project: project.isLiked = true })
-            toast('הפרוייטק נבחר לרשימת המועדפים שלך');
-            return changProjectLike(projectId);
-        } 
-        this.setState({ project: project.isLiked = false })
-        toast('הפרוייטק הוצא מרשימת המועדפים שלך');
-        changProjectLike(projectId);
-    }
-
     generateProject( ){
         let { projects} = this.state;
         projects = projects.reverse();
@@ -49,7 +34,6 @@ class Recent extends Component {
                     {projects.map( project => 
                         < ProjectCard key={project._id} 
                                       project={project} 
-                                      handleLike={this.handleLike}
                                       width= 'card mb-3 col-lg-6 col-xl-6 py-0 px-2 border-0'/>
                     )}
                 </div>

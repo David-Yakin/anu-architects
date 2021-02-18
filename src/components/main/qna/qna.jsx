@@ -13,7 +13,6 @@ class Qna extends Component {
 
      handleQnaDelete = async (QnaId, e) => {
         e.preventDefault();
-        console.log('delet works!');
         Swal.fire({
             title: '?האם אתה בטוח',
             text: "!הפרויקט יימחק ממאגר המידע",

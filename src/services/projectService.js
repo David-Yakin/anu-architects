@@ -27,6 +27,3 @@ export async function getProjects(){
   return http.get(`${apiUrl}/projects/private-area/projects-search-page`);
 }
 
-export function changProjectLike(projectId) {
-  return http.patch(`${apiUrl}/projects/${projectId}`)
-}

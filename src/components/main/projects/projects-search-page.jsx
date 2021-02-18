@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Titles from '../../common/titles';
 import ProjectCard from './project-card';
 import SearchInput from '../../common/search-input';
-import { getProjects, deleteProject, changProjectLike } from '../../../services/projectService';
+import { getProjects, deleteProject } from '../../../services/projectService';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify'
 import { getUsers } from '../../../services/userService';
@@ -28,20 +28,6 @@ class Projects extends Component {
             users: usersData
          });
      }
-
-    handleLike = async(projectId) => {
-        let projects = [...this.state.projects];
-        let project = projects.find( project => project._id === projectId);
-
-        if(!project.isLiked) {
-            this.setState({ project: project.isLiked = true })
-            toast('הפרוייטק נבחר לרשימת המועדפים שלך');
-            return changProjectLike(projectId);
-        } 
-        this.setState({ project: project.isLiked = false })
-        toast('הפרוייטק הוצא מרשימת המועדפים שלך');
-        changProjectLike(projectId);
-    }
 
      async handleChange(e){
         const { data } = await getProjects();
@@ -80,7 +66,6 @@ class Projects extends Component {
 
      generateProject( ){
         const { projects } = this.state;
-
         if(projects.length){
             return (
                 <div className="row">
@@ -89,9 +74,7 @@ class Projects extends Component {
                             key={project._id} 
                             project={project} 
                             width={'card mb-3  col-12 col-md-6 col-lg-4 py-0 px-2 border-0'}
-                            handleProjectDelete={this.handleProjectDelete}
-                            handleLike={this.handleLike}
-                            />
+                            handleProjectDelete={this.handleProjectDelete}/>
                     )}  
                 </div>
             )

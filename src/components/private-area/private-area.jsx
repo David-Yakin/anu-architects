@@ -17,34 +17,29 @@ import BlogsSearch from '../main/blogs/blogs-search-page'
 import CreateTeamMember from '../main/resumes/create-resume-card';
 import EditTeamMember from '../main/resumes/edit-resume-card';
 import TeamMembersSearch from '../main/resumes/resume-search-page';
-import { getCurrentUser } from "../../services/userService";
 import Users from './users';
-
 import ProtectedRoute from '../common/protectedRoute';
-
 import { Switch, Route } from 'react-router-dom';
 import Qna from '../main/qna/qna';
 import createQna  from '../main/qna/creat-qna';
 import EditQna  from '../main/qna/edit-qna';
+import UpdateUser from './update-user';
+import { getCurrentUser } from '../../services/userService';
 
 class Main extends Component {
 
     state = {  }
 
-    getSideBar(){
-        let user = getCurrentUser();
-        if (user && user.admin | user.isBloger) return <SideBar /> 
-    }
-
+    
     render() { 
-            
+            const user = getCurrentUser()
         return ( 
             
                 <React.Fragment>
-
-                {this.getSideBar()}
+                {user && <SideBar />}
 
                 <Switch>
+
                     <Route path='/private-area/sign-in' component={Singin}/>
                     <Route path='/private-area/sign-up' component={Singup}/>
                     <Route path='/private-area/my-projects' component={MyProjects}/>
@@ -52,6 +47,7 @@ class Main extends Component {
                     
             <div className="col-11 col-xl-10 p-0">
                 <Switch>
+                    <Route path='/private-area/update-user/:id' component={UpdateUser}/>
                     <Route path='/private-area/my-contracts' component={MyContracts}/>
                     <Route path='/private-area/my-blueprints' component={MyBlueprints}/>
                     <Route path='/private-area/my-sketchs' component={MySketchs}/>

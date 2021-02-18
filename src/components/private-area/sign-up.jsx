@@ -2,38 +2,49 @@ import React from 'react';
 import Joi from "joi-browser";
 import Form from '../common/form';
 import { Link } from 'react-router-dom';
-import http from '../../services/httpService';
-import { apiUrl } from '../../config.json';
+// import http from '../../services/httpService';
+// import { apiUrl } from '../../config.json';
 import { Redirect } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { getCurrentUser, login } from "../../services/userService";
+import { getCurrentUser, login, createUser } from "../../services/userService";
 
 class Signup extends Form {
     state = { 
         data: { 
+            userID: '',
             name:'', 
             lastName: '',
             email: '', 
             phone:'',
+            country: '',
+            city: '',
+            street: '',
+            houseNumber : '',
+            zip: '',
             password:'', 
          },
         errors: {}
      }
 
     schema = { 
+        userID: Joi.string().required().min(8).max(255).label('userID'),
         name: Joi.string().required().min(2).max(255).label('name'),
         lastName: Joi.string().required().min(2).max(255).label('last name'),
         email: Joi.string().required().email().label('mail'),
         phone: Joi.string().required().min(9).max(14).label('phone'),
+        country: Joi.string().required().min(2).max(255).label('country'),
+        city: Joi.string().required().min(2).max(255).label('city'),
+        street: Joi.string().required().min(2).max(255).label('street'),
+        houseNumber : Joi.string().required().min(2).max(255).label('houseNumber'),
+        zip: Joi.string().required().min(4).max(255).label('zip'),
         password: Joi.string().required().min(8).max(1024).label('password'),
      }
 
      doSubmit = async ()=>{
         const data  ={...this.state.data};
-        data.admin = false;
   
         try{
-          await http.post(`${apiUrl}/users`, data); 
+          await createUser(data);
           toast(`${data.name} נרשמת בהצלחה!`);
          
           await login(data.email,data.password);
@@ -46,17 +57,15 @@ class Signup extends Form {
         }
        }
 
-       
 
     render() { 
         let user = getCurrentUser();
         if(user && user.admin) return <Redirect to="/private-area/users" />
-        if(user && !user.admin  && user.isBloger ) return window.location = "/private-area/blogs-search-page" ;
         if(user) return <Redirect to="/private-area/my-projects" />
 
         return ( 
             <div className="container-fluid sign-up">
-                <div className="center ">
+                <div className="center py-4">
                     <form onSubmit={ this.handleSubmit } 
                           autoComplete='off' 
                           method='POST' 
@@ -64,11 +73,19 @@ class Signup extends Form {
 
                         <h1 className="h3 mb-3 font-weight-normal text-dark text-center">טופס הירשמות</h1>
 
-                        { this.renderInput('name', 'שם פרטי' ) }
-                        { this.renderInput('lastName', 'שם משפחה' ) }
-                        { this.renderInput('email', 'מייל', 'email') }
-                        { this.renderInput('phone','טלפון', 'phone') }
-                        { this.renderInput('password', 'סיסמה', 'password', ) }
+                        { this.renderInput('userID', 'מספר תעודת זהות *' ) }
+                        { this.renderInput('name', 'שם פרטי *' ) }
+                        { this.renderInput('lastName', 'שם משפחה *' ) }
+                        { this.renderInput('email', 'מייל *', 'email') }
+                        { this.renderInput('phone','טלפון *', 'phone') }
+
+                        { this.renderInput('country','ארץ *' ) }
+                        { this.renderInput('city','עיר *') }
+                        { this.renderInput('street','רחוב *') }
+                        { this.renderInput('houseNumber','מספר בית *') }
+                        { this.renderInput('zip','מיקוד *') }
+
+                        { this.renderInput('password', 'סיסמה *', 'password', ) }
                         
                         <div className="center">
                             <Link className='a-herf mb-2 text-rtl' to="/private-area/sign-in"> משתמש רשום?

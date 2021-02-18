@@ -17,11 +17,5 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    height: 63.5vh;
-    form{
-        position: fixed;
-        top: 40%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+    min-height: 63.5vh;
 }

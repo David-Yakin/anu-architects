@@ -33,7 +33,6 @@ class CreatQna extends Form {
 
          try{
             const data  = {...this.state.data};
-            // console.log(data);
             await createQna(data);
             toast('השאלה והתשובה נוצרו');
             this.props.history.replace('/private-area/qna-search-page') ;

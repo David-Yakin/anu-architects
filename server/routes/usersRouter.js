@@ -1,8 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
-const { User, validateUser, validateProjects } = require('../models/user');
-const { Card } = require('../models/project');
+const { User, validateUser } = require('../models/user');
 const auth = require('../middleware/auth');
 const router = express.Router();
 
@@ -12,17 +11,11 @@ router.get('/private-area/users', async (req, res) => {
   res.send(users);
 });
 
-const getCards = async (cardsArray) => {
-  const cards = await Card.find({ "bizNumber": { $in: cardsArray } });
-  return cards;
-};
-
 router.delete('/:id', auth, async (req, res) => {
   const user = await User.findOneAndRemove({ _id: req.params.id });
   if (!user) return res.status(404).send('המשתמש לא נמצא במאגר המידע');
   res.send(user);
 });
-
 
 router.patch('/:id', auth, async (req, res) => {
   let user = await User.findById(req.params.id);
@@ -34,22 +27,31 @@ router.patch('/:id', auth, async (req, res) => {
   res.send(user);
 });
 
-
-router.patch('/projects', auth, async (req, res) => {
-  const { error } = validateProjects(req.body);
-  if (error) res.status(400).send(error.details[0].message);
-
-  const cards = await getCards(req.body.cards);
-  if (cards.length !== req.body.cards.length) return res.status(400).send("Card numbers don't match");
-
-  let user = await User.findById(req.user._id);
-  user.cards = req.body.cards;
+router.patch('/isProjectManager/:id', auth, async (req, res) => {
+  let user = await User.findById(req.params.id);
+  if(!user) return res.status(404).send('לא נמצא המשתמש');
+  let status = user.isProjectManager;
+  let changeStatus = !status;
+  user = await User.findOneAndUpdate( {_id : req.params.id}, { isProjectManager : changeStatus});
   user = await user.save();
   res.send(user);
 });
 
-router.get('/me', auth, async (req, res) => {
-  const user = await User.findById(req.user._id).select('-password');
+router.patch('/user/:id', auth, async (req, res) => {
+  let user = await User.findById(req.params.id);
+  if(!user) return res.status(404).send('לא נמצא המשתמש');
+
+  user = await User.findOneAndUpdate( {_id : req.params.id}, {
+     phone : req.body.phone,
+     name: req.body.name,
+     lastName: req.body.lastName
+    });
+  user = await user.save();
+  res.send(user);
+});
+
+router.get('/user/:id', auth, async (req, res) => {
+  const user = await User.findById(req.params.id).select('-password');
   res.send(user);
 });
 
@@ -58,10 +60,26 @@ router.post('/', async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   let user = await User.findOne({ email: req.body.email });
-  if (user) return res.status(400).send('User already registered.');
-  
-  user = new User(_.pick(req.body, ['name', 'lastName', 'email','phone', 'password', 'admin', 'projects']));
-  const salt = await bcrypt.genSalt(10);
+  if (user) return res.status(400).send('המשתמש קיים');
+
+  user = await new User(
+    {
+      userID: req.body.userID,
+      name: req.body.name,
+      lastName:req.body.lastName,
+      email:req.body.email,
+      phone: req.body.phone,
+      adress: {
+        country: req.body.adress.country ,
+        city: req.body.adress.city ,
+        street: req.body.adress.street ,
+        houseNumber : req.body.adress.houseNumber ,
+        zip: req.body.adress.zip ,
+      },
+      password: req.body.password
+    });
+
+  const salt = await bcrypt.genSalt(12);
   user.password = await bcrypt.hash(user.password, salt);
   await user.save();
   res.send(_.pick(user, ['name', 'email']));

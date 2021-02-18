@@ -2,7 +2,7 @@ import React from 'react';
 import { getCurrentUser } from "../../../services/userService";
 import { Link } from 'react-router-dom'
 
-const ProjectCard = ({project, width, handleProjectDelete, handleLike}) =>{
+const ProjectCard = ({project, width, handleProjectDelete}) =>{
     const user = getCurrentUser();
     return (
         <div className={width}>
@@ -26,11 +26,6 @@ const ProjectCard = ({project, width, handleProjectDelete, handleLike}) =>{
                 </div>
 
                     <div className="col-2 pt-1 px-0">
-                   
-                       { user && !user.admin && !user.isBloger &&
-                       <i className={ project.isLiked === true ?
-                        "fas fa-thumbs-up text-dark" : "far fa-thumbs-up curser" } 
-                        onClick={()=>handleLike( project._id)}></i>}
                       
                       {user && user.admin && 
                       <span>

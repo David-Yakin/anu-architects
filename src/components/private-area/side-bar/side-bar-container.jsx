@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SideRow from './side-bar-row';
 import { getCurrentUser } from '../../../services/userService';
 class SideBar extends Component {
-    
+    user = getCurrentUser();
     state = { 
         sideItemes: [
             {
@@ -85,6 +85,43 @@ class SideBar extends Component {
                 ],
                 open: false
         },
+            {
+                row: {text:  'הפרויקטים שלי', icon: 'center fas fa-folder-open'},
+                navs: [
+                    {
+                        text: 'לוחות זמנים',
+                        page:'/private-area/create-blog-card',
+                        icon:'side-nav center far fa-clock'
+                    },
+                    {
+                        text: 'תוכניות',
+                        page:'/private-area/blogs-search-page',
+                        icon:'side-nav center far fa-paper-plane'
+                    },
+                    {
+                        text: 'סקיצות',
+                        page:'/private-area/blogs-search-page',
+                        icon:'side-nav center fas fa-pencil-alt'
+                    },
+                    {
+                        text: 'חוזים',
+                        page:'/private-area/blogs-search-page',
+                        icon:'side-nav center fas fa-file-signature'
+                    },
+                ],
+                open: false
+        },
+            {
+                row: {text:  'ניהול משתמש', icon: 'center fas fa-wrench'},
+                navs: [
+                    {
+                        text: 'עדכון פרטים',
+                        page:`/private-area/update-user/${this.user._id}`,
+                        icon:'side-nav center fas fa-user-edit'
+                    },
+                ],
+                open: false
+        },
 
     ]
      }
@@ -102,18 +139,19 @@ class SideBar extends Component {
     //  }
 
      render() { 
-        const user = getCurrentUser()
         const { sideItemes } = this.state;
         return ( 
             sideItemes.length &&
                 <div className="d-flex justify-content-end ">
                     <div className="accordion col-1 col-xl-2 side-bar position-fixed text-rtl">
 
-                        { user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={0} item={sideItemes[0]} index={0}/> }
-                        { user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={1} item={sideItemes[1]} index={1}/> }
-                        { user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={2} item={sideItemes[2]} index={2}/> }
-                        { user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={3} item={sideItemes[3]} index={3}/> }
-                        { user.isBloger && <SideRow toggleSideNav={this.toggleSideNav} key={4} item={sideItemes[4]} index={4}/> }
+                        { this.user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={0} item={sideItemes[0]} index={0}/> }
+                        { this.user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={1} item={sideItemes[1]} index={1}/> }
+                        { this.user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={2} item={sideItemes[2]} index={2}/> }
+                        { this.user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={3} item={sideItemes[3]} index={3}/> }
+                        { this.user.isBloger && <SideRow toggleSideNav={this.toggleSideNav} key={4} item={sideItemes[4]} index={4}/> }
+                        { this.user && !this.user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={6} item={sideItemes[6]} index={6}/> }
+                        { this.user && !this.user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={5} item={sideItemes[5]} index={5}/> }
 
                     </div>
                 </div>

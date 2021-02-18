@@ -25,6 +25,14 @@ async function primaryQnas({ answer, question, open }){
     await qna.save(); 
 }
 
+async function primaryUsers({ userID, name, lastName, email, phone,
+    adress: { country, city, street, houseNumber , zip, }, password, admin, isBloger, isProjectManager}){
+let user = new User({
+    userID, name, lastName, email, phone,
+    adress: { country, city, street, houseNumber , zip, }, password, admin, isBloger, isProjectManager
+})
+await user.save(); 
+}
 async function primaryBlogs({ 
     title, subTitle, author, category, cardUrl, cardAlt, titleImgUrl, titleImgAlt, titleImgCredit, endImgUrl, endImgAlt, endImgCredit, firstInnerTitle, firstP, secondP, thirdP, landscapeImgUrl, landscapeImgAlt, landscapeImgCredit, secondInnerTitle, foruthP, fifthP, sixthP, profileImgUrl, profileImgAlt, profileImgCredit, thirdInnerTitle, seventhP, eighthP, ninthP,
  }){
@@ -34,12 +42,6 @@ async function primaryBlogs({
     await blog.save(); 
 }
 
-async function primaryUsers({ name,lastName, email,phone,password,admin,isBloger}){
-let user = new User({
-    name,lastName, email,phone,password,admin,isBloger
-})
-await user.save(); 
-}
 
 exports.primaryProjects = primaryProjects;
 exports.primaryResumes = primaryResumes;
