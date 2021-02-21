@@ -51,5 +51,6 @@ app.use('/api/blogs', blogs);
 app.use('/api/resumes', resumes);
 app.use('/api/qnas', qnas);
 
+
 const PORT = 8181;
 app.listen(PORT, () => console.log(`server run on: http://localhost:${PORT}`));
