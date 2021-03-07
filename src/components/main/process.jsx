@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Titles from '../common/titles';
 // import ALink from '../common/a-link';
 import { Link } from 'react-scroll';
+import { url } from '../../config.json';
 class Process extends Component {
     state = { 
         counter: 0,
@@ -90,7 +91,7 @@ class Process extends Component {
                     <video 
                            autoPlay loop muted 
                            className=" w-100 border border-dark"
-                           src={sliders[counter].video}>
+                           src={`${url}${sliders[counter].video}`}>
                     </video>
                 </div>
 

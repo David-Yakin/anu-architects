@@ -23,7 +23,7 @@ const qnaSchema = Joi.object({
   answer: {
     title: Joi.string().required().min(2).max(255),
     text:Joi.string().required().min(2).max(255),
-    img: Joi.string().required().min(2).max(255),
+    img: Joi.string().required().min(2).max(1024),
     alt:Joi.string().required().min(2).max(255)
   }})
 

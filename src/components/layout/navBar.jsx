@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-scroll';
 import { NavLink } from 'react-router-dom'
+import {url} from '../../config.json';
 
 class NavBar extends Component {
 
@@ -30,7 +31,8 @@ class NavBar extends Component {
                 <div className="row justify-content-between">
     
                     <div className="logo center">
-                        <NavLink id='logo' to="/"><img src="/images/logo/ANU_white.png" alt="logo"/></NavLink>
+                        <NavLink id='logo' to="/"><img src={`${url}/images/logo/ANU_white.png`} alt="logo"/></NavLink>
+
                     </div>
     
                     <div>

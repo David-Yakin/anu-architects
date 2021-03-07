@@ -1,0 +1,9 @@
+             console.log('submit');
+
+            const projectName = this.state.data.name;
+            console.log(projectName);
+
+            const arrayOfImages  = {...this.state.arrayOfImages};
+            console.log(arrayOfImages);
+
+            await uploadImages(arrayOfImages, "projects", projectName);

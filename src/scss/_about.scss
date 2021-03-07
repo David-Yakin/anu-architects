@@ -1,6 +1,9 @@
 .about {
 
-    background: $darkBlue;
+    background-image: url('http://localhost:8181/images/about/Bg_Image.jpg') ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 
     .container {
         .row {

@@ -2,8 +2,6 @@ import React from 'react';
 import Joi from "joi-browser";
 import Form from '../common/form';
 import { Link } from 'react-router-dom';
-// import http from '../../services/httpService';
-// import { apiUrl } from '../../config.json';
 import { Redirect } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { getCurrentUser, login, createUser } from "../../services/userService";

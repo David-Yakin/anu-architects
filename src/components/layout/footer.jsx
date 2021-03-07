@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { url } from '../../config.json';
 
 class Footer extends Component {
 
@@ -14,7 +15,7 @@ class Footer extends Component {
                     <div className="center pt-5">
                         <div className="logo zoom">
                             <Link to="/">
-                                <img src="/images/footer/logo.png" 
+                                <img src={`${url}/images/footer/logo.png`} 
                                      alt="logo"/>
                             </Link>
                         </div>

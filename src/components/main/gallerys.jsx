@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Titles from '../common/titles';
+import { url } from '../../config.json';
 
 class Gallery extends Component {
 
@@ -10,70 +11,70 @@ class Gallery extends Component {
         smallImages: [
             {
                 id: 0,
-                url: '/images/gallery/small/1.jpg',
+                url: `${url}/images/gallery/small/1.jpg`,
                 alt: 'תמונה ראשונה בפרויקטים אחרונים', 
             },
             {
                 id: 1,
-                url: '/images/gallery/small/2.jpg',
+                url: `${url}/images/gallery/small/2.jpg`,
                 alt: 'תמונה שניה בפרויקטים אחרונים',                
             },
             {
                 id: 2,
-                url: '/images/gallery/small/3.jpg',
+                url: `${url}/images/gallery/small/3.jpg`,
                 alt: 'תמונה שלישית בפרויקטים אחרונים',
             },
             {
                 id: 3,
-                url: '/images/gallery/small/4.jpg',
+                url: `${url}/images/gallery/small/4.jpg`,
                 alt: 'תמונה רביעית בפרויקטים אחרונים',
             },
             {
                 id: 4,
-                url: '/images/gallery/small/5.jpg',
+                url: `${url}/images/gallery/small/5.jpg`,
                 alt: 'תמונה חמישית בפרויקטים אחרונים',
             },
         ],
 
         bigImage: [
             {
-                url: '/images/gallery/big/1.jpg',
+                url: `${url}/images/gallery/big/1.jpg`,
                 alt: 'תמונה ראשונה בפרויקטים אחרונים', 
             },
             {
-                url: '/images/gallery/big/2.jpg',
+                url: `${url}/images/gallery/big/2.jpg`,
                 alt: 'תמונה שניה בפרויקטים אחרונים',                
             },
             {
-                url: '/images/gallery/big/3.jpg',
+                url: `${url}/images/gallery/big/3.jpg`,
                 alt: 'תמונה שלישית בפרויקטים אחרונים',
             },
             {
-                url: '/images/gallery/big/4.jpg',
+                url: `${url}/images/gallery/big/4.jpg`,
                 alt: 'תמונה רביעית בפרויקטים אחרונים',
             },
             {
-                url: '/images/gallery/big/5.jpg',
+                url: `${url}/images/gallery/big/5.jpg`,
                 alt: 'תמונה חמישית בפרויקטים אחרונים',
             },
             {
-                url: '/images/gallery/big/6.jpg',
+                url: `${url}/images/gallery/big/6.jpg`,
                 alt: 'תמונה שישית בפרויקטים אחרונים', 
             },
             {
-                url: '/images/gallery/big/7.jpg',
+                url: `${url}/images/gallery/big/7.jpg`,
                 alt: 'תמונה שביעית בפרויקטים אחרונים',                
             },
             {
-                url: '/images/gallery/big/8.jpg',
+                url: `${url}/images/gallery/big/8.jpg`,
                 alt: 'תמונה שמינית בפרויקטים אחרונים',
             },
             {
-                url: '/images/gallery/big/9.jpg',
+                url: `${url}/images/gallery/big/9.jpg`,
                 alt: 'תמונה תשיעית בפרויקטים אחרונים',
             },
             {
-                url: '/images/gallery/big/10.jpg',
+                url: `${url}/images/gallery/big/10.jpg`,
                 alt: 'תמונה עשירית בפרויקטים אחרונים',
             },
         ]

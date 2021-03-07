@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { getCurrentUser } from "../../../services/userService";
+import { url } from '../../../config.json';
 
 const BlogCard = ({blog, handleBlogDelete }) => {
     const user = getCurrentUser();
@@ -9,7 +10,7 @@ const BlogCard = ({blog, handleBlogDelete }) => {
             <div className="row">
                 <div className="col-4 center px-0">
                     <img className="img-fluid" 
-                         src={blog.cardUrl} 
+                         src={`${url}${blog.cardUrl}`} 
                          alt={blog.cardAlt}/>
                 </div>
                 <div className="post_text col-8 text-right">

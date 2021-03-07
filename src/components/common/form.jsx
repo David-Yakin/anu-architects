@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
 import SelectBox from "./selectBox";
+import InputFile from "./input-file";
 
 class Form extends Component {
   state = {
@@ -29,6 +30,27 @@ class Form extends Component {
         name={name}
         value={data[name]}
         onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  };
+
+
+
+  renderFileInput(name, text, accept, multiple, className, divClass) {
+    const { data, errors } = this.state;
+    return (
+      <InputFile
+        name={name}
+        text={text}
+        accept={accept}
+        multiple={multiple}
+        className={className}
+        divClass={divClass}
+        value={data[name]}
+        onChange={this.handleChange}
+        // onInput={}
+        // onBlur={}
         error={errors[name]}
       />
     );

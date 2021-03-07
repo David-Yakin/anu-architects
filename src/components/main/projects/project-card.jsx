@@ -1,6 +1,7 @@
 import React from 'react';
 import { getCurrentUser } from "../../../services/userService";
 import { Link } from 'react-router-dom'
+import { url } from '../../../config.json';
 
 const ProjectCard = ({project, width, handleProjectDelete}) =>{
     const user = getCurrentUser();
@@ -8,7 +9,7 @@ const ProjectCard = ({project, width, handleProjectDelete}) =>{
         <div className={width}>
 
         <Link to={`/project-page/${project._id}`}>
-            <img src={project.cardUrl} 
+            <img src={`${url}${project.cardUrl}`} 
                  className="card-img-top" 
                  alt={project.cardAlt} />
         </Link>   

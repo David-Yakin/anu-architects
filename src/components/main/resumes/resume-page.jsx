@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ALink from '../../common/a-link';
 import { getMyResume } from '../../../services/resumeService'
+import { url } from '../../../config.json';
 
 class Resume extends Component {
 
@@ -32,7 +33,7 @@ class Resume extends Component {
                             <div className="row  pt-1">
 
                                 <div className="col-12 col-md-5">
-                                    <img src={resume.profileUrl} 
+                                    <img src={`${url}${resume.profileUrl}`} 
                                       className="card-img-top" 
                                       alt={resume.profileAlt}/>                          
                                 </div>

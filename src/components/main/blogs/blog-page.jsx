@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ALink from '../../common/a-link';
 import { getMyBlog } from '../../../services/blogService';
 import { getDate } from '../../../services/timeService';
+import { url } from '../../../config.json';
 
 class Blog extends Component {
     state = { 
@@ -21,7 +22,7 @@ class Blog extends Component {
             <div className="article container-fluid blogs px-0">    
 
                 <div className='pic-head'>
-                    <img className="img-fluid px-0" src={blog.titleImgUrl} 
+                    <img className="img-fluid px-0" src={`${url}${blog.titleImgUrl}`} 
                                                     alt={blog.titleImgAlt}/>
                     <span className="span-title mt-1 px-2">צילום: {blog.titleImgCredit}</span>  
                 </div>        
@@ -58,7 +59,7 @@ class Blog extends Component {
                                         </div>
 
                                         <div className="post_v_img">
-                                            <img className="img-fluid center" src={blog.landscapeImgUrl} alt={blog.landscapeImgAlt}/>
+                                            <img className="img-fluid center" src={`${url}${blog.landscapeImgUrl}`} alt={blog.landscapeImgAlt}/>
                                             <div className=" d-flex justify-content-between pb-2">
                                                <span className="text-secondary">צילום: {blog.landscapeImgCredit}</span> 
                                                <span className="text-secondary"> {blog.landscapeImgAlt}</span> 
@@ -71,7 +72,7 @@ class Blog extends Component {
 
                                         <div className="row">
                                             <div className="post_v_img col-12 col-md-8">
-                                                <img className="img-fluid center" src={blog.profileImgUrl} alt={blog.profileImgAlt} />
+                                                <img className="img-fluid center" src={`${url}${blog.profileImgUrl}`} alt={blog.profileImgAlt} />
                                                 <div className=" d-flex justify-content-between pb-2">
                                                     <span className="text-secondary">צילום: {blog.profileImgCredit}</span> 
                                                     <span className="text-secondary"> {blog.profileImgAlt}</span> 
@@ -92,7 +93,7 @@ class Blog extends Component {
                                         <p className="text-rtl">{blog.seventhP}</p>
                                         
                                             <div className="post_v_img">
-                                                <img className="img-fluid center" src={blog.endImgUrl} alt={blog.endImgAlt} />
+                                                <img className="img-fluid center" src={`${url}${blog.endImgUrl}`} alt={blog.endImgAlt} />
 
                                                 <div className=" d-flex justify-content-between pb-2">
                                                     <span className="text-secondary">צילום: {blog.endImgCredit}</span> 

@@ -1,24 +1,15 @@
 import './App.scss';
 import React, { Component } from 'react';
-
 import NavBar from "./components/layout/navBar";
-import Footer from "./components/layout/footer";
-
-
+import Footer from "./components/layout/footer"
 import ProjectPage from './components/main/projects/project-page';
 import ProjectsSearch from './components/main/projects/projects-search-page';
-
-
 import BlogPage from './components/main/blogs/blog-page'
 import BlogsSearch from './components/main/blogs/blogs-search-page'
-
 import TeamMembersSearch from './components/main/resumes/resume-search-page';
 import ResumePage from './components/main/resumes/resume-page';
-
 import PrivateArea from './components/private-area/private-area';
-
 import Main from "./components/main/main";
-
 import { Switch, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -33,9 +24,7 @@ componentDidMount(){
 }  
 
   render() { 
-
     const { user } = this.state;
-
     return ( 
           <div className="App">
 
@@ -54,9 +43,7 @@ componentDidMount(){
           <Route path='/resume-page/:id' component={ResumePage}/>
           <Route path='/private-area' component={PrivateArea} />
           <Route path='/' exact component={Main} user={user} />
-
         </Switch>
- 
       </main>
 
       <footer>

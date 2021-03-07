@@ -5,8 +5,11 @@ import Form from '../../common/form';
 import { createProject } from '../../../services/projectService';
 import { toast } from 'react-toastify';
 
+
 class CreateProject extends Form {
     state = { 
+   
+
         data: { 
             name:'', 
             year: '',
@@ -38,6 +41,7 @@ class CreateProject extends Form {
      }
 
      schema = { 
+    
         name: Joi.string().required().min(2).max(255).label('name'),
         year: Joi.string().required().min(2).max(4).label('year'),
         size: Joi.string().required().min(2).max(255).label('size'),
@@ -77,6 +81,17 @@ class CreateProject extends Form {
               }
      };
 
+    // fileSelectedHandler = event => {
+    //     this.setState({ selectedImage: event.target.files[0] })
+
+    //     };
+
+    // fileUploadHandler = () => {
+    //     const selectedImage  = {...this.state.selectedImage};
+    //     selectedImage.folder = "projects";
+    //     uploadImage(selectedImage);
+    //     }
+
     render() { 
         return (    
                 <div className="create-project">
@@ -91,6 +106,8 @@ class CreateProject extends Form {
                              onSubmit={ this.handleSubmit } 
                              autoComplete='off' 
                              method='POST'>
+                                
+
                                 { this.renderInput('name', 'שם הפרויקט *' ) }
                                 { this.renderInput('year', ' השנה בה הסתיים הפרויקט *', 'number' ) }
                                 { this.renderInput('size', 'גודל הנכס במטר רבוע *', 'number') }

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ALink from '../../common/a-link';
 import { getMyProject } from '../../../services/projectService'
+import { url } from '../../../config.json';
+
 class Project extends Component {
 
     state = {  
@@ -27,7 +29,7 @@ class Project extends Component {
             <div className="container-fluid p-0">
 
                 <img className="img-fluid"
-                     src={project.urlPamorama} 
+                     src={`${url}${project.urlPamorama}`} 
                      alt={project.altPamorama} 
                      />
 
@@ -75,7 +77,7 @@ class Project extends Component {
 
                             <div className="col-12 col-md-6 px-1">
                             <img className='img-fluid' 
-                                     src={ project.urlBefore } 
+                                     src={`${url}${ project.urlBefore }`} 
                                      alt={ project.altBefore } 
                                 />
                                 <p className='text-right'>{ project.desBefore }</p>
@@ -83,7 +85,7 @@ class Project extends Component {
 
                             <div className="col-12 col-md-6 px-1">
                             <img className='img-fluid' 
-                                     src={ project.urlSketch} 
+                                     src={`${url}${ project.urlSketch}`} 
                                      alt={ project.altSketch } 
                                 />
                                 <p className='text-right'>{ project.desSketch }</p>
@@ -91,7 +93,7 @@ class Project extends Component {
 
                             <div className="col-12 col-md-6 px-1">
                             <img className='img-fluid' 
-                                     src={ project.urlImaging } 
+                                     src={`${url}${ project.urlImaging }`} 
                                      alt={ project.altImaging } 
                                 />
                                 <p className='text-right'>{ project.desImaging }</p>
@@ -99,7 +101,7 @@ class Project extends Component {
 
                             <div className="col-12 col-md-6 px-1">
                             <img className='img-fluid' 
-                                     src={ project.urlConstraction } 
+                                     src={`${url}${ project.urlConstraction }`} 
                                      alt={ project.altConstraction } 
                                 />
                                 <p className='text-right'>{ project.desConstraction }</p>
@@ -109,10 +111,11 @@ class Project extends Component {
 
                     <div className="row">
                             {  <img className='img-fluid pb-3'
-                                 src={ project.urlGallery }
+                                 src={`${url}${ project.urlGallery }`}
                                  alt={ project.altGallery } /> }
+                                 
                             {/* {  <img className='img-fluid pb-3'
-                                 src={ gallerys[counter].url }
+                                 src={`${url}${ gallerys[counter].url }
                                  alt={ gallerys[counter].alt } /> } */}
                     </div>
                                 <div className="center pb-3">

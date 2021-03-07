@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { getCurrentUser } from "../../../services/userService";
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
+import { url } from '../../../config.json';
 
 class TheTeam extends Component {
     state = { 
@@ -59,7 +60,7 @@ class TheTeam extends Component {
 
                         <div style={ this.styles }>
                             <img className="card-img-top" 
-                                src={resume.profileUrl} 
+                                src={`${url}${resume.profileUrl}`} 
                                 alt={resume.profileAlt}
                                 style={ this.styles.bg }/>
                         </div>

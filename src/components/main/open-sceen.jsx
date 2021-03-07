@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
+import { url } from '../../config.json';
 
 class OpenScreen extends Component {
-    state = { 
-        videoUrl: "/videos/openSceen/SketchDrawing.mp4"
-     }
+    state = {  }
+    
     render() { 
         return ( 
             <div id='open-creen' className="openScreen container-fluid px-0  d-none d-sm-block">
 
-                <video className="bgVideo" autoPlay loop muted src={this.state.videoUrl}></video>
+                <video className="bgVideo" autoPlay loop muted src={`${url}/videos/openSceen/SketchDrawing.mp4`}></video>
 
                 <div className="container">
                     <div className="center">

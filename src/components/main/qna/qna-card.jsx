@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { getCurrentUser } from "../../../services/userService";
+import { url } from '../../../config.json';
 
 const QnaCard = ({  item, toggleQna, index, handleQnaDelete  }) => {
     const { question, answer } = item;
@@ -21,7 +22,7 @@ const QnaCard = ({  item, toggleQna, index, handleQnaDelete  }) => {
 
                             <div className="accordionImage d-none d-md-block col-4 p-0">
                                 <img className="img-fluid border"
-                                     src={answer.img} 
+                                     src={`${url}${answer.img}`} 
                                      alt={answer.alt}/>
                             </div>
 

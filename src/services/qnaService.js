@@ -6,6 +6,7 @@ export async function getQnas(){
 
 export function createQna({question, title, text, img, alt}) {
   const obj = {question, answer: {title, text, img, alt}}
+  console.log(img);
   return http.post(`${apiUrl}/qnas`, obj);}
 
 export function editQna({question, title, text, img, alt, _id}) {
