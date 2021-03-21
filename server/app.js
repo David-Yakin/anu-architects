@@ -31,24 +31,24 @@ app.use('/api/resumes', resumes);
 app.use('/api/qnas', qnas);
 
 app.use(morgan('dev'));
-primaryProjects(data.projects[0]);
-primaryProjects(data.projects[1]);
-primaryProjects(data.projects[2]);
-primaryProjects(data.projects[3]);
+// primaryProjects(data.projects[0]);
+// primaryProjects(data.projects[1]);
+// primaryProjects(data.projects[2]);
+// primaryProjects(data.projects[3]);
 
-primaryResumes(data.resumes[0]);
-primaryResumes(data.resumes[1]);
-primaryResumes(data.resumes[2]);
+// primaryResumes(data.resumes[0]);
+// primaryResumes(data.resumes[1]);
+// primaryResumes(data.resumes[2]);
 
-primaryBlogs(data.blogs[0]);
-primaryBlogs(data.blogs[1]);
-primaryBlogs(data.blogs[2]);
+// primaryBlogs(data.blogs[0]);
+// primaryBlogs(data.blogs[1]);
+// primaryBlogs(data.blogs[2]);
 
 primaryUsers(data.users[0]);
 primaryUsers(data.users[1]);
 
-primaryQnas(data.qnas[0]);
-primaryQnas(data.qnas[1]);
+// primaryQnas(data.qnas[0]);
+// primaryQnas(data.qnas[1]);
 
 const PORT = 8181;
 app.listen(PORT, () => console.log(`server run on: http://localhost:${PORT}`));

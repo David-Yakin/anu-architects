@@ -259,7 +259,6 @@ const data ={
             password: "$2b$10$wtmDgFgnTq7cmEn.yGjGXeme34WT91B7RDRPWgOb4Q9KFguCMaiLy",
             admin: false,
             isBloger:false,
-            isProjectManager: false,
         },
         {
             userID: "000000001",
@@ -277,7 +276,6 @@ const data ={
             password: "$2b$10$wtmDgFgnTq7cmEn.yGjGXeme34WT91B7RDRPWgOb4Q9KFguCMaiLy",
             admin: true,
             isBloger:true,
-            isProjectManager: true,
         },
     ],
     qnas:[

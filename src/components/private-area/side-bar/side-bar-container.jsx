@@ -132,11 +132,6 @@ class SideBar extends Component {
          if (i === index) return this.setState({ item: item.open = true });  
          return this.setState({ item: item.open = false })})}
 
-    //  toggleSideNav = (index) => {
-    //     let changeStatus = this.state.sideItemes[index];
-    //     changeStatus.open = !changeStatus.open ;
-    //     this.setState({ changeStatus })
-    //  }
 
      render() { 
         const { sideItemes } = this.state;
