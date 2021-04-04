@@ -107,7 +107,6 @@ class CreateProject extends Form {
                              autoComplete='off' 
                              method='POST'>
                                 
-
                                 { this.renderInput('name', 'שם הפרויקט *' ) }
                                 { this.renderInput('year', ' השנה בה הסתיים הפרויקט *', 'number' ) }
                                 { this.renderInput('size', 'גודל הנכס במטר רבוע *', 'number') }

@@ -9,8 +9,8 @@ const app = express();
 const cors = require('cors'); // להוריד כשמעלים לשרת אמיתי!!!
 const mongoose = require('mongoose');
 const morgan = require('morgan');
-const { primaryProjects, primaryResumes, primaryBlogs, primaryUsers, primaryQnas } = require('./primaryInfo/primaryData');
-const {data} = require('./primaryInfo/data');
+// const { primaryProjects, primaryResumes, primaryBlogs, primaryUsers, primaryQnas } = require('./primaryInfo/primaryData');
+// const {data} = require('./primaryInfo/data');
 
 mongoose.connect('mongodb://localhost/anu-architects', {
   useNewUrlParser:true,
@@ -44,8 +44,8 @@ app.use(morgan('dev'));
 // primaryBlogs(data.blogs[1]);
 // primaryBlogs(data.blogs[2]);
 
-primaryUsers(data.users[0]);
-primaryUsers(data.users[1]);
+// primaryUsers(data.users[0]);
+// primaryUsers(data.users[1]);
 
 // primaryQnas(data.qnas[0]);
 // primaryQnas(data.qnas[1]);
