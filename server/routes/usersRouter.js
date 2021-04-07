@@ -80,11 +80,17 @@ router.patch('/user/:id', auth, async (req, res) => {
   user = await User.findOneAndUpdate( {_id : req.params.id}, {
      phone : req.body.phone,
      name: req.body.name,
-     lastName: req.body.lastName
+     lastName: req.body.lastName,
+     adress: {
+      country: req.body.country ,
+      city: req.body.city ,
+      street: req.body.street ,
+      houseNumber : req.body.houseNumber ,
+      zip: req.body.zip ,
+    },
     });
   user = await user.save();
   res.send(user);
 });
-
 
 module.exports = router; 

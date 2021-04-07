@@ -1,25 +1,22 @@
 import React from 'react';
 
 const SearchInput = ({categories, placeholder, handleChange}) => {
-
     return (
-            <div id="search-bar">
+        <div id="search-bar">
             <div className="d-flex flex-row-reverse">
-
                 <div className="col-12 mb-5">
                     <div className="input-group">
                         <div className="input-group-append">
-
                             <select className="form-control form-control-lg p-2"
                                      onChange={(e)=> handleChange(e)}>
-                            { categories.map((category, i) => <option 
-                                key={i} 
-                                value={category.value}>
-                                    {category.text}
-                                                              </option>)}
+                                {categories.map((category, i) => 
+                                    <option key={i} 
+                                            value={category.value}>
+                                                {category.text}
+                                    </option>)}
                             </select>
-
                         </div>
+
                         <input type="search" 
                                className=" text-rtl form-control form-control-lg"
                                placeholder={placeholder}
@@ -27,7 +24,6 @@ const SearchInput = ({categories, placeholder, handleChange}) => {
                                />
                     </div>
                 </div>
-
             </div>
         </div>
     )

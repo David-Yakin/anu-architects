@@ -55,17 +55,9 @@ class UpdateUser extends Form {
 
      doSubmit = async ()=>{
         const data  ={...this.state.data};
-  
-        try{
-          await editUser(data); 
-          toast(`${data.name} עדכון הפרטים שלך נשמר בהצלחה`);
-          this.props.history.replace('/private-area/my-projects');
-        } 
-        catch(ex){
-          if( ex.response && ex.response.status === 400){
-            this.setState({ errors: { email: 'המייל הזה תפוס' }});
-          }
-        }
+        await editUser(data); 
+        toast(`${data.name} עדכון הפרטים שלך נשמר בהצלחה`);
+        this.props.history.replace('/private-area/my-projects');
        }
 
     render() { 
@@ -85,7 +77,6 @@ class UpdateUser extends Form {
                         { this.renderInput('name', 'שם פרטי' ) }
                         { this.renderInput('lastName', 'שם משפחה' ) }
                         { this.renderInput('phone','טלפון', 'phone') }
-
                         { this.renderInput('country','ארץ') }
                         { this.renderInput('city','עיר') }
                         { this.renderInput('street','רחוב') }
