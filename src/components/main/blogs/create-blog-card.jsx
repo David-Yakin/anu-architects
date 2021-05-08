@@ -47,6 +47,7 @@ class CeateBlog extends Form {
 
          },
         errors: {},
+        images: []
      }
 
      schema = { 
@@ -89,19 +90,80 @@ class CeateBlog extends Form {
 
      }
 
-     doSubmit = async ()=>{
-        try{
-            
-            const data  = {...this.state.data};
-            await createBlog(data);
-            toast('המאמר נוצר');
-            this.props.history.replace('/private-area/blogs-search-page') ;
+     checkTitle = (title) => {
+        return title.replace(/\s/g, "-")
+     }
 
-         }catch(ex){
-            toast('המאמר לא נשמר קרתה שגיאה בשמירת המאמר')
-            this.setState({ errors: { title:  `המאמר לא נשמר קרתה שגיאה בשמירת המאמר: ${ex}` }});
+     upload = () => {
+        const {title, subTitle,author, category, cardUrl, cardAlt, titleImgUrl, titleImgAlt, titleImgCredit, endImgUrl, endImgAlt, endImgCredit, firstInnerTitle, firstP, secondP, thirdP, landscapeImgUrl, landscapeImgAlt, landscapeImgCredit, secondInnerTitle, foruthP, fifthP, sixthP, profileImgUrl, profileImgAlt, profileImgCredit, thirdInnerTitle, seventhP, eighthP, ninthP} = this.state.data;
+        const {images} = this.state;
+        const titleChecked = this.checkTitle(title.trim());
+
+        const formData = new FormData();
+        formData.append("title", titleChecked);
+        formData.append("subTitle", subTitle.trim());
+        formData.append("author", author.trim());
+        formData.append("category", category.trim());
+        formData.append("cardUrl", cardUrl.trim());
+        formData.append("cardAlt", cardAlt.trim());
+        formData.append("titleImgUrl", titleImgUrl.trim());
+        formData.append("titleImgAlt", titleImgAlt.trim());
+        formData.append("titleImgCredit", titleImgCredit.trim());
+        formData.append("endImgUrl", endImgUrl.trim());
+        formData.append("endImgAlt", endImgAlt.trim());
+        formData.append("endImgCredit", endImgCredit.trim());
+        formData.append("firstInnerTitle", firstInnerTitle.trim());
+        formData.append("firstP", firstP.trim());
+        formData.append("secondP", secondP.trim());
+        formData.append("thirdP", thirdP.trim());
+        formData.append("landscapeImgUrl", landscapeImgUrl.trim());
+        formData.append("landscapeImgAlt", landscapeImgAlt.trim());
+        formData.append("landscapeImgCredit", landscapeImgCredit.trim());
+        formData.append("secondInnerTitle", secondInnerTitle.trim());
+        formData.append("foruthP", foruthP.trim());
+        formData.append("fifthP", fifthP.trim());
+        formData.append("sixthP", sixthP.trim());
+        formData.append("profileImgUrl", profileImgUrl.trim());
+        formData.append("profileImgAlt", profileImgAlt.trim());
+        formData.append("profileImgCredit", profileImgCredit.trim());
+        formData.append("thirdInnerTitle", thirdInnerTitle.trim());
+        formData.append("seventhP", seventhP.trim());
+        formData.append("eighthP", eighthP.trim());
+        formData.append("ninthP", ninthP.trim());
+    
+        for(let x = 0; x < images.length; x++){
+            for (let i of images[x]) {
+                formData.append("images", i);
+            }
+        }
+        return formData
+      }
+
+      doSubmit = async (e)=>{
+        const formData = this.upload()
+         try{
+            await createBlog(formData);
+            toast('המאמר נוצר בהצלחה');
+            this.props.history.replace('/private-area/blogs-search-page');
+         }catch(err){
+             toast('ארעה שגיאה - הפרויקט לא נשמר')
+             this.setState({ errors: { title: 'קרתה שגיאה בשמירת המאמר - המאמר לא נשמר' }});
          }
      };
+
+    //  doSubmit = async ()=>{
+    //     try{
+            
+    //         const data  = {...this.state.data};
+    //         await createBlog(data);
+    //         toast('המאמר נוצר');
+    //         this.props.history.replace('/private-area/blogs-search-page') ;
+
+    //      }catch(ex){
+    //         toast('המאמר לא נשמר קרתה שגיאה בשמירת המאמר')
+    //         this.setState({ errors: { title:  `המאמר לא נשמר קרתה שגיאה בשמירת המאמר: ${ex}` }});
+    //      }
+    //  };
 
     render() { 
 
@@ -124,44 +186,37 @@ class CeateBlog extends Form {
                             { this.renderInput('title', 'שם המאמר *' ) }
                             { this.renderInput('subTitle', ' כותרת משנה של המאמר *' ) }
                             { this.renderInput('author', 'כותב המאמר *') }
-
                             { this.renderSelectBox('category', 'בחר קטגוריה', [
                                     {text:'ארכיטקטורה', value:'architecture' },
                                     {text:'עיצוב פנים', value:'exterior-design' }, 
-                                    {text:'ניהול פרויקטים', value:'Projects-Management' }]) }
-
-                            { this.renderInput('cardUrl', 'כתובת תמונה לכרטיס המאמר ביחס של 16:9 *') }
+                                    {text:'ניהול פרויקטים', value:'Projects-Management' }
+                                    ]) }
+                            { this.renderFileInput('cardUrl', 'העלה תמונה לכרטיס המאמר ביחס של 16:9 *') }
                             { this.renderInput('cardAlt', 'תיאור התמונה לכרטיס המאמר לצורך נגישות') }
-
-                            { this.renderInput('titleImgUrl', 'כתובת התמונה ראשית בגודל - 1920X650 *') }
+                            { this.renderFileInput('titleImgUrl', 'העלה התמונה ראשית ביחס של - 1920X650 *') }
                             { this.renderInput('titleImgAlt', 'תיאור התמונה הראשית *') }
                             { this.renderInput('titleImgCredit', 'קרדיט לצלם של התמונה הראשית') }
-                            
-                            { this.renderInput('endImgUrl', 'כתובת התמונה סופית בגודל - 1920X800 *') }
+                            { this.renderFileInput('endImgUrl', 'העלה התמונה סופית ביחס של - 1920X800 *') }
                             { this.renderInput('endImgAlt', 'תיאור התמונה סופית *') }
                             { this.renderInput('endImgCredit', 'קרדיט לצלם של התמונה סופית') }
-
                             { this.renderInput('firstInnerTitle', 'כותרת ראשונה בגוף המאמר') }
                             { this.renderTextarea('firstP', 'פיסקה ראשונה') }
                             { this.renderTextarea('secondP', 'פיסקה שנייה') }
                             { this.renderTextarea('thirdP', 'פיסקה שלישית') }
-
-                            { this.renderInput('landscapeImgUrl', 'כתובת התמונה שנייה') }
+                            { this.renderFileInput('landscapeImgUrl', 'העלה התמונה שנייה') }
                             { this.renderInput('landscapeImgAlt', 'תיאור התמונה שנייה') }
                             { this.renderInput('landscapeImgCredit', 'קרדיט לצלם של התמונה שנייה') }
                             { this.renderInput('secondInnerTitle', 'כותרת שנייה בגוף המאמר') }
                             { this.renderTextarea('foruthP', 'פיסקה רביעית') }
                             { this.renderTextarea('fifthP', 'פיסקה חמישית') }
                             { this.renderTextarea('sixthP', 'פיסקה שישית') }
-
-                            { this.renderInput('profileImgUrl', 'כתובת התמונה השלישית') }
+                            { this.renderFileInput('profileImgUrl', 'העלה התמונה השלישית') }
                             { this.renderInput('profileImgAlt', 'תיאור התמונה השלישית') }
                             { this.renderInput('profileImgCredit', 'קרדיט לצלם של התמונה השלישית') }
                             { this.renderInput('thirdInnerTitle', 'כותרת שלישית בגוף המאמר') }
                             { this.renderTextarea('seventhP', 'פיסקה שביעית') }
                             { this.renderTextarea('eighthP', 'פיסקה שמינית') }
                             { this.renderTextarea('ninthP', 'פיסקה תשיעית') }
-
                             { this.renderButton('צור מאמר', 'btn btn-lg btn-outline-dark btn-block my-3') }
                         </form>
                     </div>

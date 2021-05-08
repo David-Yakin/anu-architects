@@ -1,0 +1,19 @@
+.strength-meter {
+    position: relative;
+    height: 1rem;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 10px 0;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        height: 100%;
+        width: calc(1% * var(--strength, 0));
+        background-color: var(--bg, 'red');
+        transition: width 200ms;
+    }
+}

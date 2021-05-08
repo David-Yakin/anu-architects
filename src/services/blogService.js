@@ -1,6 +1,12 @@
 import http from "./httpService";
 import { apiUrl } from "../config.json";
 
+export function createBlog(blog) {
+  return http.post(`${apiUrl}/blogs`, blog, {
+    onUploadProgress: ProgressEvent => console.log(`upload progress: ${Math.round(ProgressEvent.loaded / ProgressEvent.total *100)}%`)
+  });
+}
+
 export function getBlog(blogId) {
   return http.get(`${apiUrl}/blogs/private-area/edit-blog-card/${blogId}`);
 }
@@ -13,10 +19,6 @@ export function editBlog(blog) {
 
 export function getMyBlog(blogId) {
   return http.get(`${apiUrl}/blogs/blog/${blogId}`);
-}
-
-export function createBlog(blog) {
-  return http.post(`${apiUrl}/blogs`, blog);
 }
 
 export async function getBlogs(){

@@ -5,11 +5,11 @@ import Titles from '../../common/titles';
 import { createResume } from '../../../services/resumeService';
 import { toast } from 'react-toastify';
 
-class CreatTeamMemberCard extends Form {
-
+class CreatResume extends Form {
     state = { 
         data: { 
-            title:'', 
+            firstName:'', 
+            lastName: '',
             subTitle: '',
             firstP: '',
             secondp: '',
@@ -19,10 +19,12 @@ class CreatTeamMemberCard extends Form {
             profileAlt:''
          },
         errors: {},
+        images: []
      }
 
      schema = { 
-        title: Joi.string().required().min(2).max(255).label('title'),
+        firstName: Joi.string().required().min(2).max(255).label('firstName'),
+        lastName: Joi.string().required().min(2).max(255).label('lastName'),
         subTitle: Joi.string().required().min(2).max(255).label('subTitle'),
         firstP: Joi.string().required().min(2).max(1024).label('firstP'),
         secondp:  Joi.string().required().min(2).max(1024).label('secondp'),
@@ -32,15 +34,43 @@ class CreatTeamMemberCard extends Form {
         profileAlt: Joi.string().required().min(2).max(255).label('profileAlt'),
      }
 
-     doSubmit = async ()=>{
-         try{
-            const data  = {...this.state.data};
-            await createResume(data);
-            toast('הכרטיס של איש הצוות נוצר');
-            this.props.history.replace('/private-area/resume-search-page') ;
+     checkLastName = (lastName) => {
+        return lastName.replace(/\s/g, "-")
+     }
 
-         }catch(ex){
-            this.setState({ errors: { title: 'קרתה שגיאה בשמירת איש הצוות- איש הצוות לא נשמר' }});
+     upload = () => {
+        const {firstName, lastName, subTitle,firstP,secondp,thirdP,fourthP, profileUrl, profileAlt} = this.state.data;
+        const {images} = this.state;
+        const lastNameChecked = this.checkLastName(lastName.trim());
+
+        const formData = new FormData();
+        formData.append("firstName", firstName.trim());
+        formData.append("lastName", lastNameChecked);
+        formData.append("subTitle", subTitle.trim());
+        formData.append("firstP", firstP.trim());
+        formData.append("secondp", secondp.trim());
+        formData.append("thirdP", thirdP.trim());
+        formData.append("fourthP", fourthP.trim());
+        formData.append("profileUrl", profileUrl);
+        formData.append("profileAlt", profileAlt.trim());
+
+        for(let x = 0; x < images.length; x++){
+            for (let i of images[x]) {
+                formData.append("images", i);
+            }
+        }
+        return formData
+      }
+
+     doSubmit = async (e)=>{
+        const formData = this.upload()
+         try{
+            await createResume(formData);
+            toast('הכרטיס של איש הצוות נוצר');
+            this.props.history.replace('/private-area/resume-search-page');
+         }catch(err){
+             toast('ארעה שגיאה - איש הצוות לא נשמר')
+            this.setState({ errors: { profileAlt: 'אנא וודא כי איש הצוות לא נמצא כבר במאגר המידע' }});
          }
      };
 
@@ -59,13 +89,14 @@ class CreatTeamMemberCard extends Form {
                      onSubmit={ this.handleSubmit } 
                      autoComplete='off' 
                      method='POST'>
-                        { this.renderInput('title', 'שם מלא *' ) }
+                        { this.renderInput('firstName', 'שם פרטי *' ) }
+                        { this.renderInput('lastName', 'שם משפחה *' ) }
                         { this.renderInput('subTitle', ' הגדרת תפקיד בחברה *' ) }
                         { this.renderTextarea('firstP', 'השכלה *') }
                         { this.renderTextarea('secondp', 'עבודה כשכירה בתחום *') }
                         { this.renderTextarea('thirdP', 'עבודה כעצמאית בתחום *') }
                         { this.renderTextarea('fourthP', 'תפקיד ועיסוק בחברה *') }
-                        { this.renderInput('profileUrl', 'תמונת פרופיל *') }
+                        { this.renderFileInput('profileUrl', 'העלה תמונת פרופיל *') }
                         { this.renderInput('profileAlt', 'תיאור תמונת פרופיל לצורך נגישות *') }
                         { this.renderButton('צור איש צוות', 'btn btn-lg btn-outline-dark btn-block my-3') }
                     </form>
@@ -76,4 +107,4 @@ class CreatTeamMemberCard extends Form {
     }
 }
  
-export default CreatTeamMemberCard;
+export default CreatResume;

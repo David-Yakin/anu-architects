@@ -9,14 +9,16 @@ const app = express();
 const cors = require('cors'); // להוריד כשמעלים לשרת אמיתי!!!
 const mongoose = require('mongoose');
 const morgan = require('morgan');
-// const { primaryProjects, primaryResumes, primaryBlogs, primaryUsers, primaryQnas } = require('./primaryInfo/primaryData');
-// const {data} = require('./primaryInfo/data');
+const { primaryProjects, primaryResumes, primaryBlogs, primaryUsers, primaryQnas } = require('./primaryInfo/primaryData');
+const {data} = require('./primaryInfo/data');
 
 mongoose.connect('mongodb://localhost/anu-architects', {
   useNewUrlParser:true,
   useUnifiedTopology:true,
 }).then(()=> console.log('connected to MongoDb!'))
 .catch(error => console.error(`could not connect to mongoDb: ${error}`));
+
+// mongoose.set('useFindAndModify', false);
 
 app.use(cors());// להוריד כשמעלים לשרת אמיתי!!!
 app.use(express.json());

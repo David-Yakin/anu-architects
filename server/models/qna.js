@@ -8,8 +8,6 @@ const qnaSchema = new mongoose.Schema({
     answer:{
       title: string255,
       text:string255,
-      img: string255,
-      alt:string255
     },
     open: {type: Boolean, default: false},
     createdAt: { type: Date, default: Date.now },
@@ -23,8 +21,6 @@ const qnaSchema = Joi.object({
   answer: {
     title: Joi.string().required().min(2).max(255),
     text:Joi.string().required().min(2).max(255),
-    img: Joi.string().required().min(2).max(1024),
-    alt:Joi.string().required().min(2).max(255)
   }})
 
   return qnaSchema.validate(qna);

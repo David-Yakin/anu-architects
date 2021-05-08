@@ -45,10 +45,6 @@ export function changUserStatus(userId) {
   return http.patch(`${apiUrl}/users/${userId}`)
 }
 
-export function changUserProjectManagerStatus(userId) {
-  return http.patch(`${apiUrl}/users/isProjectManager/${userId}`)
-}
-
 export function editUser(user) {
   const userId = user._id;
   delete user._id;

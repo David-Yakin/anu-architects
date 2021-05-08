@@ -2,38 +2,19 @@ const express = require('express');
 const { Qna, validateQna } = require('../models/qna');
 const auth = require('../middleware/auth');
 const router = express.Router();
-// const multer = require('multer');
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, saveToFolder) {
-//     saveToFolder(null, `/images/projects/progectUpload`);
-//   },
-//   filename: function (req, file, fileExtantion) {
-//     fileExtantion(null, file.originalname)
-//   }
-// })
 
-// const upload = multer({
-//   storage:storage,
-//   limits: {fileSize: 1024 *1024 * 4}
-// });
-
-router.post('/', auth, async (req, res) => {
-  console.log(req.file);
-  // const { error } = validateQna(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
+router.post('/', async (req, res) => {
+  const { error } = validateQna(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
  
-  let qna = new Qna(
-    {
+  let qna = new Qna({
       question: req.body.question,
       answer: {
         title: req.body.answer.title,
         text: req.body.answer.text,
-        img: req.body.answer.img,
-        alt: req.body.answer.alt,
       }
-    }
-    );
+    });
     
     const post = await qna.save();
     res.send(post);

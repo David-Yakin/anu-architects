@@ -19,7 +19,7 @@ class Form extends Component {
     );
   };
 
-  renderInput(name, placeholder, type = "text", className, divClass) {
+  renderInput(name, placeholder, disabled = false, type = "text", className, divClass) {
     const { data, errors } = this.state;
     return (
       <Input
@@ -31,13 +31,41 @@ class Form extends Component {
         value={data[name]}
         onChange={this.handleChange}
         error={errors[name]}
+        disabled={disabled}
       />
     );
   };
 
+  renderFileInput(name, text, disabled = false, accept,  className, divClass) {
+    const { data, errors } = this.state;
+    return (
+      <InputFile
+        name={name}
+        text={text}
+        accept={accept}
+        className={className}
+        divClass={divClass}
+        value={data[name]}
+        onChange={this.handleFileChange}
+        error={errors[name]}
+        disabled={disabled}
+      />
+    );
+  };
 
+  handleFileChange = ({ target: input }) => {
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(input);
+    if (errorMessage) return errors[input.name] = errorMessage;
+    else delete errors[input.name];
+    const data = { ...this.state.data };
+    data[input.name] = input.value
+    let stateImage = [...this.state.images]
+    stateImage.push(input.files)
+    this.setState({ data, errors, images: stateImage});
+  }
 
-  renderFileInput(name, text, accept, multiple, className, divClass) {
+  renderFileInputEdit(name, text, accept, multiple, className, divClass) {
     const { data, errors } = this.state;
     return (
       <InputFile
@@ -48,13 +76,23 @@ class Form extends Component {
         className={className}
         divClass={divClass}
         value={data[name]}
-        onChange={this.handleChange}
-        // onInput={}
-        // onBlur={}
+        onChange={this.handleFileChangeEdit}
         error={errors[name]}
       />
     );
   };
+
+  handleFileChangeEdit = ({ target: input }) => {
+    const errors = { ...this.state.errors };
+    // const errorMessage = this.validateProperty(input);
+    // if (errorMessage) return errors[input.name] = errorMessage;
+    delete errors[input.name];
+    const data = { ...this.state.data };
+    data[input.name] = input.value
+    let stateImage = [...this.state.images]
+    stateImage.push(input.files)
+    this.setState({ data, errors, images: stateImage});
+  }
 
     renderTextarea(name, placeholder, divClass, className, rows ){
     const { data, errors } = this.state;

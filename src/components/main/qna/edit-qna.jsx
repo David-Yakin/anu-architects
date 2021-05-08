@@ -13,9 +13,6 @@ class CreatQna extends Form {
             question: '',
             title:'', 
             text: '',
-            img: '',
-            alt:'',
-           
          },
         errors: {},
      }
@@ -25,8 +22,6 @@ class CreatQna extends Form {
         question: Joi.string().required().min(2).max(255).label('question'),
         title: Joi.string().required().min(2).max(255).label('title'),
         text: Joi.string().required().min(2).max(255).label('text'),
-        img: Joi.string().required().min(2).max(1024).label('img'),
-        alt: Joi.string().required().min(2).max(255).label('alt'),
      }
 
      async componentDidMount(){
@@ -44,8 +39,6 @@ class CreatQna extends Form {
             question:qna.question, 
             title: qna.title,
             text:qna.text,
-            img:qna.img,
-            alt:qna.alt,
         };
      }
 
@@ -79,8 +72,6 @@ class CreatQna extends Form {
                         { this.renderInput('question', 'השאלה *') }
                         { this.renderInput('title', 'כותרת התשובה *' ) }
                         { this.renderTextarea('text', '  התשובה המלאה *' ) }
-                        { this.renderInput('img', 'כתובת תמונת התשובה *') }
-                        { this.renderInput('alt', 'הסבר על התמונה לצורך נגישות *') }
                         { this.renderButton('עדכן את השאלה והתשובה', 'btn btn-lg btn-outline-dark btn-block my-3') }
                     </form>
                 </div>

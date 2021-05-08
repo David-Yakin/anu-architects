@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Redirect } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { getCurrentUser, login, createUser } from "../../services/userService";
+import StrenthMeter from '../common/strength-meter/strength-meter'
 
 class Signup extends Form {
     state = { 
@@ -39,6 +40,10 @@ class Signup extends Form {
      }
 
      doSubmit = async ()=>{
+        const passwordInput = document.getElementById('password-input') 
+        const passwordCheck = document.getElementById('password') 
+        if(passwordInput.value !== passwordCheck.value) return this.setState({ errors: { password: 'הסיסמה לא תואמת' }})
+
         const data  ={...this.state.data};
   
         try{
@@ -74,16 +79,17 @@ class Signup extends Form {
                         { this.renderInput('userID', 'מספר תעודת זהות *' ) }
                         { this.renderInput('name', 'שם פרטי *' ) }
                         { this.renderInput('lastName', 'שם משפחה *' ) }
-                        { this.renderInput('email', 'מייל *', 'email') }
-                        { this.renderInput('phone','טלפון *', 'phone') }
-
+                        { this.renderInput('email', 'מייל *', false, 'email') }
+                        { this.renderInput('phone','טלפון *', false, 'phone') }
                         { this.renderInput('country','ארץ *' ) }
                         { this.renderInput('city','עיר *') }
                         { this.renderInput('street','רחוב *') }
                         { this.renderInput('houseNumber','מספר בית *') }
                         { this.renderInput('zip','מיקוד *') }
 
-                        { this.renderInput('password', 'סיסמה *', 'password', ) }
+                        <StrenthMeter />
+
+                        { this.renderInput('password', 'חזור על הסיסמה *', false, 'password', ) }
                         
                         <div className="center">
                             <Link className='a-herf mb-2 text-rtl' to="/private-area/sign-in"> משתמש רשום?

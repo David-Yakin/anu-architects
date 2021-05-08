@@ -8,6 +8,7 @@ const InputFile = ({
     className='form-control m-0 text-rtl', 
     divClass="mb-2", 
     value='',
+    disabled,
      ...rest 
     }) => {
 
@@ -18,18 +19,19 @@ const InputFile = ({
             value={value}
             type='file'
             name={name} 
-            id='real-button'
+            id={name}
             hidden
             multiple
+            disabled={disabled}
             />
 
         <button className={className}
                 id='btn'
-                onClick={(e)=>{
+                onClick={e =>{
                     e.preventDefault()
-                    document.getElementById('real-button').click(); }}
+                    document.getElementById(name).click(); }}
                     >
-                        {value === '' ? text : value }
+                        {value === '' ? text : value}
         </button>
       {error && <span className="text-danger">{error}</span>}
      
@@ -52,4 +54,9 @@ text=''
  className=''
  divClass=''
 
+ state: {
+   data:{},
+   error:{};
+   image:[]
+ }
 */

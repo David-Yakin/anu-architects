@@ -2,7 +2,8 @@ const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
 
 const resumeSchema = new mongoose.Schema({
-    title: { type: String, required: true, minlength: 2, maxlength: 255},
+    firstName: { type: String, required: true, minlength: 2, maxlength: 255},
+    lastName: { type: String, required: true, minlength: 2, maxlength: 255},
     subTitle: { type: String, required: true, minlength: 2, maxlength: 255},
     firstP: { type: String, required: true, minlength: 2, maxlength: 1024},
     secondp: { type: String, required: true, minlength: 2, maxlength: 1024},
@@ -19,7 +20,8 @@ const Resume = mongoose.model('Resume', resumeSchema);
 function validateResume(resume) {
 
   const schema = Joi.object({
-    title: Joi.string().required().min(2).max(255),
+    firstName: Joi.string().required().min(2).max(255),
+    lastName: Joi.string().required().min(2).max(255),
     subTitle: Joi.string().min(2).max(255).required(),
     firstP: Joi.string().required().min(2).max(1024),
     secondp: Joi.string().required().min(2).max(1024),

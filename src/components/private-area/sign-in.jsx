@@ -49,8 +49,8 @@ class Signin extends Form {
 
                         <h1 className="h3 mb-3 font-weight-normal text-dark text-center px-0">טופס הירשמות</h1>
 
-                        { this.renderInput('email', 'מייל', 'email') }
-                        { this.renderInput('password', 'סיסמה', 'password', ) }
+                        { this.renderInput('email', 'מייל',false, 'email') }
+                        { this.renderInput('password', 'סיסמה',false, 'password', ) }
                         { this.renderButton('שלח', 'btn btn-lg btn-outline-dark btn-block') }
 
                     </form>

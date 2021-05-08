@@ -71,7 +71,7 @@ class TheTeam extends Component {
                                   style={this.styles.a}>
 
                                         <h5 className="card-title text-right">
-                                            {resume.title}
+                                            {resume.firstName} {resume.lastName}
                                         </h5>
 
                             </Link>

@@ -1,16 +1,18 @@
 import http from "./httpService";
 import { apiUrl } from "../config.json";
 
+export function createProject(project) {
+  return http.post(`${apiUrl}/projects`, project, {
+    onUploadProgress: ProgressEvent => console.log(`upload progress: ${Math.round(ProgressEvent.loaded / ProgressEvent.total *100)}%`)
+  });
+}
+
 export function deleteProject(projectId){
   return http.delete(`${apiUrl}/projects/${projectId}`);
 }
 
 export function getMyProject(projectId) {
   return http.get(`${apiUrl}/projects/project-page/${projectId}`);
-}
-
-export function createProject(project) {
-  return http.post(`${apiUrl}/projects`, project);
 }
 
 export function editProject(project) {

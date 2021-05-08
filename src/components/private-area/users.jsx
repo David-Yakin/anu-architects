@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SearchInput from '../common/search-input';
 import Titles from '../common/titles';
-import { getUsers, deleteUser, changUserStatus, changUserProjectManagerStatus } from '../../services/userService';
+import { getUsers, deleteUser, changUserStatus } from '../../services/userService';
 import { getDate } from '../../services/timeService';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
@@ -30,32 +30,6 @@ class Users extends Component {
             || (user.lastName.toLowerCase().includes(searchTerm.toLowerCase()))
             || (user.isBloger.toString().includes(searchTerm))); 
         this.setState({ users: filertUsers });
-    }
-
-    changeProjectManagerStatus = async (userId) => {
-        let users = [...this.state.users];
-        let user = users.find( user => user._id === userId);
-        if(!user.isProjectManager){
-            return (
-                Swal.fire({
-                    title: '?האם אתה בטוח',
-                    text: "!המשתמש יוכל לשנות למחוק או ליצור פרויקטים",
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'שנה הרשאה למנהל פרויקטים',
-                    cancelButtonText:'בטל'
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.setState({ user: user.isProjectManager = true })
-                        toast('ההרשאה עודכנה');
-                        changUserProjectManagerStatus(userId);
-                    }
-                }))
-            }       
-        toast('ההרשאה עודכנה');
-        this.setState({ user: user.isProjectManager = false });
-        changUserProjectManagerStatus(userId); 
     }
 
     changeStatus = async (userId) => {

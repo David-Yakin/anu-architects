@@ -50,21 +50,20 @@ class ContectUs extends Form {
                           method='POST' 
                           className="row col-12 col-lg-8 px-0">
                             <div className='p-2 col-6'>
-
-                                { this.renderInput('name', 'שם פרטי *', 'text', 'form-control m-0 text-rtl border border-dark', '')}
+                                { this.renderInput('name', 'שם פרטי *', false, 'text', 'form-control m-0 text-rtl border border-dark', '')}
                             </div>
                             <div className="p-2 col-6">
-                                { this.renderInput('lastName', 'שם משפחה *', 'text', 'form-control text-rtl border border-dark', '')}
+                                { this.renderInput('lastName', 'שם משפחה *', false, 'text', 'form-control text-rtl border border-dark', '')}
                             </div>
                             <div className="p-2 col-6">
-                                { this.renderInput('mail', 'כתובת מייל *', 'text', 'form-control text-rtl border border-dark', '')}
+                                { this.renderInput('mail', 'כתובת מייל *', false, 'text', 'form-control text-rtl border border-dark', '')}
                             </div>
                             <div className="p-2 col-6">
-                                { this.renderInput('phone', 'טלפון', 'text', 'form-control text-rtl border border-dark', '')}
+                                { this.renderInput('phone', 'טלפון', false, 'text', 'form-control text-rtl border border-dark', '')}
                             </div>
                             
                            <div className="p-2 col-12">
-                                { this.renderInput('subject', 'נושא *', 'text', 'form-control text-rtl border border-dark', '')}
+                                { this.renderInput('subject', 'נושא *', false, 'text', 'form-control text-rtl border border-dark', '')}
                            </div>
 
                            <div className="p-2 col-12">

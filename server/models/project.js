@@ -36,7 +36,6 @@ const projectSchema = new mongoose.Schema({
 const Project = mongoose.model('Project', projectSchema);
 
 function validateProject(project) {
-
   const schema = Joi.object({
     name: Joi.string().required().min(2).max(255),
     year: Joi.string().min(2).max(4).required(),

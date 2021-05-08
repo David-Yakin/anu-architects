@@ -1,6 +1,6 @@
 import React from "react";
 
-const Input = ({ name, error, placeholder, className='form-control m-0 text-rtl', divClass="mb-2", 
+const Input = ({ name, error,disabled, placeholder, className='form-control m-0 text-rtl', divClass="mb-2", 
      ...rest 
     }) => {
   return (
@@ -9,7 +9,8 @@ const Input = ({ name, error, placeholder, className='form-control m-0 text-rtl'
             name={name} 
             id={name} 
             className={className} 
-            placeholder={placeholder}/>
+            placeholder={placeholder}
+            disabled={disabled}/>
       {error && <span className="text-danger">{error}</span>}
     </div>
   );

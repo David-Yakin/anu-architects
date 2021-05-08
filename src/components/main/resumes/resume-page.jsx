@@ -41,7 +41,7 @@ class Resume extends Component {
                                 <div className="col-12 col-md-7 center-items d-flex justify-content-end">
 
                                     <div className="">
-                                        <h1 className="font-weight-bold text-right ">{resume.title}</h1>
+                                        <h1 className="font-weight-bold text-right ">{resume.firstName} {resume.lastName}</h1>
                                         <h4 className=" text-right">{resume.subTitle}</h4>
                                     </div>
 

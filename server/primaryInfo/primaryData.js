@@ -13,9 +13,9 @@ async function primaryProjects({
     await project.save();
 }
 
-async function primaryResumes({ title, subTitle, profileUrl, profileAlt, firstP, secondp, thirdP, fourthP }){
+async function primaryResumes({ firstName, subTitle, profileUrl, profileAlt, firstP,lastName, secondp, thirdP, fourthP }){
     let resume = new Resume({
-      title, subTitle, profileUrl, profileAlt, firstP, secondp, thirdP, fourthP   
+        firstName, subTitle, profileUrl, profileAlt, firstP, secondp, thirdP, fourthP, lastName   
     });
     await resume.save(); 
 }

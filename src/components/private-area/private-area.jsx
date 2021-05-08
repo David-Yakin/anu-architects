@@ -14,9 +14,9 @@ import ProjectsSearch from '../main/projects/projects-search-page';
 import CreateBlog from '../main/blogs/create-blog-card'
 import EditBlog from '../main/blogs/edit-blog-card'
 import BlogsSearch from '../main/blogs/blogs-search-page'
-import CreateTeamMember from '../main/resumes/create-resume-card';
-import EditTeamMember from '../main/resumes/edit-resume-card';
-import TeamMembersSearch from '../main/resumes/resume-search-page';
+import CreatResume from '../main/resumes/create-resume-card';
+import EditResume from '../main/resumes/edit-resume-card';
+import resumesSearch from '../main/resumes/resume-search-page';
 import Users from './users';
 import ProtectedRoute from '../common/protectedRoute';
 import { Switch, Route } from 'react-router-dom';
@@ -60,15 +60,15 @@ class Main extends Component {
                     <ProtectedRoute path='/private-area/edit-project-card/:id' component={EditProject} title={"admin"}/>
                     <ProtectedRoute path='/private-area/create-blog-card' component={CreateBlog} title={"isBloger"}/>
                     <ProtectedRoute path='/private-area/edit-blog-card/:id' component={EditBlog} title={"isBloger"}/>
-                    <ProtectedRoute path='/private-area/create-resume-card' component={CreateTeamMember} title={"admin"}/>
-                    <ProtectedRoute path='/private-area/edit-resume-card/:id' component={EditTeamMember} title={"admin"}/>
+                    <ProtectedRoute path='/private-area/create-resume-card' component={CreatResume} title={"admin"}/>
+                    <ProtectedRoute path='/private-area/edit-resume-card/:id' component={EditResume} title={"admin"}/>
                     
                     <ProtectedRoute path='/private-area/create-qna-card' component={createQna} title={"admin"}/>
                     <ProtectedRoute path='/private-area/edit-qna-card/:id' component={EditQna} title={"admin"}/>
 
                     <Route path='/private-area/projects-search-page' component={ProjectsSearch}/>
                     <Route path='/private-area/blogs-search-page' component={BlogsSearch}/>
-                     <Route path='/private-area/resume-search-page' component={TeamMembersSearch}/>
+                     <Route path='/private-area/resume-search-page' component={resumesSearch}/>
                      <Route path='/private-area/qna-search-page' component={Qna}/>
                      </Switch>  
                 </div>

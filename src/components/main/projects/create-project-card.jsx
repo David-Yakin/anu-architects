@@ -8,8 +8,6 @@ import { toast } from 'react-toastify';
 
 class CreateProject extends Form {
     state = { 
-   
-
         data: { 
             name:'', 
             year: '',
@@ -38,10 +36,10 @@ class CreateProject extends Form {
             altGallery:''
          },
         errors: {},
+        images: []
      }
 
      schema = { 
-    
         name: Joi.string().required().min(2).max(255).label('name'),
         year: Joi.string().required().min(2).max(4).label('year'),
         size: Joi.string().required().min(2).max(255).label('size'),
@@ -69,28 +67,61 @@ class CreateProject extends Form {
         altGallery: Joi.string().min(2).max(255).label('altGallery'),
      }
 
-     doSubmit = async ()=>{
+     checkName = (name) => {
+        return name.replace(/\s/g, "-")
+     }
+
+     upload = () => {
+        const {name, year, size,category,description,country,city, cardUrl, cardAlt,urlPamorama, altPamorama, urlBefore, altBefore, desBefore, urlSketch, altSketch, desSketch, urlImaging, altImaging, desImaging, urlConstraction, altConstraction, desConstraction, urlGallery, altGallery} = this.state.data;
+        const {images} = this.state;
+        const nameChecked = this.checkName(name.trim());
+
+        const formData = new FormData();
+        formData.append("name", nameChecked);
+        formData.append("year", year.trim());
+        formData.append("size", size.trim());
+        formData.append("category", category.trim());
+        formData.append("description", description.trim());
+        formData.append("country", country.trim());
+        formData.append("city", city.trim());
+        formData.append("cardUrl", cardUrl);
+        formData.append("cardAlt", cardAlt.trim());
+        formData.append("urlPamorama", urlPamorama.trim());
+        formData.append("altPamorama", altPamorama.trim());
+        formData.append("urlBefore", urlBefore.trim());
+        formData.append("altBefore", altBefore.trim());
+        formData.append("desBefore", desBefore.trim());
+        formData.append("urlSketch", urlSketch.trim());
+        formData.append("altSketch", altSketch.trim());
+        formData.append("desSketch", desSketch.trim());
+        formData.append("urlImaging", urlImaging.trim());
+        formData.append("altImaging", altImaging.trim()); 
+        formData.append("desImaging", desImaging.trim()); 
+        formData.append("urlConstraction", urlConstraction.trim()); 
+        formData.append("altConstraction", altConstraction.trim()); 
+        formData.append("desConstraction", desConstraction.trim()); 
+        formData.append("urlGallery", urlGallery.trim()); 
+        formData.append("altGallery", altGallery.trim()); 
+
+        for(let x = 0; x < images.length; x++){
+            for (let i of images[x]) {
+                formData.append("images", i);
+            }
+        }
+        return formData
+      }
+
+      doSubmit = async (e)=>{
+        const formData = this.upload()
          try{
-            const data  = {...this.state.data};
-            await createProject(data);
+            await createProject(formData);
             toast('הפרויקט נוצר');
-            this.props.history.replace('/private-area/projects-search-page') ;
-
-         }catch(ex){
-            this.setState({ errors: { title: 'קרתה שגיאה בשמירת הפרויקט - הפרויקט לא נשמר' }});
-              }
+            this.props.history.replace('/private-area/projects-search-page');
+         }catch(err){
+             toast('ארעה שגיאה - הפרויקט לא נשמר')
+             this.setState({ errors: { title: 'קרתה שגיאה בשמירת הפרויקט - הפרויקט לא נשמר' }});
+         }
      };
-
-    // fileSelectedHandler = event => {
-    //     this.setState({ selectedImage: event.target.files[0] })
-
-    //     };
-
-    // fileUploadHandler = () => {
-    //     const selectedImage  = {...this.state.selectedImage};
-    //     selectedImage.folder = "projects";
-    //     uploadImage(selectedImage);
-    //     }
 
     render() { 
         return (    
@@ -108,8 +139,8 @@ class CreateProject extends Form {
                              method='POST'>
                                 
                                 { this.renderInput('name', 'שם הפרויקט *' ) }
-                                { this.renderInput('year', ' השנה בה הסתיים הפרויקט *', 'number' ) }
-                                { this.renderInput('size', 'גודל הנכס במטר רבוע *', 'number') }
+                                { this.renderInput('year', ' השנה בה הסתיים הפרויקט *', false, 'number' ) }
+                                { this.renderInput('size', 'גודל הנכס במטר רבוע *', false, 'number') }
                                 { this.renderSelectBox('category', 'בחר קטגוריה', [
                                     {text:'דירה', value:'apartment' },
                                     {text:'וילה', value:'villa' }, 
@@ -120,23 +151,23 @@ class CreateProject extends Form {
                                 { this.renderTextarea('description', 'תיאור הנכס *' ) }
                                 { this.renderInput('country', 'הארץ בה מצוי הנכס  *' ) }
                                 { this.renderInput('city', 'העיר בה מצוי הנכס  *' ) }
-                                { this.renderInput('cardUrl', 'תמונה לכרטיס הפרוייקט *' ) }
+                                { this.renderFileInput('cardUrl', 'העלה תמונה לכרטיס הפרוייקט *' ) }
                                 { this.renderInput('cardAlt', 'תיאור התמונה לכרטיס הפרוייקט *' ) }
-                                { this.renderInput('urlPamorama', 'תמונה של הנכס מבחוץ *' ) }
+                                { this.renderFileInput('urlPamorama', 'העלה תמונה של הנכס מבחוץ *' ) }
                                 { this.renderInput('altPamorama', 'תיאור של התמונה לצורך נגישות *' ) }
-                                { this.renderInput('urlBefore', 'התמונה של הנכס לפני הבניה/ השיפוץ' ) }
+                                { this.renderFileInput('urlBefore', 'העלה התמונה של הנכס לפני הבניה/ השיפוץ' ) }
                                 { this.renderInput('altBefore', 'תיאור של התמונה לצורך נגישות' ) }
                                 { this.renderTextarea('desBefore', 'תיאור מצב הנכס לפני תהליך הבניה/ השיפוץ' ) }
-                                { this.renderInput('urlSketch', 'סקיצה של הפרויקט' ) }
+                                { this.renderFileInput('urlSketch', 'העלה סקיצה של הפרויקט' ) }
                                 { this.renderInput('altSketch', 'תיאור של הסקיצה לצורך נגישות' ) }
                                 { this.renderTextarea('desSketch', 'תיאור תהליך העבודה על הסקיצה' ) }
-                                { this.renderInput('urlImaging', 'הדמייה של הפרויקט' ) }
+                                { this.renderFileInput('urlImaging', 'העלה הדמייה של הפרויקט' ) }
                                 { this.renderInput('altImaging', 'תיאור של ההדמייה לצורך נגישות' ) }
                                 { this.renderTextarea('desImaging', 'תיאור תהליך העבודה על ההדמייה' ) }
-                                { this.renderInput('urlConstraction', 'תמונה מהשיפוצים / הבנייה של הפרויקט' ) }
+                                { this.renderFileInput('urlConstraction', 'העלה תמונה מהשיפוצים / הבנייה של הפרויקט' ) }
                                 { this.renderInput('altConstraction', 'תיאור של התמונה לצורך נגישות' ) }
                                 { this.renderTextarea('desConstraction', 'תיאור תהליך הבנייה / השיפוץ' ) }
-                                { this.renderInput('urlGallery', 'תמונה לגלריית התמונות' ) }
+                                { this.renderFileInput('urlGallery', 'העלה תמונות לגלריית התמונות' ) }
                                 { this.renderInput('altGallery', 'תיאור של התמונה לצורך נגישות' ) }
                                 { this.renderButton('צור פרויקט', 'btn btn-lg btn-outline-dark btn-block my-3') }
                             </form>
