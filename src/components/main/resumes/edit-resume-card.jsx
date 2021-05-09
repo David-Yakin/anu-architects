@@ -59,11 +59,10 @@ class EditTeamMember extends Form {
      }
 
     checkLastName = (lastName) => {
-        return lastName.replace(/\s/, "-")
+        return lastName.replace(/\s/g, "-")
      }
      
     upload = () => {
-
         const resumeId = this.props.match.params.id
         const {firstName, lastName, subTitle,firstP,secondp,thirdP,fourthP, profileUrl, profileAlt} = this.state.data;
         const {images} = this.state;

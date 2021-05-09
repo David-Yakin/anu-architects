@@ -6,6 +6,11 @@ export function createProject(project) {
     onUploadProgress: ProgressEvent => console.log(`upload progress: ${Math.round(ProgressEvent.loaded / ProgressEvent.total *100)}%`)
   });
 }
+export function editprojectWithPics(project) {
+  const projectId = project._id;
+  return http.put(`${apiUrl}/projects/${projectId}`, project, {
+    onUploadProgress: ProgressEvent => console.log(`upload progress: ${Math.round(ProgressEvent.loaded / ProgressEvent.total * 100)}%`)});
+}
 
 export function deleteProject(projectId){
   return http.delete(`${apiUrl}/projects/${projectId}`);
