@@ -145,12 +145,13 @@ router.put('/private-area/edit-project-card/:id', auth, async (req, res) => {
     let project = await Project.findOneAndUpdate({ _id: req.params.id }, req.body);
     if (!project) return res.status(404).send('The project with the given ID was not found.');
     
-    project = await Project.findOne({ _id: req.params.id, user_id: req.user._id });
+    project = await Project.findOne({ _id: req.params.id});
     res.send(project);
   }
   return res.send('You are not authorized to change projects')
 });
 
+/*************** עדכון פרויקט עם תמונות חדשות *****************/
   const checkPath = (reqDir, projectDir) => {
   if(reqDir === projectDir) return projectDir;
   return reqDir;

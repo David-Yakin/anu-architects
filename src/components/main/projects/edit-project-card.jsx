@@ -136,7 +136,7 @@ class EditProject extends Form {
         formData.append("id", projectId );
 
         if(cardUrl === undefined)  formData.append("cardUrl", data.cardUrl);
-        else formData.append("cardUrl", cardUrl);
+        else formData.append("cardUrl", cardUrl.trim());
 
         if(urlPamorama === undefined) formData.append("urlPamorama", data.urlPamorama);
         else formData.append("urlPamorama", urlPamorama.trim());

@@ -6,6 +6,13 @@ export function createProject(project) {
     onUploadProgress: ProgressEvent => console.log(`upload progress: ${Math.round(ProgressEvent.loaded / ProgressEvent.total *100)}%`)
   });
 }
+
+export function editProject(project) {
+  const projectId = project._id;
+  delete project._id;
+  return http.put(`${apiUrl}/projects/private-area/edit-project-card/${projectId}`, project);
+}
+
 export function editprojectWithPics(project) {
   const projectId = project._id;
   return http.put(`${apiUrl}/projects/${projectId}`, project, {
@@ -18,12 +25,6 @@ export function deleteProject(projectId){
 
 export function getMyProject(projectId) {
   return http.get(`${apiUrl}/projects/project-page/${projectId}`);
-}
-
-export function editProject(project) {
-  const projectId = project._id;
-  delete project._id;
-  return http.put(`${apiUrl}/projects/private-area/edit-project-card/${projectId}`, project);
 }
 
 export function getProject(projectId) {

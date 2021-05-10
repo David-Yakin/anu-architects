@@ -7,14 +7,20 @@ export function createBlog(blog) {
   });
 }
 
-export function getBlog(blogId) {
-  return http.get(`${apiUrl}/blogs/private-area/edit-blog-card/${blogId}`);
-}
-
 export function editBlog(blog) {
   const blogId = blog._id;
   delete blog._id;
   return http.put(`${apiUrl}/blogs/private-area/edit-blog-card/${blogId}`, blog);
+}
+
+export function editBlogWithPics(blog) {
+  const blogId = blog._id;
+  return http.put(`${apiUrl}/blogs/${blogId}`, blog, {
+    onUploadProgress: ProgressEvent => console.log(`upload progress: ${Math.round(ProgressEvent.loaded / ProgressEvent.total * 100)}%`)});
+}
+
+export function getBlog(blogId) {
+  return http.get(`${apiUrl}/blogs/private-area/edit-blog-card/${blogId}`);
 }
 
 export function getMyBlog(blogId) {
