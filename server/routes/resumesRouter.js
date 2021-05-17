@@ -81,9 +81,9 @@ router.post('/', upload.array("images", 20), auth, async (req, res) => {
     const { error } = validateResume(resume);
     if (error) return res.status(400).send(error.details[0].message);
   
-      resume = new Resume(resume);
-      await resume.save();
-      res.send('איש הצוות נשמר בהצלחה');
+    resume = new Resume(resume);
+    await resume.save();
+    res.send('איש הצוות נשמר בהצלחה');
   }
   return res.send('You are not authorized to create resume!')
   });

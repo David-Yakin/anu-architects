@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
     const name = req.body.name
     const year = req.body.year
     const projectFind = await Project.findOne({ name, year});
-    if(projectFind) return storegePath('איש הצוות כבר נמצא במאגר המידע')
+    if(projectFind) return storegePath('פרויקט עם השם הזה כבר נמצא במאגר המידע')
     const NameLowerCase = name.toLowerCase() + "-" + year.toLowerCase()
     if(!fs.existsSync(`public/images/projects/${NameLowerCase}`)){  
       fs.mkdirSync(`public/images/projects/${NameLowerCase}`) 
@@ -36,7 +36,7 @@ const storageFromEditFile = multer.diskStorage({
 })
 
 const checkFileType = (file, cb) => {
-  const filetypes = /jpeg|jpg|png/;
+  const filetypes = /(jpeg|jpg|png)/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
   if (mimetype && extname) return cb(null, true);
@@ -51,11 +51,7 @@ const uploadFromEditFile = multer({
   fileFilter,
 });
 
-const upload = multer({
-  storage,
-  limits: { fileSize: 1024 * 1024 * 10 },
-  fileFilter,
-});
+const upload = multer({ storage, limits: { fileSize: 1024 * 1024 * 10 }, fileFilter,});
 
 router.post('/', upload.array("images", 20), auth, async (req, res) => {
   if(req.user && req.user.admin === true){
@@ -104,10 +100,8 @@ router.post('/', upload.array("images", 20), auth, async (req, res) => {
         urlGallery: galleryDir,
         altGallery: req.body.altGallery,
     }
-  
     const { error } = validateProject(project);
     if (error)return res.status(400).send(error.details[0].message);
-  
     project = new Project(project);
     await project.save();
     res.send('הפרויקט נשמר בהצלחה');
@@ -119,12 +113,10 @@ router.delete('/:id', auth, async (req, res) => {
   if(req.user && req.user.admin === true){
     let project = await Project.findOne({_id: req.params.id})
     if (!project) return res.status(404).send("הפרויקט לא נמצא");
-
     const name = project.name
     const year = project.year
     const nameLowerCase = name.toLowerCase() + "-" + year.toLowerCase()
     const newName = nameLowerCase.replace(/\s/g, "-")
-
     fs.readdir(`public/images/projects/${newName}`, (err, files)=>{
       for(let file of files){
       fs.unlinkSync(`public/images/projects/${newName}/${file}`)
@@ -151,15 +143,12 @@ router.put('/private-area/edit-project-card/:id', auth, async (req, res) => {
   return res.send('You are not authorized to change projects')
 });
 
-/*************** עדכון פרויקט עם תמונות חדשות *****************/
   const checkPath = (reqDir, projectDir) => {
   if(reqDir === projectDir) return projectDir;
   return reqDir;
 }
 
 router.put('/:id',uploadFromEditFile.array("images", 20), auth, async (req, res) => {
-  //multer - לא מעביר גישה לפאראמס לכן אני מעביר את תעודת הזהות בגוף הבקשה ומוסיף אותו לאוביקט המידע מהטופס
-
 if(req.user && req.user.admin === true){
   let project = await Project.findOne({_id: req.body.id})
   if (!project) return res.status(404).send("הפרויקט לא נמצא");
@@ -171,27 +160,21 @@ if(req.user && req.user.admin === true){
   const cardImage = path.basename(req.body.cardUrl);
   const reqCardDir = `/images/projects/${nameLowerCase}/${cardImage}`
   const cardDir = checkPath(reqCardDir, project.cardUrl)
-
   const pamoramaImage = path.basename(req.body.urlPamorama);
   const reqPamoramaDir = `/images/projects/${nameLowerCase}/${pamoramaImage}`
   const pamoramaDir = checkPath(reqPamoramaDir, project.urlPamorama)
-
   const beforeImage = path.basename(req.body.urlBefore);
   const reqBeforeDir = `/images/projects/${nameLowerCase}/${beforeImage}`
   const beforeDir = checkPath(reqBeforeDir, project.urlBefore)
-
   const sketchImage = path.basename(req.body.urlSketch);
   const reqSketchDir = `/images/projects/${nameLowerCase}/${sketchImage}`
   const sketchDir = checkPath(reqSketchDir, project.urlSketch)
-
   const imagingImage = path.basename(req.body.urlImaging);
   const reqImagingDir = `/images/projects/${nameLowerCase}/${imagingImage}`
   const imagingDir = checkPath(reqImagingDir, project.urlImaging)
-
   const constractionImage = path.basename(req.body.urlConstraction);
   const reqConstractionDir = `/images/projects/${nameLowerCase}/${constractionImage}`
   const constractionDir = checkPath(reqConstractionDir, project.urlConstraction)
-
   const galleryImage = path.basename(req.body.urlGallery);
   const reqGalleryDir = `/images/projects/${nameLowerCase}/${galleryImage}`
   const galleryDir = checkPath(reqGalleryDir, project.urlGallery)

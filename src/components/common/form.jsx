@@ -35,35 +35,43 @@ class Form extends Component {
       />
     );
   };
+  
+  handleChange = ({ currentTarget: input }) => {
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(input);
+    if (errorMessage) errors[input.name] = errorMessage;
+    else delete errors[input.name];
+    const data = { ...this.state.data };
+    data[input.name] = input.value;
+    this.setState({ data, errors });
+  };
 
   renderFileInput(name, text, disabled = false, accept,  className, divClass) {
     const { data, errors } = this.state;
     return (
       <InputFile
-        name={name}
-        text={text}
-        accept={accept}
-        className={className}
-        divClass={divClass}
-        value={data[name]}
-        onChange={this.handleFileChange}
-        error={errors[name]}
-        disabled={disabled}
-      />
-    );
-  };
-
-  handleFileChange = ({ target: input }) => {
-    const errors = { ...this.state.errors };
-    const errorMessage = this.validateProperty(input);
-    if (errorMessage) return errors[input.name] = errorMessage;
-    else delete errors[input.name];
-    const data = { ...this.state.data };
-    data[input.name] = input.value
-    let stateImage = [...this.state.images]
-    stateImage.push(input.files)
-    this.setState({ data, errors, images: stateImage});
-  }
+      name={name}
+      text={text}
+      accept={accept}
+      className={className}
+      divClass={divClass}
+      value={data[name]}
+      onChange={this.handleFileChange}
+      error={errors[name]}
+      disabled={disabled}/>
+      );};
+    
+      handleFileChange = ({ target: input }) => {
+        const errors = { ...this.state.errors };
+        const errorMessage = this.validateProperty(input);
+        if (errorMessage) return errors[input.name] = errorMessage;
+        else delete errors[input.name];
+        const data = { ...this.state.data };
+        data[input.name] = input.value
+        let stateImage = [...this.state.images]
+        stateImage.push(input.files)
+        this.setState({ data, errors, images: stateImage});
+      }
 
   renderFileInputEdit(name, text, accept, multiple, className, divClass) {
     const { data, errors } = this.state;
@@ -72,20 +80,15 @@ class Form extends Component {
         name={name}
         text={text}
         accept={accept}
-        multiple={multiple}
         className={className}
         divClass={divClass}
         value={data[name]}
         onChange={this.handleFileChangeEdit}
-        error={errors[name]}
-      />
-    );
-  };
+        error={errors[name]} />
+    );};
 
   handleFileChangeEdit = ({ target: input }) => {
     const errors = { ...this.state.errors };
-    // const errorMessage = this.validateProperty(input);
-    // if (errorMessage) return errors[input.name] = errorMessage;
     delete errors[input.name];
     const data = { ...this.state.data };
     data[input.name] = input.value
@@ -125,16 +128,6 @@ class Form extends Component {
       />
     );
   }
-
-  handleChange = ({ currentTarget: input }) => {
-    const errors = { ...this.state.errors };
-    const errorMessage = this.validateProperty(input);
-    if (errorMessage) errors[input.name] = errorMessage;
-    else delete errors[input.name];
-    const data = { ...this.state.data };
-    data[input.name] = input.value;
-    this.setState({ data, errors });
-  };
   
   validateProperty = ({ name, value }) => {
     const obj = { [name]: value };

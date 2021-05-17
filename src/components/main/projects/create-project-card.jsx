@@ -9,31 +9,11 @@ import { toast } from 'react-toastify';
 class CreateProject extends Form {
     state = { 
         data: { 
-            name:'', 
-            year: '',
-            size:'',
-            category:'',
-            description:'',
-            country:'',
-            city:'',
-            cardUrl:'',
-            cardAlt: '',
-            urlPamorama:'',
-            altPamorama:'',
-            urlBefore:'',
-            altBefore:'',
-            desBefore:'',
-            urlSketch:'',
-            altSketch:'',
-            desSketch:'',
-            urlImaging:'',
-            altImaging:'',
-            desImaging:'',
-            urlConstraction:'',
-            altConstraction:'',
-            desConstraction:'',
-            urlGallery:'',
-            altGallery:''
+            name:'', year: '', size:'', category:'', description:'', country:'', 
+            city:'', cardUrl:'', cardAlt: '', urlPamorama:'', altPamorama:'', 
+            urlBefore:'', altBefore:'', desBefore:'', urlSketch:'', altSketch:'', 
+            desSketch:'', urlImaging:'', altImaging:'', desImaging:'', urlConstraction:'', 
+            altConstraction:'', desConstraction:'', urlGallery:'', altGallery:''
          },
         errors: {},
         images: []
@@ -47,36 +27,27 @@ class CreateProject extends Form {
         description: Joi.string().required().min(2).max(1024).label('description'),
         country: Joi.string().required().min(2).max(255).label('country'),
         city: Joi.string().required().min(2).max(255).label('city'),
-
         cardUrl: Joi.string().required().min(2).max(255),
         cardAlt: Joi.string().required().min(2).max(255),
-
         urlPamorama: Joi.string().required().min(2).max(255).label('urlPamorama'),
         altPamorama: Joi.string().required().min(2).max(255).label('altPamorama'),
-
         urlBefore: Joi.string().min(2).max(255).label('urlBefore'),
         altBefore: Joi.string().min(2).max(255).label('altBefore'),
         desBefore: Joi.string().min(2).max(1024).label('desBefore'),
-
         urlSketch: Joi.string().min(2).max(255).label('urlSketch'),
         altSketch: Joi.string().min(2).max(255).label('altSketch'),
         desSketch: Joi.string().min(2).max(1024).label('desSketch'),
-
         urlImaging: Joi.string().min(2).max(255).label('urlImaging'),
         altImaging: Joi.string().min(2).max(255).label('altImaging'),
         desImaging: Joi.string().min(2).max(1024).label('desImaging'),
-
         urlConstraction: Joi.string().min(2).max(255).label('urlConstraction'),
         altConstraction: Joi.string().min(2).max(255).label('altConstraction'),
         desConstraction: Joi.string().min(2).max(1024).label('desConstraction'),
-        
         urlGallery: Joi.string().min(2).max(1024).label('urlGallery'),
         altGallery: Joi.string().min(2).max(255).label('altGallery'),
      }
 
-     checkName = (name) => {
-        return name.replace(/\s/g, "-")
-     }
+     checkName = name => name.replace(/\s/g, "-")
 
      upload = () => {
         const {name, year, size,category,description,country,city, cardUrl, cardAlt,urlPamorama, altPamorama, urlBefore, altBefore, desBefore, urlSketch, altSketch, desSketch, urlImaging, altImaging, desImaging, urlConstraction, altConstraction, desConstraction, urlGallery, altGallery} = this.state.data;
@@ -118,7 +89,7 @@ class CreateProject extends Form {
         return formData
       }
 
-      doSubmit = async (e)=>{
+      doSubmit = async ()=>{
         const formData = this.upload()
          try{
             await createProject(formData);

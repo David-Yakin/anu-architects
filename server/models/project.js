@@ -1,7 +1,7 @@
 const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
 
-const projectSchema = new mongoose.Schema({
+const schema = new mongoose.Schema({
   name: { type: String, required: true, minlength: 2, maxlength: 255},
   year: { type: String, required: true, minlength: 2, maxlength: 4},
   size: { type: String, required: true, minlength: 2, maxlength: 255},
@@ -28,12 +28,9 @@ const projectSchema = new mongoose.Schema({
   urlGallery: { type: String, required: true, minlength: 2, maxlength: 1024},
   altGallery: { type: String, required: true, minlength: 2, maxlength: 255},
   createdAt: { type: Date, default: Date.now },
-  counter: { type: String, default: 0},
-  isLiked: {type: Boolean, default: false},
-
 });
 
-const Project = mongoose.model('Project', projectSchema);
+const Project = mongoose.model('Project', schema);
 
 function validateProject(project) {
   const schema = Joi.object({

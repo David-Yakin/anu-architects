@@ -7,6 +7,10 @@ export function createProject(project) {
   });
 }
 
+export function deleteProject(projectId){
+  return http.delete(`${apiUrl}/projects/${projectId}`);
+}
+
 export function editProject(project) {
   const projectId = project._id;
   delete project._id;
@@ -14,17 +18,8 @@ export function editProject(project) {
 }
 
 export function editprojectWithPics(project) {
-  const projectId = project._id;
-  return http.put(`${apiUrl}/projects/${projectId}`, project, {
+  return http.put(`${apiUrl}/projects/${project._id}`, project, {
     onUploadProgress: ProgressEvent => console.log(`upload progress: ${Math.round(ProgressEvent.loaded / ProgressEvent.total * 100)}%`)});
-}
-
-export function deleteProject(projectId){
-  return http.delete(`${apiUrl}/projects/${projectId}`);
-}
-
-export function getMyProject(projectId) {
-  return http.get(`${apiUrl}/projects/project-page/${projectId}`);
 }
 
 export function getProject(projectId) {
@@ -35,3 +30,7 @@ export async function getProjects(){
   return http.get(`${apiUrl}/projects/private-area/projects-search-page`);
 }
 
+
+export function getMyProject(projectId) {
+  return http.get(`${apiUrl}/projects/project-page/${projectId}`);
+}

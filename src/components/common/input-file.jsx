@@ -1,17 +1,6 @@
 import React from "react";
 
-const InputFile = ({
-    name, 
-    error, 
-    text='בחר קובץ' ,
-    accept = 'image/*',
-    className='form-control m-0 text-rtl', 
-    divClass="mb-2", 
-    value='',
-    disabled,
-     ...rest 
-    }) => {
-
+const InputFile = ({name, error, text='בחר קובץ', accept = 'image/*', className='form-control m-0 text-rtl', divClass="mb-2", value='', disabled, ...rest}) => {
   return (
     <div className={divClass}>
         <input {...rest} 
@@ -22,19 +11,16 @@ const InputFile = ({
             id={name}
             hidden
             multiple
-            disabled={disabled}
-            />
+            disabled={disabled}/>
 
         <button className={className}
                 id='btn'
                 onClick={e =>{
                     e.preventDefault()
-                    document.getElementById(name).click(); }}
-                    >
+                    document.getElementById(name).click(); }}>
                         {value === '' ? text : value}
         </button>
       {error && <span className="text-danger">{error}</span>}
-     
     </div>
   );
 };

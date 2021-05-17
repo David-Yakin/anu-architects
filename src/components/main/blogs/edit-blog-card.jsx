@@ -57,25 +57,20 @@ class EditBlog extends Form {
         endImgUrl: Joi.string().min(2).max(255).label('endImgUrl'),
         endImgAlt: Joi.string().required().min(2).max(255).label('endImgAlt'),
         endImgCredit: Joi.string().required().min(2).max(255).label('endImgCredit'),
-
         firstInnerTitle: Joi.string().required().min(2).max(255).label('firstInnerTitle'),
         firstP: Joi.string().required().min(2).max(1024).label('firstP'),
         secondP: Joi.string().required().min(2).max(1024).label('secondP'),
         thirdP: Joi.string().required().min(2).max(1024).label('thirdP'),
-
         landscapeImgUrl: Joi.string().min(2).max(255).label('landscapeImgUrl'),
         landscapeImgAlt: Joi.string().required().min(2).max(255).label('landscapeImgAlt'),
         landscapeImgCredit: Joi.string().required().min(2).max(255).label('landscapeImgCredit'),
-
         secondInnerTitle: Joi.string().required().min(2).max(255).label('secondInnerTitle'),
         foruthP: Joi.string().required().min(2).max(1024).label('foruthP'),
         fifthP: Joi.string().required().min(2).max(1024).label('fifthP'),
         sixthP: Joi.string().required().min(2).max(1024).label('sixthP'),
-
         profileImgUrl: Joi.string().min(2).max(255).label('profileImgUrl'),
         profileImgAlt: Joi.string().required().min(2).max(255).label('profileImgAlt'),
         profileImgCredit: Joi.string().required().min(2).max(255).label('profileImgCredit'),
-
         thirdInnerTitle: Joi.string().required().min(2).max(255).label('thirdInnerTitle'),
         seventhP: Joi.string().required().min(2).max(1024).label('seventhP'),
         eighthP: Joi.string().required().min(2).max(1024).label('eighthP'),
@@ -139,26 +134,21 @@ checkTitle = (title) => {
     formData.append("subTitle", subTitle.trim());
     formData.append("author", author.trim());
     formData.append("category", category.trim());
-
     formData.append("cardAlt", cardAlt.trim());
-    
     formData.append("titleImgAlt", titleImgAlt.trim());
     formData.append("titleImgCredit", titleImgCredit.trim());
-    
     formData.append("endImgAlt", endImgAlt.trim());
     formData.append("endImgCredit", endImgCredit.trim());
     formData.append("firstInnerTitle", firstInnerTitle.trim());
     formData.append("firstP", firstP.trim());
     formData.append("secondP", secondP.trim());
     formData.append("thirdP", thirdP.trim());
-    
     formData.append("landscapeImgAlt", landscapeImgAlt.trim());
     formData.append("landscapeImgCredit", landscapeImgCredit.trim());
     formData.append("secondInnerTitle", secondInnerTitle.trim());
     formData.append("foruthP", foruthP.trim());
     formData.append("fifthP", fifthP.trim());
     formData.append("sixthP", sixthP.trim());
-    
     formData.append("profileImgAlt", profileImgAlt.trim());
     formData.append("profileImgCredit", profileImgCredit.trim());
     formData.append("thirdInnerTitle", thirdInnerTitle.trim());
@@ -169,16 +159,12 @@ checkTitle = (title) => {
     
     if(cardUrl === undefined) formData.append("cardUrl", data.cardUrl);
     else formData.append("cardUrl", cardUrl.trim());
-
     if(titleImgUrl === undefined) formData.append("titleImgUrl", data.titleImgUrl);
     else formData.append("titleImgUrl", titleImgUrl.trim());
-
     if(endImgUrl === undefined) formData.append("endImgUrl", data.endImgUrl);
     else formData.append("endImgUrl", endImgUrl.trim());
-
     if(landscapeImgUrl === undefined) formData.append("landscapeImgUrl", data.landscapeImgUrl);
     else formData.append("landscapeImgUrl", landscapeImgUrl.trim());
-
     if(profileImgUrl === undefined) formData.append("profileImgUrl", data.profileImgUrl);
     else formData.append("profileImgUrl", profileImgUrl.trim());
     
@@ -189,7 +175,6 @@ checkTitle = (title) => {
     }
     return formData
   }
-
 
   doSubmit = async ()=>{
     const  dataFromState  = {...this.state.data};
@@ -204,17 +189,15 @@ checkTitle = (title) => {
             dataFromState.endImgUrl = data.endImgUrl
             dataFromState.landscapeImgUrl = data.landscapeImgUrl
             dataFromState.profileImgUrl = data.profileImgUrl
-
             await editBlog(dataFromState);
             toast('הפרויקט עודכן בהצלחה!');
             return this.props.history.replace('/private-area/blogs-search-page')
         }
-
         const formData = this.upload( data)
         await editBlogWithPics(formData);
         toast('הפרויקט עודכן בהצלחה!');
         return this.props.history.replace('/private-area/blogs-search-page')    
-    }catch(err){
+        }catch(err){
             console.log(err.message);
     }
  };
@@ -279,9 +262,7 @@ checkTitle = (title) => {
                     </div>
                 </div>                    
             </div>
-                 
-            
-            );
+        );
     }
 }
  
