@@ -54,24 +54,15 @@ const uploadFromEditFile = multer({
 const upload = multer({ storage, limits: { fileSize: 1024 * 1024 * 10 }, fileFilter,});
 
 router.post('/', upload.array("images", 20), auth, async (req, res) => {
-  if(req.user && req.user.admin === true){
+  if(req.user && req.user.admin){
     const name = req.body.name
     const year = req.body.year
-    const NameLowerCase = name.toLowerCase() + "-" + year.toLowerCase()
-    const cardImage = path.basename(req.body.cardUrl);
-    const cardDir = `/images/projects/${NameLowerCase}/${cardImage}`
-    const pamoramaImage = path.basename(req.body.urlPamorama);
-    const pamoramaDir = `/images/projects/${NameLowerCase}/${pamoramaImage}`
-    const beforeImage = path.basename(req.body.urlBefore);
-    const beforeDir = `/images/projects/${NameLowerCase}/${beforeImage}`
-    const sketchImage = path.basename(req.body.urlSketch);
-    const sketchDir = `/images/projects/${NameLowerCase}/${sketchImage}`
-    const imagingImage = path.basename(req.body.urlImaging);
-    const imagingDir = `/images/projects/${NameLowerCase}/${imagingImage}`
-    const constractionImage = path.basename(req.body.urlConstraction);
-    const constractionDir = `/images/projects/${NameLowerCase}/${constractionImage}`
-    const galleryImage = path.basename(req.body.urlGallery);
-    const galleryDir = `/images/projects/${NameLowerCase}/${galleryImage}`
+    const folder = name.toLowerCase() + "-" + year.toLowerCase()
+
+    const makeDir = (folder, key) => {
+      const image = path.basename(req.body[key]);
+      return  `/images/projects/${folder}/${image}`
+    }
   
     let project = {
         name: req.body.name,
@@ -81,36 +72,37 @@ router.post('/', upload.array("images", 20), auth, async (req, res) => {
         description: req.body.description,
         country: req.body.country,
         city: req.body.city,
-        cardUrl: cardDir,
+        cardUrl: makeDir(folder, "cardUrl"),
         cardAlt: req.body.cardAlt,
-        urlPamorama: pamoramaDir,
+        urlPamorama: makeDir(folder, "urlPamorama"),
         altPamorama: req.body.altPamorama,
-        urlBefore: beforeDir,
+        urlBefore: makeDir(folder, "urlBefore"),
         altBefore: req.body.altBefore,
         desBefore: req.body.desBefore,
-        urlSketch: sketchDir,
+        urlSketch: makeDir(folder, "urlSketch"),
         altSketch: req.body.altSketch,
         desSketch: req.body.desSketch,
-        urlImaging: imagingDir,
+        urlImaging: makeDir(folder, "urlImaging"),
         altImaging: req.body.altImaging,
         desImaging: req.body.desImaging,
-        urlConstraction: constractionDir,
+        urlConstraction: makeDir(folder, "urlConstraction"),
         altConstraction: req.body.altConstraction,
         desConstraction: req.body.desConstraction,
-        urlGallery: galleryDir,
+        urlGallery: makeDir(folder, "urlGallery"),
         altGallery: req.body.altGallery,
     }
+
     const { error } = validateProject(project);
     if (error)return res.status(400).send(error.details[0].message);
     project = new Project(project);
     await project.save();
-    res.send('הפרויקט נשמר בהצלחה');
+    return res.send('הפרויקט נשמר בהצלחה');
   }
   return res.send('You are not authorized to create projects')
 });
 
 router.delete('/:id', auth, async (req, res) => {
-  if(req.user && req.user.admin === true){
+  if(req.user && req.user.admin){
     let project = await Project.findOne({_id: req.params.id})
     if (!project) return res.status(404).send("הפרויקט לא נמצא");
     const name = project.name
@@ -130,7 +122,7 @@ router.delete('/:id', auth, async (req, res) => {
 });
 
 router.put('/private-area/edit-project-card/:id', auth, async (req, res) => {
-  if(req.user && req.user.admin === true){
+  if(req.user && req.user.admin){
     const { error } = validateProject(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     
@@ -138,7 +130,7 @@ router.put('/private-area/edit-project-card/:id', auth, async (req, res) => {
     if (!project) return res.status(404).send('The project with the given ID was not found.');
     
     project = await Project.findOne({ _id: req.params.id});
-    res.send(project);
+    return res.send(project);
   }
   return res.send('You are not authorized to change projects')
 });
@@ -148,36 +140,21 @@ router.put('/private-area/edit-project-card/:id', auth, async (req, res) => {
   return reqDir;
 }
 
+
 router.put('/:id',uploadFromEditFile.array("images", 20), auth, async (req, res) => {
-if(req.user && req.user.admin === true){
+if(req.user && req.user.admin){
   let project = await Project.findOne({_id: req.body.id})
   if (!project) return res.status(404).send("הפרויקט לא נמצא");
 
   const name = project.name
   const year = project.year
-  const nameLowerCase = name.toLowerCase() + "-" + year.toLowerCase()
+  const folder = name.toLowerCase() + "-" + year.toLowerCase()
 
-  const cardImage = path.basename(req.body.cardUrl);
-  const reqCardDir = `/images/projects/${nameLowerCase}/${cardImage}`
-  const cardDir = checkPath(reqCardDir, project.cardUrl)
-  const pamoramaImage = path.basename(req.body.urlPamorama);
-  const reqPamoramaDir = `/images/projects/${nameLowerCase}/${pamoramaImage}`
-  const pamoramaDir = checkPath(reqPamoramaDir, project.urlPamorama)
-  const beforeImage = path.basename(req.body.urlBefore);
-  const reqBeforeDir = `/images/projects/${nameLowerCase}/${beforeImage}`
-  const beforeDir = checkPath(reqBeforeDir, project.urlBefore)
-  const sketchImage = path.basename(req.body.urlSketch);
-  const reqSketchDir = `/images/projects/${nameLowerCase}/${sketchImage}`
-  const sketchDir = checkPath(reqSketchDir, project.urlSketch)
-  const imagingImage = path.basename(req.body.urlImaging);
-  const reqImagingDir = `/images/projects/${nameLowerCase}/${imagingImage}`
-  const imagingDir = checkPath(reqImagingDir, project.urlImaging)
-  const constractionImage = path.basename(req.body.urlConstraction);
-  const reqConstractionDir = `/images/projects/${nameLowerCase}/${constractionImage}`
-  const constractionDir = checkPath(reqConstractionDir, project.urlConstraction)
-  const galleryImage = path.basename(req.body.urlGallery);
-  const reqGalleryDir = `/images/projects/${nameLowerCase}/${galleryImage}`
-  const galleryDir = checkPath(reqGalleryDir, project.urlGallery)
+  const makeDir = (folder, key) => {
+    const image = path.basename(req.body[key]);
+    const reqDir = `/images/projects/${folder}/${image}`
+    return checkPath(reqDir, project[key])
+  }
 
   project = {
     name: req.body.name,
@@ -187,25 +164,26 @@ if(req.user && req.user.admin === true){
     description: req.body.description,
     country: req.body.country,
     city: req.body.city,
-    cardUrl: cardDir,
+    cardUrl: makeDir(folder, "cardUrl"),
     cardAlt: req.body.cardAlt,
-    urlPamorama: pamoramaDir,
+    urlPamorama: makeDir(folder, "urlPamorama"),
     altPamorama: req.body.altPamorama,
-    urlBefore:  beforeDir,
+    urlBefore: makeDir(folder, "urlBefore"),
     altBefore: req.body.altBefore,
     desBefore: req.body.desBefore,
-    urlSketch: sketchDir,
+    urlSketch: makeDir(folder, "urlSketch"),
     altSketch: req.body.altSketch,
     desSketch: req.body.desSketch,
-    urlImaging: imagingDir,
+    urlImaging: makeDir(folder, "urlImaging"),
     altImaging: req.body.altImaging,
     desImaging: req.body.desImaging,
-    urlConstraction: constractionDir,
+    urlConstraction: makeDir(folder, "urlConstraction"),
     altConstraction: req.body.altConstraction,
     desConstraction: req.body.desConstraction,
-    urlGallery:galleryDir,
+    urlGallery: makeDir(folder, "urlGallery"),
     altGallery: req.body.altGallery,
 }
+
   const { error } = validateProject(project);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -232,20 +210,5 @@ router.get('/private-area/edit-project-card/:id', auth, async (req, res) => {
   if (!project) return res.status(404).send('The project with the given ID was not found.');
   res.send(project);
 });
-
-// router.get('/private-area/my-projects', auth, async (req, res) => {
-//   const projects = await Project.find({ user_id: req.user._id });
-//   res.send(projects);
-// });
-
-// router.patch('/:id', async (req, res) => {
-//   let project = await Project.findById(req.params.id);
-//   if(!project) return res.status(404).send('הפרוייקט לא נמצא במאגר המידע');
-//   let status = project.isLiked;
-//   let changeStatus = !status;
-//   project = await Project.findOneAndUpdate( {_id : req.params.id}, { isLiked : changeStatus});
-//   project = await Project.save();
-//   res.send(project);
-// })
 
 module.exports = router; 

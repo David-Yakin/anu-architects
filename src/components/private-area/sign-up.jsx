@@ -43,22 +43,16 @@ class Signup extends Form {
         const passwordInput = document.getElementById('password-input') 
         const passwordCheck = document.getElementById('password') 
         if(passwordInput.value !== passwordCheck.value) return this.setState({ errors: { password: 'הסיסמה לא תואמת' }})
-
         const data  ={...this.state.data};
-  
         try{
           await createUser(data);
           toast(`${data.name} נרשמת בהצלחה!`);
-         
           await login(data.email,data.password);
           window.location = '/private-area/my-projects';
-         
         } catch(ex){
           if( ex.response && ex.response.status === 400){
             this.setState({ errors: { email: 'המייל הזה תפוס' }});
-          }
-        }
-       }
+          }}}
 
 
     render() { 
@@ -86,9 +80,7 @@ class Signup extends Form {
                         { this.renderInput('street','רחוב *') }
                         { this.renderInput('houseNumber','מספר בית *') }
                         { this.renderInput('zip','מיקוד *') }
-
-                        <StrenthMeter />
-
+                            <StrenthMeter />
                         { this.renderInput('password', 'חזור על הסיסמה *', false, 'password', ) }
                         
                         <div className="center">

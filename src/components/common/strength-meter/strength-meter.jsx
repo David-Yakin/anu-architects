@@ -9,11 +9,12 @@ const StrenthMeter = () => {
         let weaknesses = []
 
         weaknesses.push(lengthWeakness(password))
+        weaknesses.push(simblesWeakness(password))
         weaknesses.push(numbersWeakness(password))
         weaknesses.push(lowercaseWeakness(password))
         weaknesses.push(uppercaseWeakness(password))
-        weaknesses.push(unauthorizedCharacters(password))
         weaknesses.push(repeatCharacters(password))
+        weaknesses.push(unauthorizedCharacters(password))
       
         weaknesses.forEach( weakness => {   
             if (weakness !== undefined){
@@ -41,14 +42,14 @@ const StrenthMeter = () => {
     }
 
     const lengthWeakness = password => {
-        if(password.length < 8) return {
+        if(password.length < 9) return {
             message: 'הסיסמה חייבת להכיל לפחות שמונה תווים',
-            deduction: 30
+            deduction: 20
         }
     }
     
     const unauthorizedCharacters = password =>{
-        const matches = password.match(/[^A-Za-z0-9]/g) || []
+        const matches = password.match(/[^A-Za-z0-9!@#$%^&*-]/g ) || []
         if(matches.length !== 0){
             return {
             message: 'סימן לא מורשה! השתמש רק באותיות גדולות וקטנות באנגלית ובמספרים ',
@@ -80,6 +81,14 @@ const StrenthMeter = () => {
             return{
                 message: 'הסיסמה חייבת להכיל לפחות אות אחת גדולה באנגלית',
                 deduction: 20   
+            }}
+    }
+    const simblesWeakness = password => {
+        const matches = password.match(/(!|@|#|\$|%|\^|&|\*|-)/g) || []
+        if(matches.length === 0){
+            return{
+                message: 'הסיסמה חייבת להכיל לפחות אחד מהסימנים הבאים !@#$%^&*-',
+                deduction: 10   
             }}
     }
 

@@ -7,31 +7,11 @@ import { toast } from 'react-toastify';
 
 class EditProject extends Form {
     state = { 
-        data: { 
-            name:'', 
-            year: '',
-            size:'',
-            category:'',
-            description:'',
-            country:'',
-            city:'',
-            cardUrl:'',
-            cardAlt: '',
-            urlPamorama:'',
-            altPamorama:'',
-            urlBefore:'',
-            altBefore:'',
-            desBefore:'',
-            urlSketch:'',
-            altSketch:'',
-            desSketch:'',
-            urlImaging:'',
-            altImaging:'',
-            desImaging:'',
-            urlConstraction:'',
-            altConstraction:'',
-            desConstraction:'',
-            urlGallery:'',
+        data: { name:'', year: '', size:'', category:'', description:'',
+            country:'', city:'', cardUrl:'', cardAlt: '', urlPamorama:'',
+            altPamorama:'', urlBefore:'', altBefore:'', desBefore:'', urlSketch:'',
+            altSketch:'', desSketch:'', urlImaging:'', altImaging:'', desImaging:'',
+            urlConstraction:'', altConstraction:'', desConstraction:'', urlGallery:'',
             altGallery:''
          },
         errors: {},
@@ -83,31 +63,22 @@ class EditProject extends Form {
             description:project.description,
             country:project.country,
             city:project.city,
-            // cardUrl:project.cardUrl,
             cardAlt: project.cardAlt,
-            // urlPamorama:project.urlPamorama,
             altPamorama:project.altPamorama,
-            // urlBefore:project.urlBefore,
             altBefore:project.altBefore,
             desBefore:project.desBefore,
-            // urlSketch:project.urlSketch,
             altSketch:project.altSketch,
             desSketch:project.desSketch,
-            // urlImaging:project.urlImaging,
             altImaging:project.altImaging,
             desImaging:project.desImaging,
-            // urlConstraction:project.urlConstraction,
             altConstraction:project.altConstraction,
             desConstraction:project.desConstraction,
-            // urlGallery:project.urlGallery,
             altGallery:project.altGallery
         };
      }
 
-     checkName = (name) => {
-        return name.replace(/\s/g, "-")
-     }
-
+     checkName = name => name.replace(/\s/g, "-")
+     
      upload = ( data) => {
         const projectId = this.props.match.params.id
         const {name, year, size,category,description,country,city, cardUrl, cardAlt,urlPamorama, altPamorama, urlBefore, altBefore, desBefore, urlSketch, altSketch, desSketch, urlImaging, altImaging, desImaging, urlConstraction, altConstraction, desConstraction, urlGallery, altGallery} = this.state.data;
@@ -135,24 +106,18 @@ class EditProject extends Form {
         formData.append("altGallery", altGallery.trim()); 
         formData.append("id", projectId );
 
-        if(cardUrl === undefined)  formData.append("cardUrl", data.cardUrl);
+        if(cardUrl === undefined) formData.append("cardUrl", data.cardUrl);
         else formData.append("cardUrl", cardUrl.trim());
-
         if(urlPamorama === undefined) formData.append("urlPamorama", data.urlPamorama);
         else formData.append("urlPamorama", urlPamorama.trim());
-
         if(urlBefore === undefined) formData.append("urlBefore", data.urlBefore);
         else formData.append("urlBefore", urlBefore.trim());
-
         if(urlSketch === undefined) formData.append("urlSketch", data.urlSketch);
         else formData.append("urlSketch", urlSketch.trim());
-
         if(urlImaging === undefined) formData.append("urlImaging", data.urlImaging);
         else formData.append("urlImaging", urlImaging.trim());
-
         if(urlConstraction === undefined) formData.append("urlConstraction", data.urlConstraction);
         else formData.append("urlConstraction", urlConstraction.trim()); 
-
         if(urlGallery === undefined) formData.append("urlGallery", data.urlGallery);
         else formData.append("urlGallery", urlGallery.trim()); 
 

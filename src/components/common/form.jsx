@@ -31,8 +31,7 @@ class Form extends Component {
         value={data[name]}
         onChange={this.handleChange}
         error={errors[name]}
-        disabled={disabled}
-      />
+        disabled={disabled}/>
     );
   };
   
@@ -73,7 +72,7 @@ class Form extends Component {
         this.setState({ data, errors, images: stateImage});
       }
 
-  renderFileInputEdit(name, text, accept, multiple, className, divClass) {
+  renderFileInputEdit(name, text, accept, className, divClass) {
     const { data, errors } = this.state;
     return (
       <InputFile
