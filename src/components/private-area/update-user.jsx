@@ -74,9 +74,9 @@ class UpdateUser extends Form {
 
                         <h1 className="h3 mb-3 font-weight-normal text-dark text-center">עדכון פרטים</h1>
 
-                        { this.renderInput('name', 'שם פרטי' ) }
-                        { this.renderInput('lastName', 'שם משפחה' ) }
-                        { this.renderInput('phone','טלפון', 'phone') }
+                        { this.renderInput('name', 'שם פרטי', true ) }
+                        { this.renderInput('lastName', 'שם משפחה', true ) }
+                        { this.renderInput('phone','טלפון',false, 'phone') }
                         { this.renderInput('country','ארץ') }
                         { this.renderInput('city','עיר') }
                         { this.renderInput('street','רחוב') }

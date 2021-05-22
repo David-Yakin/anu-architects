@@ -59,7 +59,7 @@ class Resume extends Component {
 
                                 <div className=" col-12 col-md-6">
                                     <p className="text-rtl">{resume.thirdP}</p>
-                                    <p className="text-rtl">{resume.firstP}</p>
+                                    <p className="text-rtl">{resume.fourthP}</p>
                                 </div> 
 
                             </div>

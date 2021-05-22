@@ -1,20 +1,19 @@
 import React from 'react';
 
 const StrenthMeter = () => {
-
-    const calcPasswordStrenth = (password) => {
+    const calcPasswordStrenth = password => {
         const strengthMeter = document.getElementById('strength-meter')
         const reasons = document.getElementById('reasons')
         let strength = 100
         let weaknesses = []
 
         weaknesses.push(lengthWeakness(password))
-        weaknesses.push(simblesWeakness(password))
-        weaknesses.push(numbersWeakness(password))
-        weaknesses.push(lowercaseWeakness(password))
-        weaknesses.push(uppercaseWeakness(password))
-        weaknesses.push(repeatCharacters(password))
-        weaknesses.push(unauthorizedCharacters(password))
+        weaknesses.push(checkRegex(password, /(!|@|#|\$|%|\^|&|\*|-)/g, 1, 10, 'הסיסמה חייבת להכיל לפחות אחד מהסימנים הבאים !@#$%^&*-'))
+        weaknesses.push(checkRegex(password, /[0-9]/g, 4, 20, 'הסיסמה חייבת להכיל לפחות ארבעה מספרים'))
+        weaknesses.push(checkRegex(password, /[a-z]/g, 3, 20, 'הסיסמה חייבת להכיל לפחות שלושה אותיות קטנות באנגלית'))
+        weaknesses.push(checkRegex(password, /[A-Z]/g, 1, 20, 'הסיסמה חייבת להכיל לפחות אות אחת גדולה באנגלית'))
+        weaknesses.push(checkIfNotZero(password, /([a-zA-Z0-9])\1/g,  20, 'אסור להשתמש בתווים חוזרים'))
+        weaknesses.push(checkIfNotZero(password, /[^A-Za-z0-9!@#$%^&*-]/g,  100, 'סימן לא מורשה! השתמש רק באותיות גדולות וקטנות באנגלית במספרים ובסימנים !@#$%^&*-'))
       
         weaknesses.forEach( weakness => {   
             if (weakness !== undefined){
@@ -31,64 +30,29 @@ const StrenthMeter = () => {
             weaknesses = []
         } 
     }
-
-    const repeatCharacters = password => {
-        const matches = password.match(/([a-zA-Z0-9])\1/g) || []
-        if(matches.length !== 0){
-            return {
-            message: 'אסור להשתמש בתווים חוזרים',
-            deduction: 10  
-        }}
-    }
-
-    const lengthWeakness = password => {
-        if(password.length < 9) return {
-            message: 'הסיסמה חייבת להכיל לפחות שמונה תווים',
-            deduction: 20
-        }
-    }
     
-    const unauthorizedCharacters = password =>{
-        const matches = password.match(/[^A-Za-z0-9!@#$%^&*-]/g ) || []
+        const lengthWeakness = password => {
+            if(password.length < 9) return {
+                message: 'הסיסמה חייבת להכיל לפחות תשעה תווים',
+                deduction: 20
+            }
+        }
+    
+    const checkRegex = (password, regex, length, deduction, message) => {
+        const matches = password.match(regex) || []
+        if(matches.length < length){
+            return{
+                message,
+                deduction   
+            }}
+    }
+
+    const checkIfNotZero = (password, regex, deduction, message) => {
+        const matches = password.match(regex) || []
         if(matches.length !== 0){
-            return {
-            message: 'סימן לא מורשה! השתמש רק באותיות גדולות וקטנות באנגלית ובמספרים ',
-            deduction: 100  
-        }}
-    }
-
-    const lowercaseWeakness = password => {
-        const matches = password.match(/[a-z]/g) || []
-        if(matches.length < 3){
             return{
-                message: 'הסיסמה חייבת להכיל לפחות שלושה אותיות קטנות באנגלית',
-                deduction: 20   
-            }}
-    }
-
-    const numbersWeakness = password => {
-        const matches = password.match(/[0-9]/g) || []
-        if(matches.length < 4){
-            return{
-                message: 'הסיסמה חייבת להכיל לפחות ארבעה מספרים',
-                deduction: 20   
-            }}
-    }
-
-    const uppercaseWeakness = password => {
-        const matches = password.match(/[A-Z]/g) || []
-        if(matches.length === 0){
-            return{
-                message: 'הסיסמה חייבת להכיל לפחות אות אחת גדולה באנגלית',
-                deduction: 20   
-            }}
-    }
-    const simblesWeakness = password => {
-        const matches = password.match(/(!|@|#|\$|%|\^|&|\*|-)/g) || []
-        if(matches.length === 0){
-            return{
-                message: 'הסיסמה חייבת להכיל לפחות אחד מהסימנים הבאים !@#$%^&*-',
-                deduction: 10   
+                message,
+                deduction   
             }}
     }
 
