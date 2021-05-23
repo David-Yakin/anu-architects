@@ -1,9 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
-const { User, validateUser } = require('../models/user');
+const { User, validateUser, validateEmail, validatePassword } = require('../models/user');
 const auth = require('../middleware/auth');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 router.post('/', async (req, res) => {
   const { error } = validateUser(req.body);
@@ -31,10 +33,53 @@ router.post('/', async (req, res) => {
 
   const salt = await bcrypt.genSalt(12);
   user.password = await bcrypt.hash(user.password, salt);
+
   await user.save();
-  res.send(_.pick(user, ['name', 'email']));
+  return res.send(_.pick(user, ['name', 'email']));
 });
 
+
+router.post('/forgot-password', async (req, res) => {
+  const { error } = validateEmail(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  const { email } = req.body;
+  let user = await User.findOne({email})
+  if(!user) return res.status(400).send('לא נמצא המשתמש עם כתובת המייל הזאת במאגר המידע')
+
+    const secret = config.get('jwtKey') + user.password
+    const token = jwt.sign({ _id: user._id, email: user.email }, secret, {expiresIn: '15m'});
+   
+    const link = `http://localhost:3000/private-area/reset-password/${user.id}/${token}`
+    console.log(link);
+
+  return res.send('לינק לאיפוס הסיסמה נשלח לך למייל')
+})
+
+router.post('/reset-password/:id/:token', async (req, res) => {
+  try{
+    const data = req.body;
+    const { error } = validatePassword(data);
+    if (error) return res.status(400).send('בעיה בזיהוי המייל');
+
+    const { id, token } = req.params;
+    let user = await User.findById(id)
+    if(!user) return res.status(404).send('המשתמש לא רשום במאגר המידע')
+
+    const secret = config.get('jwtKey') + user.password;
+    const payload = jwt.verify(token, secret)
+    if(!payload) return res.status(404).send('problem at validation')
+
+    user.password = data.password
+    const salt = await bcrypt.genSalt(12);
+    user.password = await bcrypt.hash(user.password, salt);
+    await user.save();
+    // return res.send('הסיסמה שונתה בהצלחה')
+    return res.json({ token: user.generateAuthToken() });
+  }catch(err){
+    return res.status(404).send('הייתה בעיה באימות המייל')
+  }
+})
 
 router.get('/user/:id', auth, async (req, res) => {
   const user = await User.findById(req.params.id).select('-password');

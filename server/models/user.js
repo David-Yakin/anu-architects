@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
+
 const string255 = {type: String, required: true, minlength: 2, maxlength: 255}
 
 const userSchema = new mongoose.Schema({
@@ -51,5 +52,19 @@ function validateUser(user) {
   return schema.validate(user);
 }
 
+function validateEmail(email) {
+  const schema = Joi.object({email: Joi.string().min(2).max(256).required()})
+  return schema.validate(email);
+}
+
+function validatePassword(password) {
+  const schema = Joi.object({password: Joi.string().min(2).max(256).required()})
+  return schema.validate(password);
+}
+
+
+
 exports.User = User;
 exports.validateUser = validateUser;
+exports.validateEmail = validateEmail;
+exports.validatePassword = validatePassword;

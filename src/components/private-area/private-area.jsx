@@ -25,6 +25,8 @@ import createQna  from '../main/qna/creat-qna';
 import EditQna  from '../main/qna/edit-qna';
 import UpdateUser from './update-user';
 import { getCurrentUser } from '../../services/userService';
+import ForgotPassword from './forgot-password';
+import ResetPassword from './reset-password';
 
 class Main extends Component {
 
@@ -39,9 +41,10 @@ class Main extends Component {
                 {user && <SideBar />}
 
                 <Switch>
-
                     <Route path='/private-area/sign-in' component={Singin}/>
                     <Route path='/private-area/sign-up' component={Singup}/>
+                    <ForgotPassword path='/private-area/forgot-password' component={ForgotPassword}/>
+                    <ResetPassword path='/private-area/reset-password/:id/:token' component={ResetPassword} />
                     <Route path='/private-area/my-projects' component={MyProjects}/>
                 </Switch>    
                     

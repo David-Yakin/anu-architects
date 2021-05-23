@@ -3,6 +3,7 @@ import Joi from "joi-browser";
 import Form from '../common/form';
 import { Redirect } from "react-router-dom";
 import { login, getCurrentUser } from "../../services/userService";
+import { Link } from 'react-router-dom';
 
 class Signin extends Form {
 
@@ -51,6 +52,14 @@ class Signin extends Form {
 
                         { this.renderInput('email', 'מייל',false, 'email') }
                         { this.renderInput('password', 'סיסמה',false, 'password', ) }
+
+                        <div className="center">
+                            <Link className='a-herf mb-2 text-rtl' 
+                                  to="/private-area/forgot-password"> שכחת סיסמה?
+                                <span className='font-weight-bold text-primary'> לחץ כאן</span>
+                            </Link>
+                        </div>
+
                         { this.renderButton('שלח', 'btn btn-lg btn-outline-dark btn-block') }
 
                     </form>

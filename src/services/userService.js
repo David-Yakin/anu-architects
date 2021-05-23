@@ -13,11 +13,20 @@ export async function createUser({userID, name, lastName, email, phone, country,
 
 export async function login(email, password) {
   const { data } = await http.post(`${apiUrl}/auth`, { email, password });
-  localStorage.setItem("token", data.token);
+  return localStorage.setItem("token", data.token);
 }
 
 export function logout() {
  return localStorage.removeItem("token");
+}
+
+export function forgotPassword(user){
+  return http.post(`${apiUrl}/users/forgot-password`, user)
+}
+
+export async function resetPassword(userId, token, password){
+  const { data } = await http.post(`${apiUrl}/users/reset-password/${userId}/${token}`, password)
+  return localStorage.setItem("token", data.token);
 }
 
 export function getCurrentUser() {

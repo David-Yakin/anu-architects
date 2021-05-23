@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ALink from '../common/a-link';
 import { url } from '../../config.json';
 import { Link } from 'react-router-dom'
 
@@ -29,9 +28,7 @@ class About extends Component {
 
                                         <p className="text-rtl">סטודיו לאדריכלות עיצוב פנים ובנייה הנותן שירות מקצה לקצה בכל הנוגע לבנייה או    שיפוץ נכס מהמאקרו למיקרו.</p>
 
-                                        <ALink to='/resumes/resume-search-page' 
-                                               className='rounded'
-                                               text='...לפרטים נוספים' />
+                                        ...לפרטים נוספים 
 
                                     </div>
                                 </div>

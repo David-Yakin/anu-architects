@@ -84,7 +84,8 @@ class Signup extends Form {
                         { this.renderInput('password', 'חזור על הסיסמה *', false, 'password', ) }
                         
                         <div className="center">
-                            <Link className='a-herf mb-2 text-rtl' to="/private-area/sign-in"> משתמש רשום?
+                            <Link className='a-herf mb-2 text-rtl' 
+                                  to="/private-area/sign-in"> משתמש רשום?
                                 <span className='font-weight-bold text-primary'> התחבר</span>
                             </Link>
                         </div>

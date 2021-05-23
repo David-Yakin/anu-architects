@@ -34,9 +34,7 @@ class NavBar extends Component {
                         <NavLink id='logo' to="/"><img src={`${url}/images/logo/ANU_white.png`} alt="logo"/></NavLink>
                     </div>
 
-                    <div>
-                         { user && <NavLink className='logout' to='/private-area/logout'>logout</NavLink> } 
-                    </div>
+                         { user &&  <div><NavLink className='logout' to='/private-area/logout'>logout</NavLink> </div> } 
     
                     <div>
                         <NavLink to='/private-area/sign-up'>האיזור האישי</NavLink>
