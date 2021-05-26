@@ -29,7 +29,7 @@ componentDidMount(){
           <div className="App">
 
       <header> 
-        <ToastContainer />
+        <ToastContainer/>
         <NavBar user={user}/>  
       </header>
 

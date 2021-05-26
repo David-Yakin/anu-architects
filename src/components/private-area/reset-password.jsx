@@ -2,12 +2,11 @@ import React from 'react';
 import Joi from "joi-browser";
 import Form from '../common/form';
 import { Redirect } from "react-router-dom";
-import { getCurrentUser, resetPassword } from "../../services/userService";
 import StrenthMeter from '../common/strength-meter/strength-meter';
 import { Link } from 'react-router-dom';
+import { resetPassword, getCurrentUser } from '../../services/userService';
 
 class ResetPassword extends Form {
-
     state = { 
         data: { password:''},
         errors: {}
@@ -25,17 +24,20 @@ class ResetPassword extends Form {
      }
 
     doSubmit = async () => {  
+        console.log(1);
         try {
             const match = this.checkMatch()
             if(!match) return this.setState({ errors: { password: 'הסיסמה לא תואמת' }})
+
             const { data } = this.state;
-            const userId = this.props.computedMatch.params.id;
-            const token = this.props.computedMatch.params.token;
+            const userId = this.props.match.params.id;
+            const token = this.props.match.params.token;
             await resetPassword(userId, token, data)
+
             let user = getCurrentUser();
             if(user && user.admin) return window.location = "/private-area/users" ;
             if(user && !user.admin && user.isBloger) return window.location = "/private-area/blogs-search-page" ;
-            window.location = '/private-area/my-projects';
+            return window.location = '/private-area/my-projects';
         }catch(ex){
          if(ex.response && ex.response.status === 400){
            this.setState({ errors: { email: ex.response.data } })

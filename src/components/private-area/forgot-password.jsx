@@ -21,7 +21,8 @@ class ForgotPassword extends Form {
         try {
             const { data } = this.state;
             await forgotPassword(data);
-            toast('הלינק לאיפוס הסיסמה נשלח לך למייל')
+            await toast('הלינק לאיפוס הסיסמה נשלח לך למייל')
+            return this.props.history.replace('/')
         }catch(ex){
            this.setState({ errors: { email: 'ארעה שגיאה בשליחת המייל' } })
         }

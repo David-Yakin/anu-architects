@@ -32,7 +32,6 @@ class Main extends Component {
 
     state = {  }
 
-    
     render() { 
             const user = getCurrentUser()
         return ( 
@@ -43,8 +42,8 @@ class Main extends Component {
                 <Switch>
                     <Route path='/private-area/sign-in' component={Singin}/>
                     <Route path='/private-area/sign-up' component={Singup}/>
-                    <ForgotPassword path='/private-area/forgot-password' component={ForgotPassword}/>
-                    <ResetPassword path='/private-area/reset-password/:id/:token' component={ResetPassword} />
+                    <Route path='/private-area/forgot-password' component={ForgotPassword}/>
+                    <Route path='/private-area/reset-password/:id/:token' component={ResetPassword} />
                     <Route path='/private-area/my-projects' component={MyProjects}/>
                 </Switch>    
                     

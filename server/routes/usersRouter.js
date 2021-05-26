@@ -6,6 +6,7 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const { mailReq } = require('./mailRouter');
 
 router.post('/', async (req, res) => {
   const { error } = validateUser(req.body);
@@ -33,11 +34,9 @@ router.post('/', async (req, res) => {
 
   const salt = await bcrypt.genSalt(12);
   user.password = await bcrypt.hash(user.password, salt);
-
   await user.save();
   return res.send(_.pick(user, ['name', 'email']));
 });
-
 
 router.post('/forgot-password', async (req, res) => {
   const { error } = validateEmail(req.body);
@@ -47,13 +46,26 @@ router.post('/forgot-password', async (req, res) => {
   let user = await User.findOne({email})
   if(!user) return res.status(400).send('לא נמצא המשתמש עם כתובת המייל הזאת במאגר המידע')
 
-    const secret = config.get('jwtKey') + user.password
-    const token = jwt.sign({ _id: user._id, email: user.email }, secret, {expiresIn: '15m'});
-   
-    const link = `http://localhost:3000/private-area/reset-password/${user.id}/${token}`
-    console.log(link);
+  const secret = config.get('jwtKey') + user.password
+  const token = jwt.sign({ _id: user._id, email: user.email }, secret, {expiresIn: '15m'});
 
-  return res.send('לינק לאיפוס הסיסמה נשלח לך למייל')
+  const link = `http://localhost:3000/private-area/reset-password/${user.id}/${token}`
+
+  const html = `<table cellpadding='0' cellspacing='0'>
+  <tr>
+      <td>
+          <h1 align="right">איפוס סיסמה</h1>
+          <h2 align="right" cellpadding='0'>לחץ על הלינק על מנת לאפס את הסיסמה</h2>
+      </td>
+  </tr>
+  <tr ><td><p>http://localhost:3000/private-area/reset-password/${user.id}/${token}</p></td></tr>
+  <tr ><td align="right"><p>לשאלות נוספות ניתן לפנות לכתובת המייל</p></td></tr>
+  <tr ><td align="right">anu.arch.rl@gmail.com</td></tr>
+</table>`
+  
+  const subject = 'anu-architects password reset'
+
+  mailReq(user.email, subject, link, html).then(res.send('Email sent!')).catch(error => res.status(404).send(error.message));
 })
 
 router.post('/reset-password/:id/:token', async (req, res) => {
@@ -74,7 +86,7 @@ router.post('/reset-password/:id/:token', async (req, res) => {
     const salt = await bcrypt.genSalt(12);
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
-    // return res.send('הסיסמה שונתה בהצלחה')
+   
     return res.json({ token: user.generateAuthToken() });
   }catch(err){
     return res.status(404).send('הייתה בעיה באימות המייל')

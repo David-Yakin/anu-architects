@@ -46,7 +46,7 @@ class Signup extends Form {
         const data  ={...this.state.data};
         try{
           await createUser(data);
-          toast(`${data.name} נרשמת בהצלחה!`);
+          toast(`${data.name} ${data.lastName} נרשמת בהצלחה!`);
           await login(data.email,data.password);
           window.location = '/private-area/my-projects';
         } catch(ex){
