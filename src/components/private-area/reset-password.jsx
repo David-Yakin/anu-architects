@@ -24,7 +24,6 @@ class ResetPassword extends Form {
      }
 
     doSubmit = async () => {  
-        console.log(1);
         try {
             const match = this.checkMatch()
             if(!match) return this.setState({ errors: { password: 'הסיסמה לא תואמת' }})

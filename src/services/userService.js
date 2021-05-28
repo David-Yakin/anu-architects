@@ -20,15 +20,6 @@ export function logout() {
  return localStorage.removeItem("token");
 }
 
-export function forgotPassword(user){
-  return http.post(`${apiUrl}/users/forgot-password`, user)
-}
-
-export async function resetPassword(userId, token, password){
-  const { data } = await http.post(`${apiUrl}/users/reset-password/${userId}/${token}`, password)
-  return localStorage.setItem("token", data.token);
-}
-
 export function getCurrentUser() {
   try {
     const jwt = localStorage.getItem("token");
@@ -58,5 +49,14 @@ export function editUser(user) {
   const userId = user._id;
   delete user._id;
   return http.patch(`${apiUrl}/users/user/${userId}`, user);
+}
+
+export function forgotPassword(user){
+  return http.post(`${apiUrl}/users/forgot-password`, user)
+}
+
+export async function resetPassword(userId, token, password){
+  const { data } = await http.post(`${apiUrl}/users/reset-password/${userId}/${token}`, password)
+  return localStorage.setItem("token", data.token);
 }
 

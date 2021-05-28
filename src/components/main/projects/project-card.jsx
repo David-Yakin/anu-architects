@@ -7,7 +7,7 @@ const ProjectCard = ({project, width, handleProjectDelete}) =>{
     const user = getCurrentUser();
     return (
         <div className={width}>
-
+             
         <Link to={`/project-page/${project._id}`}>
             <img src={`${url}${project.cardUrl}`} 
                  className="card-img-top" 

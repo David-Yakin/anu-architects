@@ -62,8 +62,6 @@ function validatePassword(password) {
   return schema.validate(password);
 }
 
-
-
 exports.User = User;
 exports.validateUser = validateUser;
 exports.validateEmail = validateEmail;

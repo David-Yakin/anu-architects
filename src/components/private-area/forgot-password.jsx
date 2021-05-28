@@ -5,7 +5,6 @@ import { Redirect } from "react-router-dom";
 import { getCurrentUser, forgotPassword } from "../../services/userService";
 import { toast } from 'react-toastify';
 
-
 class ForgotPassword extends Form {
 
     state = { 
@@ -42,7 +41,9 @@ class ForgotPassword extends Form {
                           method='POST' 
                           className="border border-light rounded p-4 bg-light">
 
-                        <h1 className="h3 mb-3 font-weight-normal text-dark text-center px-0">שליחת לינק לאיפוס סיסמה</h1>
+                        <h1 className="h3 mb-3 font-weight-normal text-dark text-center px-0">
+                            שליחת לינק לאיפוס סיסמה
+                        </h1>
 
                         { this.renderInput('email', 'מייל',false, 'email') }
                         { this.renderButton('שלח', 'btn btn-lg btn-outline-dark btn-block') }
