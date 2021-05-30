@@ -10,7 +10,8 @@ class Process extends Component {
             { 
                 id: 0,
                 dotText: ' א',
-                video: "/videos/theProcess/1.mp4",
+                image: "/images/theProcess/2.jpg",
+                alt:"תמונה של מילוי טופס",
                 title: "מילוי טופס צור קשר",
                 content: "על מנת שהשיחה הראשונית תהה פרודוקטיבית נשמח לדעת כמה שיותר פרטים על הפרויקט. מה סוג הנכס? מיקומו?  דד ליין לסיומו? אם יש דברים ספציפיים שרוצים להתעכב עליהם בתכנון או בעיצוב הנכס. כמו כן, אם יש לכם שאלה כללית עלינו או על תהליך העבודה או כל שאלה אחרת מלאו את טופס יצירת הקשר ונחזור אליכם עם תשובות בהקדם. ",
                 link: "לטופס יצירת קשר",
@@ -19,7 +20,8 @@ class Process extends Component {
             {
                 id: 1,
                 dotText: ' ב',
-                video: "2",
+                image: "/images/theProcess/3.jpg",
+                alt:"תמונה שמתארת פגישת ייעוץ ראשונית",
                 title: "פגישת ייעוץ",
                 content: "בפגישת הייעוץ הראשונית ננסה להבין את הצרכים שלך כלקוח, אענה על כך שאלה שתהיה לך וביחד נחליט על חבילת הצילום המתאימה, בהתאם לגודל הפרויקט ומגבלות התקציב. כמו כן אתן נדבר על מספר נקודות שיעזרו לייעל את יום הצילום, יחסכו זמן ויאפשרו את התנאים הדרושים ליצירת צילום מקצועי של הנכס. נקבע ביחד תאריך ליום הצילום ולאחר מכן הלקוח יעביר מקדמה שתשמש בין היתר לשכירת ציוד צילום מיוחד במקרה ויידרש",
                 link: "לטופס יצירת קשר",
@@ -28,7 +30,8 @@ class Process extends Component {
             {
                 id: 2,
                 dotText: ' ג',
-                video: "/videos/theProcess/3.mp4",
+                image: "/images/theProcess/4.jpg",
+                alt:"תמונה של תוכניות וסקיצות",
                 title: "תוכניות וסקיצות",
                 content: "על מנת שפגישת הייעוץ תהה פרודקטיבית נשמח לדעת כמה פרטים ראשוניים",
                 link: "לטופס יצירת קשר",
@@ -37,7 +40,8 @@ class Process extends Component {
             {
                 id: 3,
                 dotText: ' ד',
-                video: "4",
+                image: "/images/theProcess/5.jpg",
+                alt:"תמונה של הבנייה והשיפוץ",
                 title: "בנייה ושיפוץ",
                 content: "על מנת שפגישת הייעוץ תהה פרודקטיבית נשמח לדעת כמה פרטים ראשוניים",
                 link: "לטופס יצירת קשר",
@@ -46,7 +50,8 @@ class Process extends Component {
             {
                 id: 4,
                 dotText: ' ה',
-                video: "5",
+                image: "/images/theProcess/6.jpg",
+                alt:"תמונה של עיצוב פנים",
                 title: "עיצוב",
                 content: "על מנת שפגישת הייעוץ תהה פרודקטיבית נשמח לדעת כמה פרטים ראשוניים",
                 link: "לטופס יצירת קשר",
@@ -88,11 +93,11 @@ class Process extends Component {
            
             <div className='row px-3 border-0'>
                 <div className="col-6 center d-none d-lg-block">
-                    <video 
-                           autoPlay loop muted 
+                    <img src={`${url}${sliders[counter].image}`}
+                        alt={sliders[counter].alt}
                            className=" w-100 border border-dark"
-                           src={`${url}${sliders[counter].video}`}>
-                    </video>
+                           >
+                    </img>
                 </div>
 
                 <article className="col-12 col-lg-6 text-rtl">
