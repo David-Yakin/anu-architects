@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Redirect } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { getCurrentUser, login, createUser } from "../../services/userService";
-import StrenthMeter from '../common/strength-meter/strength-meter'
+import StrenthMeter from '../common/strength-meter/strength-meter';
 
 class Signup extends Form {
     state = { 
@@ -81,6 +81,7 @@ class Signup extends Form {
                         { this.renderInput('houseNumber','מספר בית *') }
                         { this.renderInput('zip','מיקוד *') }
                             <StrenthMeter />
+
                         { this.renderInput('password', 'חזור על הסיסמה *', false, 'password', ) }
                         
                         <div className="center">

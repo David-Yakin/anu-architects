@@ -46,7 +46,7 @@ function validateUser(user) {
       houseNumber : Joi.string().min(2).max(255).required(),
       zip: Joi.string().min(2).max(14).required(),
     },
-    password: Joi.string().min(6).max(1024).required(),
+    password: Joi.string().min(9).max(20).required().regex(/((?=.*\d{1})(?=.*[A-Z]{1})(?=.*[a-z]{1})(?=.*[!@#$%^&*-]{1}).{9,20})/),
   });
 
   return schema.validate(user);
@@ -58,7 +58,7 @@ function validateEmail(email) {
 }
 
 function validatePassword(password) {
-  const schema = Joi.object({password: Joi.string().min(2).max(256).required()})
+  const schema = Joi.object({password: Joi.string().min(2).max(256).required().regex(/((?=.*\d{1})(?=.*[A-Z]{1})(?=.*[a-z]{1})(?=.*[!@#$%^&*-]{1}).{9,20})/)})
   return schema.validate(password);
 }
 

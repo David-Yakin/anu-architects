@@ -60,3 +60,6 @@ export async function resetPassword(userId, token, password){
   return localStorage.setItem("token", data.token);
 }
 
+export function sendMail(mail){
+  return http.post(`${apiUrl}/users/send-mail`, mail)
+}

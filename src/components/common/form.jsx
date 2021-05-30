@@ -34,7 +34,7 @@ class Form extends Component {
         disabled={disabled}/>
     );
   };
-  
+
   handleChange = ({ currentTarget: input }) => {
     const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(input);

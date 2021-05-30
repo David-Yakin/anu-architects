@@ -70,13 +70,15 @@ const StrenthMeter = () => {
             <div className="col-12 p-0">
                 <div className='strength-meter'
                      id='strength-meter'></div>
-                <input type="password" 
+                     
+                    <input type="password" 
                        aria-labelledby="password"
                        className="form-control m-0 password-input text-rtl"
                        id='password-input'
                        placeholder="סיסמה *"
                        onInput={e => calcPasswordStrenth(e.target.value)}/>
-                <span id="reasons" className="text-danger text-rtl"></span>
+
+                    <span id="reasons" className="text-danger text-rtl"></span>
             </div> 
         </div>
      );

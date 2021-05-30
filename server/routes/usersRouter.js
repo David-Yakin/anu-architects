@@ -8,13 +8,18 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { mailReq } = require('./mailRouter');
 const { generateTemplate } = require('../mail-templates/mail-templates');
+const { validateMail } = require('../models/mail');
 
 router.post('/', async (req, res) => {
+  const matches = req.body.password.match(/[^A-Za-z0-9!@#$%^&*-]/g) || []
+  if(matches.length !== 0) return res.status(400).send('Invalide Password!')
+
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send('המשתמש קיים');
+
 
   user = await new User(
     {
@@ -109,7 +114,8 @@ router.post('/forgot-password', async (req, res) => {
 
   const subject = 'anu-architects password reset'
   const link = `http://localhost:3000/private-area/reset-password/${user.id}/${token}`
-  const html = generateTemplate(user.id, token).resetPassword
+  const mail = {userId: user.id, token: token}
+  const html = generateTemplate(mail).resetPassword
 
   mailReq(user.email, subject, link, html).then(res.send('Email sent!'))
   .catch(error => res.status(404).send(error.message));
@@ -117,6 +123,9 @@ router.post('/forgot-password', async (req, res) => {
 
 router.post('/reset-password/:id/:token', async (req, res) => {
   try{
+    const matches = req.body.password.match(/[^A-Za-z0-9!@#$%^&*-]/g) || []
+    if(matches.length !== 0) return res.status(400).send('Invalide Password!')
+    
     const data = req.body;
     const { error } = validatePassword(data);
     if (error) return res.status(400).send('בעיה בזיהוי המייל');
@@ -139,5 +148,21 @@ router.post('/reset-password/:id/:token', async (req, res) => {
     return res.status(404).send('הייתה בעיה באימות המייל')
   }
 })
+
+router.post('/send-mail', async (req, res) =>{
+  const { error } = validateMail(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  const { email, subject, message, name, lastName, phone } = req.body;
+
+  const to = "anu.arch.rl@gmail.com";
+  const newMessage = message.replace(/\./g, ".<br/>");
+  const text = message;
+  const mail = {firstName: name, lastName, message: newMessage, email, phone};
+  const html = generateTemplate(mail).contactUs;
+
+  mailReq(to, subject, text, html).then(res.send('Email sent!'))
+  .catch(error => res.status(404).send(error.message));
+
+} )
 
 module.exports = router; 

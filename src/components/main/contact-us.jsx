@@ -3,6 +3,7 @@ import Titles from '../common/titles';
 import Joi from "joi-browser";
 import Form from '../common/form';
 import { toast } from 'react-toastify';
+import { sendMail } from '../../services/userService';
 
 class ContectUs extends Form {
 
@@ -10,9 +11,10 @@ class ContectUs extends Form {
         data: { 
             name: '', 
             lastName:'', 
-            mail:'', 
+            email:'', 
             subject:'', 
-            phone:''
+            phone:'',
+            message: ''
         },
         errors: {}
      }
@@ -21,15 +23,17 @@ class ContectUs extends Form {
      schema = { 
         name: Joi.string().required().min(2).max(255).label('name'),
         lastName: Joi.string().required().min(2).max(255).label('lastName'),
-        mail: Joi.string().required().email().label('mail'),
+        email: Joi.string().required().email().label('email'),
         subject: Joi.string().required().min(2).max(255).label('subject'),
-        phone: Joi.string().required().min(2).max(255).label('phone'),
+        phone: Joi.string().min(2).max(255).label('phone'),
+        message: Joi.string().required().min(2).max(1024).label('message')
      }
 
-    doSubmit = () => { 
-        this.setState({data:{ name: '', lastName:'', mail:'',  subject:'',  phone:'' } })
-        document.getElementById('text-erea').value = '';
+     doSubmit = async () => { 
+        const { data } = this.state;
+        await sendMail(data)
         toast('ההודעה נשלחה! אנו ניצור עמך קשר בהקדם');
+        this.setState({data:{ name: '', lastName:'', email:'',  subject:'',  phone:'', message: '' } })
      };
     
     render() { 
@@ -56,7 +60,7 @@ class ContectUs extends Form {
                                 { this.renderInput('lastName', 'שם משפחה *', false, 'text', 'form-control text-rtl border border-dark', '')}
                             </div>
                             <div className="p-2 col-6">
-                                { this.renderInput('mail', 'כתובת מייל *', false, 'text', 'form-control text-rtl border border-dark', '')}
+                                { this.renderInput('email', 'כתובת מייל *', false, 'text', 'form-control text-rtl border border-dark', '')}
                             </div>
                             <div className="p-2 col-6">
                                 { this.renderInput('phone', 'טלפון', false, 'text', 'form-control text-rtl border border-dark', '')}
@@ -67,14 +71,7 @@ class ContectUs extends Form {
                            </div>
 
                            <div className="p-2 col-12">
-                                <textarea 
-                                    id='text-erea'
-                                    type="text" 
-                                    name="message" 
-                                    className="form-control text-rtl border border-dark"
-                                    placeholder="הודעה" 
-                                    rows="5">
-                                </textarea>                               
+                               {this.renderTextarea('message', 'הודעה *')}
                            </div>
 
                            <div className="p-2 col-12 mb-4">
