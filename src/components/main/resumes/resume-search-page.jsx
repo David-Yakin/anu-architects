@@ -56,36 +56,34 @@ class TheTeam extends Component {
        if ( resumes.length) {
            return (
                 resumes.map(  resume => (
-                    <div key={resume._id} className="card col-12 col-sm-6 col-md-4 col-lg-3 p-2 mb-5">
+                    <div to={`/resume-page/${resume._id}`}
+                          className="card col-12 col-sm-6 col-md-4 col-lg-3 p-2 mb-5"
+                          key={resume._id}> 
 
-                        <div style={ this.styles }>
+                        <Link style={ this.styles }
+                              to={`/resume-page/${resume._id}`}>
                             <img className="card-img-top" 
                                 src={`${url}${resume.profileUrl}`} 
                                 alt={resume.profileAlt}
                                 style={ this.styles.bg }/>
-                        </div>
+                        </Link>
 
                         <div className="card-body px-0">
-                            <Link to={`/resume-page/${resume._id}`} 
-                                  className='d-flex justify-content-end' 
-                                  style={this.styles.a}>
-
-                                        <h5 className="card-title text-right">
-                                            {resume.firstName} {resume.lastName}
-                                        </h5>
-
+                            <Link to={`/resume-page/${resume._id}`}
+                                  className='text-decoration-none text-dark'>
+                                <h5 className="card-title text-right ">
+                                    {resume.firstName} {resume.lastName}
+                                </h5>
+                                <p className="card-text text-right">{resume.subTitle}</p>
                             </Link>
-                            <p className="card-text text-right">{resume.subTitle}</p>
-
                             {user && user.admin && 
                                     <span> <Link to={`/private-area/edit-resume-card/${resume._id}`} className='far fa-edit text-dark text-decoration-none'></Link> <span> | </span>
                         <a href="/" onClick={ (e) => { this.handleResumeDelete(resume._id, e) } } className='fas fa-trash-alt text-dark text-decoration-none'> </a>  
                       </span>
                      
                       }
-
                         </div>
-                    </div>
+                 </div>
                 ))
            )
         }        

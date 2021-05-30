@@ -18,19 +18,21 @@ const ProjectCard = ({project, width, handleProjectDelete}) =>{
             <div className="d-flex flex-row-reverse justify-content-between">
 
                 <div className='col-10 px-0'>
-                          
-                    <h4 className="card-title text-rtl m-0 ">{project.name}</h4>
-                    <p className="card-text text-right">
-                        <small className="text-muted">{project.country} | {project.city} | {project.year}</small>
-                    </p>
-                             
+                    <Link to={`/project-page/${project._id}`}
+                          className='text-decoration-none text-dark'>     
+                        <h4 className="card-title text-rtl m-0 ">{project.name}</h4>
+                        <p className="card-text text-right">
+                            <small className="text-muted">{project.country} | {project.city} | {project.year}</small>
+                        </p>
+                    </Link>         
                 </div>
 
                     <div className="col-2 pt-1 px-0">
                       
                       {user && user.admin && 
                       <span>
-                        <Link to={`/private-area/edit-project-card/${project._id}`} className='far fa-edit text-dark text-decoration-none'></Link> 
+                        <Link to={`/private-area/edit-project-card/${project._id}`} 
+                              className='far fa-edit text-dark text-decoration-none'></Link> 
                         <span> | </span>
                         <a href="/" onClick={ e => { handleProjectDelete(project._id, e) } } className='fas fa-trash-alt text-dark text-decoration-none'> </a>  
                       </span>
