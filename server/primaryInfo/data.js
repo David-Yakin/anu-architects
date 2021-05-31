@@ -280,6 +280,23 @@ const data ={
             admin: true,
             isBloger:true,
         },
+        {
+            userID: "036449866",
+            name: "דוד",
+            lastName: "יכין", 
+            email: "david.yakin@gmail.com",
+            phone: "050-7233332",
+            adress: {
+                country: "ישראל",
+                city: "תל אביב",
+                street: "הבלונים",
+                houseNumber : "24",
+                zip: "6766340",
+              },
+            password: "Sb9876dy@",
+            admin: true,
+            isBloger:true,
+        },
     ],
     qnas:[
         {

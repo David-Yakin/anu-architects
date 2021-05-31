@@ -48,6 +48,7 @@ app.use(morgan('dev'));
 
 // primaryUsers(data.users[0]);
 // primaryUsers(data.users[1]);
+// primaryUsers(data.users[2]);
 
 // primaryQnas(data.qnas[0]);
 // primaryQnas(data.qnas[1]);

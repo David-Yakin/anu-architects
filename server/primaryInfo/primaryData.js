@@ -3,6 +3,7 @@ const { Project } = require('../models/project');
 const { Resume } = require('../models/resume');
 const { User } = require('../models/user');
 const { Qna } = require('../models/qna');
+const bcrypt = require('bcrypt');
 
 async function primaryProjects({ 
     name, year, size, category, description, country, city, cardUrl, cardAlt, urlPamorama, altPamorama, urlBefore, altBefore, desBefore, urlSketch, altSketch, desSketch, urlImaging, altImaging, desImaging, urlConstraction, altConstraction, desConstraction, urlGallery, altGallery, user_id
@@ -31,6 +32,9 @@ let user = new User({
     userID, name, lastName, email, phone,
     adress: { country, city, street, houseNumber , zip, }, password, admin, isBloger, isProjectManager
 })
+const salt = await bcrypt.genSalt(12);
+user.password = await bcrypt.hash(user.password, salt);
+
 await user.save(); 
 }
 async function primaryBlogs({ 
