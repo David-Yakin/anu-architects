@@ -248,11 +248,11 @@ const data ={
     users: [
         {
             userID: "000000000",
-            name: "user",
+            firstName: "user",
             lastName: "user", 
             email: "user@gmail.com",
             phone: "0507244442",
-            adress: {
+            address: {
                 country: "ישראל",
                 city: "תל אביב",
                 street: "הבלונים",
@@ -260,33 +260,35 @@ const data ={
                 zip: "6766339",
               },
             password: "$2b$10$wtmDgFgnTq7cmEn.yGjGXeme34WT91B7RDRPWgOb4Q9KFguCMaiLy",
-            admin: false,
+            isAdmin: false,
             isBloger:false,
+            projects:[]
         },
         {
             userID: "000000001",
-            name: "admin",
+            firstName: "admin",
             lastName: "admin", 
             email: "admin@gmail.com",
             phone: "0507233332",
-            adress: {
+            address: {
                 country: "ישראל",
                 city: "תל אביב",
                 street: "הבלונים",
                 houseNumber : "25",
                 zip: "6766339",
               },
-            password: "$2b$10$wtmDgFgnTq7cmEn.yGjGXeme34WT91B7RDRPWgOb4Q9KFguCMaiLy",
-            admin: true,
+            password: "12345678",
+            isAdmin: true,
             isBloger:true,
+            projects:[]
         },
         {
             userID: "036449866",
-            name: "דוד",
+            firstName: "דוד",
             lastName: "יכין", 
             email: "david.yakin@gmail.com",
             phone: "050-7233332",
-            adress: {
+            address: {
                 country: "ישראל",
                 city: "תל אביב",
                 street: "הבלונים",
@@ -294,8 +296,9 @@ const data ={
                 zip: "6766340",
               },
             password: "Sb9876dy@",
-            admin: true,
+            isAdmin: true,
             isBloger:true,
+            projects:[]
         },
     ],
     qnas:[

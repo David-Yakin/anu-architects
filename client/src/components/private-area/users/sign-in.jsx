@@ -1,8 +1,8 @@
 import React from 'react';
 import Joi from "joi-browser";
-import Form from '../common/form';
+import Form from '../../common/form';
 import { Redirect } from "react-router-dom";
-import { login, getCurrentUser } from "../../services/userService";
+import { login, getCurrentUser } from "../../../services/userService";
 import { Link } from 'react-router-dom';
 
 class Signin extends Form {
@@ -23,8 +23,8 @@ class Signin extends Form {
         try {
           await login(email,password);
           let user = getCurrentUser();
-          if(user && user.admin) return window.location = "/private-area/users" ;
-          if(user && !user.admin && user.isBloger) return window.location = "/private-area/blogs-search-page" ;
+          if(user && user.isAdmin) return window.location = "/private-area/users" ;
+          if(user && !user.isAdmin && user.isBloger) return window.location = "/private-area/blogs-search-page" ;
           window.location = '/private-area/my-projects';
           
         }catch(ex){
@@ -36,7 +36,7 @@ class Signin extends Form {
 
     render() { 
         let user = getCurrentUser();
-        if(user && user.admin === true) return <Redirect to="/private-area/users" />
+        if(user && user.isAdmin === true) return <Redirect to="/private-area/users" />
         if( user) return <Redirect to="/private-area/my-projects" />
 
         return ( 

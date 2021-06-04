@@ -26,11 +26,11 @@ async function primaryQnas({ answer, question, open }){
     await qna.save(); 
 }
 
-async function primaryUsers({ userID, name, lastName, email, phone,
-    adress: { country, city, street, houseNumber , zip, }, password, admin, isBloger, isProjectManager}){
+async function primaryUsers({ userID, firstName, lastName, email, phone,
+    address: { country, city, street, houseNumber , zip, }, password, isAdmin, isBloger}){
 let user = new User({
-    userID, name, lastName, email, phone,
-    adress: { country, city, street, houseNumber , zip, }, password, admin, isBloger, isProjectManager
+    userID, firstName, lastName, email, phone,
+    address: { country, city, street, houseNumber , zip, }, password, isAdmin, isBloger
 })
 const salt = await bcrypt.genSalt(12);
 user.password = await bcrypt.hash(user.password, salt);

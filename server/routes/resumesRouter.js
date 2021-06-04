@@ -59,7 +59,7 @@ const upload = multer({
 });
 
 router.post('/', upload.array("images", 20), auth, async (req, res) => {
-  if(req.user && req.user.admin === true){
+  if(req.user && req.user.isAdmin === true){
     const firstName = req.body.firstName
     const lastName = req.body.lastName
     const NameLowerCase = firstName.toLowerCase() + "-" + lastName.toLowerCase()
@@ -90,7 +90,7 @@ router.post('/', upload.array("images", 20), auth, async (req, res) => {
 
 // עדכון קורות חיים עם תמונה
 router.put('/:id', uploadFromEditFile.array("images", 20), auth, async (req, res) => {
-  if(req.user && req.user.admin === true){
+  if(req.user && req.user.isAdmin === true){
     const firstName = req.body.firstName
     const lastName = req.body.lastName
     const NameLowerCase = firstName.toLowerCase() + "-" + lastName.toLowerCase()
@@ -121,7 +121,7 @@ router.put('/:id', uploadFromEditFile.array("images", 20), auth, async (req, res
 });
 
 router.put('/private-area/edit-resume-card/:id', auth, async (req, res) => {
-  if(req.user && req.user.admin === true){
+  if(req.user && req.user.isAdmin === true){
     const { error } = validateResume(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     
@@ -134,7 +134,7 @@ router.put('/private-area/edit-resume-card/:id', auth, async (req, res) => {
 });
   
   router.delete('/:id', auth, async (req, res) => {
-    if(req.user.admin === true){
+    if(req.user.isAdmin === true){
       try{
         let resume = await Resume.findOne({_id: req.params.id})
         if (!resume) return res.status(404).send("איש הצוות לא נמצא");

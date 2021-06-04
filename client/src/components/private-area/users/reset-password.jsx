@@ -1,10 +1,10 @@
 import React from 'react';
 import Joi from "joi-browser";
-import Form from '../common/form';
+import Form from '../../common/form';
 import { Redirect } from "react-router-dom";
-import StrenthMeter from '../common/strength-meter/strength-meter';
+import StrenthMeter from '../../common/strength-meter/strength-meter';
 import { Link } from 'react-router-dom';
-import { resetPassword, getCurrentUser } from '../../services/userService';
+import { resetPassword, getCurrentUser } from '../../../services/userService';
 
 class ResetPassword extends Form {
     state = { 
@@ -34,8 +34,8 @@ class ResetPassword extends Form {
             await resetPassword(userId, token, data)
 
             let user = getCurrentUser();
-            if(user && user.admin) return window.location = "/private-area/users" ;
-            if(user && !user.admin && user.isBloger) return window.location = "/private-area/blogs-search-page" ;
+            if(user && user.isAdmin) return window.location = "/private-area/users" ;
+            if(user && !user.isAdmin && user.isBloger) return window.location = "/private-area/blogs-search-page" ;
             return window.location = '/private-area/my-projects';
         }catch(ex){
          if(ex.response && ex.response.status === 400){
@@ -46,7 +46,7 @@ class ResetPassword extends Form {
 
     render() { 
         let user = getCurrentUser();
-        if(user && user.admin === true) return <Redirect to="/private-area/users" />
+        if(user && user.isAdmin === true) return <Redirect to="/private-area/users" />
         if( user) return <Redirect to="/private-area/my-projects" />
 
         return ( 

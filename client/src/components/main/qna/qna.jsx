@@ -54,7 +54,9 @@ render(){
                     subTitle='יש לכם שאלה? כאן תוכלו לקבל תשובות על מגוון שאלות נפוצות שהופנו לאנו אדריכלים'/>
 
                     <div className="accordion mb-4">
-                        {qnas.map( (item, index) => <QnaCard key={index} toggleQna={this.toggleQna} 
+                        {qnas.map( (item, index) => <QnaCard 
+                        key={index} 
+                        toggleQna={this.toggleQna} 
                         item={item} 
                         index={index}
                         handleQnaDelete={this.handleQnaDelete}/> )}

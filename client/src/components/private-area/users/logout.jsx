@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { logout } from '../../services/userService'
+import { logout } from '../../../services/userService'
 
 class Logout extends Component {
     

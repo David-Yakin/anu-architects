@@ -25,7 +25,9 @@ class Main extends Component {
         return ( 
             <div>
                 <div className="container position-relative px-0">
-                    <nav className="nav-main d-none d-xl-flex flex-row-reverse mx-0">
+                    <div className="nav-main">
+
+                    <nav className="d-none d-xl-flex flex-row-reverse justify-content-between mx-0">
                         <Link className='nav-a' to="recent-projects" smooth={true} duration={1000}> פרויקטים  אחרונים</Link>
                         <Link className='nav-a' to="about" smooth={true} duration={1000}>אודות</Link>
                         <Link className='nav-a' to="theProcess" smooth={true} duration={1000}>התהליך</Link>
@@ -34,6 +36,8 @@ class Main extends Component {
                         <Link className='nav-a' to="faq" smooth={true} duration={1000}>שאלות ותשובות</Link>
                         <Link className='nav-a' to="contact" smooth={true} duration={1000}>צור קשר</Link>
                     </nav>
+                    
+                    </div>
                 </div>
   
                 <div className='position-relative'>

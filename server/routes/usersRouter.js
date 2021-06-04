@@ -13,35 +13,35 @@ const { validateMail } = require('../models/mail');
 router.post('/', async (req, res) => {
   const matches = req.body.password.match(/[^A-Za-z0-9!@#$%^&*-]/g) || []
   if(matches.length !== 0) return res.status(400).send('Invalide Password!')
-
-  const { error } = validateUser(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
+  
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send('המשתמש קיים');
-
-
-  user = await new User(
-    {
+  
+  user = {
       userID: req.body.userID,
-      name: req.body.name,
+      firstName: req.body.firstName,
       lastName:req.body.lastName,
       email:req.body.email,
       phone: req.body.phone,
-      adress: {
-        country: req.body.adress.country ,
-        city: req.body.adress.city ,
-        street: req.body.adress.street ,
-        houseNumber : req.body.adress.houseNumber ,
-        zip: req.body.adress.zip ,
+      address: {
+        country: req.body.address.country ,
+        city: req.body.address.city ,
+        street: req.body.address.street ,
+        houseNumber : req.body.address.houseNumber ,
+        zip: req.body.address.zip ,
       },
       password: req.body.password
-    });
+    };
+    
+    const { error } = validateUser(user);
+    if (error) return res.status(400).send(error.details[0].message);
+    
+    const salt = await bcrypt.genSalt(12);
+    user.password = await bcrypt.hash(user.password, salt);
 
-  const salt = await bcrypt.genSalt(12);
-  user.password = await bcrypt.hash(user.password, salt);
-  await user.save();
-  return res.send(_.pick(user, ['name', 'email']));
+    user = await new User(user)
+    await user.save();
+    return res.send(_.pick(user, ['name', 'email']));
 });
 
 router.get('/user/:id', auth, async (req, res) => {
@@ -56,49 +56,43 @@ router.get('/private-area/users', async (req, res) => {
 });
 
 router.delete('/:id', auth, async (req, res) => {
-  const user = await User.findOneAndRemove({ _id: req.params.id });
+  if(req.user && req.user.isAdmin === true){
+  user = await User.findOneAndRemove({ _id: req.params.id });
   if (!user) return res.status(404).send('המשתמש לא נמצא במאגר המידע');
   res.send(user);
+  }
+  return res.send('you are not authorized to delete users')
 });
 
 router.patch('/:id', auth, async (req, res) => {
-  let user = await User.findById(req.params.id);
+  if(req.user && req.user.isAdmin === true){
+  user = await User.findById(req.params.id);
   if(!user) return res.status(404).send('לא נמצא המשתמש');
   let status = user.isBloger;
   let changeStatus = !status;
   user = await User.findOneAndUpdate( {_id : req.params.id}, { isBloger : changeStatus});
   user = await user.save();
   res.send(user);
-});
-
-router.patch('/isProjectManager/:id', auth, async (req, res) => {
-  let user = await User.findById(req.params.id);
-  if(!user) return res.status(404).send('לא נמצא המשתמש');
-  let status = user.isProjectManager;
-  let changeStatus = !status;
-  user = await User.findOneAndUpdate( {_id : req.params.id}, { isProjectManager : changeStatus});
-  user = await user.save();
-  res.send(user);
+  }
+  return res.send('you are not authorized to edit users')
 });
 
 router.patch('/user/:id', auth, async (req, res) => {
   let user = await User.findById(req.params.id);
   if(!user) return res.status(404).send('לא נמצא המשתמש');
-
-  user = await User.findOneAndUpdate( {_id : req.params.id}, {
-     phone : req.body.phone,
-     name: req.body.name,
-     lastName: req.body.lastName,
-     adress: {
-      country: req.body.country ,
-      city: req.body.city ,
-      street: req.body.street ,
-      houseNumber : req.body.houseNumber ,
-      zip: req.body.zip ,
-    },
-    });
-  user = await user.save();
-  res.send(user);
+  
+    user = await User.findOneAndUpdate( {_id : req.params.id}, {
+       phone : req.body.phone,
+       address: {
+        country: req.body.country ,
+        city: req.body.city ,
+        street: req.body.street ,
+        houseNumber : req.body.houseNumber ,
+        zip: req.body.zip ,
+      },
+      });
+    user = await user.save();
+    res.send(user);
 });
 
 router.post('/forgot-password', async (req, res) => {

@@ -1,6 +1,6 @@
 import React from "react";
 
-const InputFile = ({name, error, text='בחר קובץ', accept = 'image/*', className='form-control m-0 text-rtl', divClass="mb-2", value='', disabled, ...rest}) => {
+const InputFile = ({name, error, text='בחר קובץ', accept = 'image/*', divClass="mb-2", className='form-control m-0 text-rtl btn btn-secondary border border-dark', value='', disabled, ...rest}) => {
   return (
     <div className={divClass}>
         <input {...rest} 

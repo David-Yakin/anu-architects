@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Titles from '../common/titles';
+import Titles from '../../common/titles';
 // import ProjectCard from '../main/projects/project-card';
-import { getProjects } from '../../services/projectService';
+import { getProjects } from '../../../services/projectService';
 
 class MyProjects extends Component {
     state = { 

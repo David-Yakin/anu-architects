@@ -241,7 +241,7 @@ router.get('/blog/:id', async (req, res) => {
 });
 
 router.get('/blogs', auth, async (req, res) => {
-  if( !req.user.admin ) return res.status(401).send("Access Denied");
+  if( !req.user.isAdmin ) return res.status(401).send("Access Denied");
   const blogs = await Blog.find({ user_id: req.user._id });
   res.send(blogs);
 });

@@ -25,12 +25,15 @@ class NavBar extends Component {
         return ( 
 
             <header>
-                <Link to="logo" className={ scrolled === true ? "up fa fa-chevron-up" : ''} smooth={true} duration={1000}> </Link>
+                <Link to="logo" 
+                      className={ scrolled === true ? "up fa fa-chevron-up" : ''} 
+                      smooth={true} 
+                      duration={1000}> </Link>
 
             <div className="container">
                 <div className="row justify-content-between">
     
-                    <div className="logo center">
+                    <div className="logo center p-0">
                         <NavLink id='logo' to="/"><img src={`${url}/images/logo/ANU_white.png`} alt="logo"/></NavLink>
                     </div>
 

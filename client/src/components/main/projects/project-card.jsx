@@ -29,7 +29,7 @@ const ProjectCard = ({project, width, handleProjectDelete}) =>{
 
                     <div className="col-2 pt-1 px-0">
                       
-                      {user && user.admin && 
+                      {user && user.isAdmin && 
                       <span>
                         <Link to={`/private-area/edit-project-card/${project._id}`} 
                               className='far fa-edit text-dark text-decoration-none'></Link> 

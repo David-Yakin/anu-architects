@@ -1,6 +1,6 @@
 import React from "react";
 
-const Input = ({ name, error,disabled, placeholder, className='form-control m-0 text-rtl', divClass="mb-2", 
+const Input = ({ name, error, disabled, placeholder, divClass="mb-2", className='form-control m-0 text-rtl', 
      ...rest 
     }) => {
   return (

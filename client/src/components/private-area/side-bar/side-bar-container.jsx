@@ -140,13 +140,13 @@ class SideBar extends Component {
                 <div className="d-flex justify-content-end ">
                     <div className="accordion col-1 col-xl-2 side-bar position-fixed text-rtl">
 
-                        { this.user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={0} item={sideItemes[0]} index={0}/> }
-                        { this.user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={1} item={sideItemes[1]} index={1}/> }
-                        { this.user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={2} item={sideItemes[2]} index={2}/> }
-                        { this.user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={3} item={sideItemes[3]} index={3}/> }
+                        { this.user.isAdmin && <SideRow toggleSideNav={this.toggleSideNav} key={0} item={sideItemes[0]} index={0}/> }
+                        { this.user.isAdmin && <SideRow toggleSideNav={this.toggleSideNav} key={1} item={sideItemes[1]} index={1}/> }
+                        { this.user.isAdmin && <SideRow toggleSideNav={this.toggleSideNav} key={2} item={sideItemes[2]} index={2}/> }
+                        { this.user.isAdmin && <SideRow toggleSideNav={this.toggleSideNav} key={3} item={sideItemes[3]} index={3}/> }
                         { this.user.isBloger && <SideRow toggleSideNav={this.toggleSideNav} key={4} item={sideItemes[4]} index={4}/> }
-                        { this.user && !this.user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={6} item={sideItemes[6]} index={6}/> }
-                        { this.user && !this.user.admin && <SideRow toggleSideNav={this.toggleSideNav} key={5} item={sideItemes[5]} index={5}/> }
+                        { this.user && !this.user.isAdmin && <SideRow toggleSideNav={this.toggleSideNav} key={6} item={sideItemes[6]} index={6}/> }
+                        { this.user && !this.user.isAdmin && <SideRow toggleSideNav={this.toggleSideNav} key={5} item={sideItemes[5]} index={5}/> }
 
                     </div>
                 </div>

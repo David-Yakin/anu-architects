@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import SearchInput from '../common/search-input';
-import Titles from '../common/titles';
-import { getUsers, deleteUser, changUserStatus } from '../../services/userService';
-import { getDate } from '../../services/timeService';
+import SearchInput from '../../common/search-input';
+import Titles from '../../common/titles';
+import { getUsers, deleteUser, changUserStatus } from '../../../services/userService';
+// import { getDate } from '../../services/timeService';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 class Users extends Component {
     state = { 
@@ -86,11 +87,10 @@ class Users extends Component {
                     <th scope="col">מס'</th>
                     <th scope="col">שם פרטי</th>
                     <th scope="col">שם משפחה</th>
-                    <th scope="col">ת.ז</th>
                     <th scope="col">כתובת מייל</th>
                     <th scope="col">טלפון</th>
                     <th scope="col">בלוגר</th>
-                    <th scope="col">נוצר בתאריך</th>
+                    {/* <th scope="col">העלה קבצים</th> */}
                     <th scope="col">מחק</th>
                   </tr>
                 </thead>
@@ -98,20 +98,19 @@ class Users extends Component {
                 <tbody>
                    { users.map( (user, index) =>  ( 
                     <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{user.name}</td>
-                        <td>{user.lastName}</td>
-                        <td>{user.userID}</td>
-                        <td>{user.email}</td>
-                        <td>{user.phone}</td>
+                        <td><Link className='text-decoration-none text-dark' to={`/private-area/user/${user._id}`}>{index + 1}</Link></td>
+                        <td><Link className='text-decoration-none text-dark' to={`/private-area/user/${user._id}`}>{user.firstName}</Link></td>
+                        <td><Link className='text-decoration-none text-dark' to={`/private-area/user/${user._id}`}>{user.lastName}</Link></td>
+                        <td><Link className='text-decoration-none text-dark' to={`/private-area/user/${user._id}`}>{user.email}</Link></td>
+                        <td><Link className='text-decoration-none text-dark' to={`/private-area/user/${user._id}`}>{user.phone}</Link></td>
                         <td> <button className={ user.isBloger ? "btn btn-danger" : "btn btn-outline-dark"}
-                                     onClick={ () => this.changeStatus(user._id) }disabled={user.admin ? true : false}>
+                                     onClick={ () => this.changeStatus(user._id) }disabled={user.isAdmin ? true : false}>
                             {user.isBloger ? "חיובי" : "שלילי"}
                             </button> 
                         </td>
-                        <td>{getDate(user.createdAt)}</td>
+                        {/* <td><Link to={`/private-area/${user._id}`} className='btn btn-info'>העלה  &#11165;</Link></td> */}
                         <td>
-                            {!user.admin && <a href="/" onClick={ e => { this.handleUserDelete(user._id, e) } } className='fas fa-user-slash text-dark text-decoration-none'> </a> }
+                            {!user.isAdmin && <a href="/" onClick={ e => { this.handleUserDelete(user._id, e) } } className='fas fa-user-slash text-dark text-decoration-none'> </a> }
                         </td>
                     </tr>
                     ) )}

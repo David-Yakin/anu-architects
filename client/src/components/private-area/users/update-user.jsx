@@ -1,16 +1,15 @@
 import React from 'react';
 import Joi from "joi-browser";
-import Form from '../common/form';
+import Form from '../../common/form';
 import { Redirect } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { getCurrentUser, getUser, editUser } from "../../services/userService";
+import { getCurrentUser, getUser, editUser } from "../../../services/userService";
 
 class UpdateUser extends Form {
     state = { 
         data: { 
-            name:'', 
+            firstName:'', 
             lastName: '',
-            email: '', 
             phone:'',
             country: '',
             city: '',
@@ -23,7 +22,7 @@ class UpdateUser extends Form {
 
     schema = { 
         _id: Joi.string(),
-        name: Joi.string().required().min(2).max(255).label('name'),
+        firstName: Joi.string().required().min(2).max(255).label('name'),
         lastName: Joi.string().required().min(2).max(255).label('last name'),
         phone: Joi.string().required().min(9).max(14).label('phone'),
         country: Joi.string().required().min(2).max(255).label('country'),
@@ -39,17 +38,14 @@ class UpdateUser extends Form {
         this.setState({ data: this.mapToNewModel(data)});
      }
 
-    mapToNewModel({ _id, name, lastName, phone, adress }){
+    mapToNewModel({ _id, firstName, lastName, phone, address }){
        return {
-           _id: _id,
-           name:name, 
-           lastName: lastName,
-           phone:phone,
-           country: adress.country,
-           city: adress.city,
-           street: adress.street,
-           houseNumber: adress.houseNumber,
-           zip: adress.zip
+           _id, firstName, lastName, phone,
+           country: address.country,
+           city: address.city,
+           street: address.street,
+           houseNumber: address.houseNumber,
+           zip: address.zip
        };
     }
 
@@ -62,7 +58,7 @@ class UpdateUser extends Form {
 
     render() { 
         let user = getCurrentUser();
-        if(user && user.admin) return <Redirect to="/private-area/users" />
+        if(user && user.isAdmin) return <Redirect to="/private-area/users" />
        
         return ( 
             <div className="container-fluid sign-up">
@@ -74,7 +70,7 @@ class UpdateUser extends Form {
 
                         <h1 className="h3 mb-3 font-weight-normal text-dark text-center">עדכון פרטים</h1>
 
-                        { this.renderInput('name', 'שם פרטי', true ) }
+                        { this.renderInput('firstName', 'שם פרטי', true ) }
                         { this.renderInput('lastName', 'שם משפחה', true ) }
                         { this.renderInput('phone','טלפון',false, 'phone') }
                         { this.renderInput('country','ארץ') }

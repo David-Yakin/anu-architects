@@ -39,6 +39,7 @@ header {
         .row {
             .logo {
                 border-radius: 5px;
+                padding: 0;
 
                 img {
                     height: 50px;
@@ -76,21 +77,24 @@ header {
 }
 
 .nav-main{
-       position: absolute;
-       top: 10px;
-       right: 0;
-       z-index: 5;
+    //    position: absolute;
+    //    top: 10px;
+    //    right: 0;
+    //    z-index: 5;
     .nav-a{
         text-decoration: none;
         color: $darkBlue;
         font-size: $fontSize2;
         line-height: 2;
-        padding: 0 18px;
+        padding: 0 12px;
         margin: 1px 0;
+        border-radius: 5px;
 
         &:hover {                  
             cursor: pointer;
-            font-weight: bold;
+            // font-weight: bold;
+            color: white;
+            background-color: $darkBlue;
         }
     }
  

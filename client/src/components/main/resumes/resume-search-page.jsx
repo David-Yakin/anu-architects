@@ -76,7 +76,7 @@ class TheTeam extends Component {
                                 </h5>
                                 <p className="card-text text-right">{resume.subTitle}</p>
                             </Link>
-                            {user && user.admin && 
+                            {user && user.isAdmin && 
                                     <span> <Link to={`/private-area/edit-resume-card/${resume._id}`} className='far fa-edit text-dark text-decoration-none'></Link> <span> | </span>
                         <a href="/" onClick={ (e) => { this.handleResumeDelete(resume._id, e) } } className='fas fa-trash-alt text-dark text-decoration-none'> </a>  
                       </span>

@@ -1,8 +1,8 @@
 import React from 'react';
 import Joi from "joi-browser";
-import Form from '../common/form';
+import Form from '../../common/form';
 import { Redirect } from "react-router-dom";
-import { getCurrentUser, forgotPassword } from "../../services/userService";
+import { getCurrentUser, forgotPassword } from "../../../services/userService";
 import { toast } from 'react-toastify';
 
 class ForgotPassword extends Form {
@@ -29,7 +29,7 @@ class ForgotPassword extends Form {
 
     render() { 
         let user = getCurrentUser();
-        if(user && user.admin === true) return <Redirect to="/private-area/users" />
+        if(user && user.isAdmin === true) return <Redirect to="/private-area/users" />
         if( user) return <Redirect to="/private-area/my-projects" />
 
         return ( 

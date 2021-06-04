@@ -19,7 +19,7 @@ class Form extends Component {
     );
   };
 
-  renderInput(name, placeholder, disabled = false, type = "text", className, divClass) {
+  renderInput(name, placeholder, disabled = false, type = "text", divClass, className) {
     const { data, errors } = this.state;
     return (
       <Input
@@ -45,7 +45,7 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
-  renderFileInput(name, text, disabled = false, accept,  className, divClass) {
+  renderFileInput(name, text, disabled = false, accept, divClass, className ) {
     const { data, errors } = this.state;
     return (
       <InputFile

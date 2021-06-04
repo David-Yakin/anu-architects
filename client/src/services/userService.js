@@ -6,8 +6,8 @@ export function getJwt(){
 return localStorage.getItem("token") ;
 }
 
-export async function createUser({userID, name, lastName, email, phone, country, city, street, houseNumber, zip, password }) {
-  const obj = { userID, name, lastName, email, phone, adress : { country, city, street, houseNumber, zip }, password}
+export async function createUser({userID, firstName, lastName, email, phone, country, city, street, houseNumber, zip, password }) {
+  const obj = { userID, firstName, lastName, email, phone, address : { country, city, street, houseNumber, zip }, password}
   await http.post(`${apiUrl}/users`, obj); 
 }
 
