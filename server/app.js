@@ -1,38 +1,53 @@
-const auth = require('./routes/authRouter');
-const users = require('./routes/usersRouter');
-const projects = require('./routes/projectsRouter');
-const blogs = require('./routes/blogsRouter');
-const resumes = require('./routes/resumesRouter');
-const qnas = require('./routes/qnasRouter');
-const express = require('express');
+const auth = require("./routes/authRouter");
+const users = require("./routes/usersRouter");
+const projects = require("./routes/projectsRouter");
+const blogs = require("./routes/blogsRouter");
+const resumes = require("./routes/resumesRouter");
+const qnas = require("./routes/qnasRouter");
+const express = require("express");
 const app = express();
-const cors = require('cors'); // להוריד כשמעלים לשרת אמיתי!!!
-const mongoose = require('mongoose');
-const morgan = require('morgan');
-const { primaryProjects, primaryResumes, primaryBlogs, primaryUsers, primaryQnas } = require('./primaryInfo/primaryData');
-const {data} = require('./primaryInfo/data');
+const cors = require("cors"); // להוריד כשמעלים לשרת אמיתי!!!
+const mongoose = require("mongoose");
+const morgan = require("morgan");
+const {
+  primaryProjects,
+  primaryResumes,
+  primaryBlogs,
+  primaryUsers,
+  primaryQnas,
+} = require("./primaryInfo/primaryData");
+const { data } = require("./primaryInfo/data");
+const chalk = require("chalk");
 
-mongoose.connect('mongodb://localhost/anu-architects', {
-  useNewUrlParser:true,
-  useUnifiedTopology:true,
-}).then(()=> console.log('connected to MongoDb!'))
-.catch(error => console.error(`could not connect to mongoDb: ${error}`));
+mongoose
+  .connect("mongodb://localhost/anu-architects", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
+  .then(() => console.log("connected to MongoDb!"))
+  .then(() =>
+    console.log(
+      chalk.yellowBright("*------------------ Errors -------------------*")
+    )
+  )
+  .catch(error => console.error(`could not connect to mongoDb: ${error}`));
 
 // mongoose.set('useFindAndModify', false);
 
-app.use(cors());// להוריד כשמעלים לשרת אמיתי!!!
+app.use(cors()); // להוריד כשמעלים לשרת אמיתי!!!
 app.use(express.json());
 
-app.use(express.static('./public'));
+app.use(express.static("./public"));
 
-app.use('/api/users', users);
-app.use('/api/auth', auth);
-app.use('/api/projects', projects);
-app.use('/api/blogs', blogs);
-app.use('/api/resumes', resumes);
-app.use('/api/qnas', qnas);
+app.use("/api/users", users);
+app.use("/api/auth", auth);
+app.use("/api/projects", projects);
+app.use("/api/blogs", blogs);
+app.use("/api/resumes", resumes);
+app.use("/api/qnas", qnas);
 
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 // primaryProjects(data.projects[0]);
 // primaryProjects(data.projects[1]);
 // primaryProjects(data.projects[2]);
@@ -54,4 +69,6 @@ app.use(morgan('dev'));
 // primaryQnas(data.qnas[1]);
 
 const PORT = 8181;
-app.listen(PORT, () => console.log(`server run on: http://:localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(chalk.green(`server run on: http://:localhost:${PORT}`))
+);
