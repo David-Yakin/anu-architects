@@ -17,7 +17,13 @@ const string1024R = {
 const string1024 = { type: String, minlength: 2, maxlength: 1024 };
 
 const schema = new mongoose.Schema({
-  name: string256R,
+  name: {
+    type: String,
+    required: true,
+    minlength: 2,
+    maxlength: 256,
+    unique: true,
+  },
   year: { type: String, required: true, minlength: 4, maxlength: 4 },
   size: { type: String, required: true, minlength: 1, maxlength: 256 },
   category: string256,

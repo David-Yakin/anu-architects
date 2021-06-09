@@ -116,46 +116,58 @@ class CreateProject extends Form {
       "name",
       this.createName(street.trim(), houseNumber.trim(), city.trim(), year)
     );
+    formData.append("country", this.checkSpaces(country.trim()));
+    formData.append("city", this.checkSpaces(city.trim()));
+    formData.append("houseNumber", houseNumber.trim());
+    formData.append("street", street.trim());
     formData.append("year", year.trim());
     formData.append("size", size.trim());
     formData.append("category", category.trim());
-    formData.append("country", this.checkSpaces(country.trim()));
-    formData.append("city", this.checkSpaces(city.trim()));
-    formData.append("street", street.trim());
-    formData.append("houseNumber", houseNumber.trim());
-    formData.append("zip", zip.trim());
-    formData.append("description", description.trim());
-    formData.append("contract", contract);
-    formData.append("licensing", licensing);
 
-    formData.append("expertFile", expertFile);
-    formData.append("expertFirstName", expertFirstName.trim());
-    formData.append("expertLastName", expertLastName.trim());
-    formData.append("expertPhone", expertPhone.trim());
+    /************************ רשות ***********************/
+    const checkInput = (text, input) =>
+      input ? formData.append(text, input.trim()) : null;
 
-    formData.append("cardUrl", cardUrl);
-    formData.append("cardAlt", cardAlt.trim());
-    formData.append("urlPamorama", urlPamorama.trim());
-    formData.append("altPamorama", altPamorama.trim());
-    formData.append("urlBefore", urlBefore.trim());
-    formData.append("altBefore", altBefore.trim());
-    formData.append("desBefore", desBefore.trim());
-    formData.append("urlConstraction", urlConstraction.trim());
-    formData.append("altConstraction", altConstraction.trim());
-    formData.append("desConstraction", desConstraction.trim());
+    checkInput("zip", zip);
+    checkInput("description", description);
 
-    formData.append("urlSketch", urlSketch.trim());
-    formData.append("altSketch", altSketch.trim());
-    formData.append("desSketch", desSketch.trim());
-    formData.append("urlImaging", urlImaging.trim());
-    formData.append("altImaging", altImaging.trim());
-    formData.append("desImaging", desImaging.trim());
-    formData.append("urlPlans", urlPlans.trim());
-    formData.append("altPlans", altPlans.trim());
-    formData.append("referenceUrl", referenceUrl.trim());
-    formData.append("referenceAlt", referenceAlt.trim());
+    checkInput("contract", contract);
+    checkInput("licensing", licensing);
 
-    formData.append("urlGallery", urlGallery.trim());
+    checkInput("expertFirstName", expertFirstName);
+    checkInput("expertLastName", expertLastName);
+    checkInput("expertPhone", expertPhone);
+    checkInput("expertFile", expertFile);
+
+    checkInput("cardUrl", cardUrl);
+    checkInput("cardAlt", cardAlt);
+
+    checkInput("urlPamorama", urlPamorama);
+    checkInput("altPamorama", altPamorama);
+
+    checkInput("urlBefore", urlBefore);
+    checkInput("altBefore", altBefore);
+    checkInput("desBefore", desBefore);
+
+    checkInput("urlConstraction", urlConstraction);
+    checkInput("altConstraction", altConstraction);
+    checkInput("desConstraction", desConstraction);
+
+    checkInput("urlSketch", urlSketch);
+    checkInput("altSketch", altSketch);
+    checkInput("desSketch", desSketch);
+
+    checkInput("urlImaging", urlImaging);
+    checkInput("altImaging", altImaging);
+    checkInput("desImaging", desImaging);
+
+    checkInput("referenceUrl", referenceUrl);
+    checkInput("referenceAlt", referenceAlt);
+
+    checkInput("urlPlans", urlPlans);
+    checkInput("altPlans", altPlans);
+
+    checkInput("urlGallery", urlGallery);
 
     for (let x = 0; x < images.length; x++) {
       for (let i of images[x]) {
@@ -203,10 +215,9 @@ class CreateProject extends Form {
           data.city.trim(),
           data.year
         );
-
         await createProject(data);
         await toast("הפרויקט נוצר");
-        return this.props.history.replace("/private-area/projects-search-page");
+        return this.props.history.replace("/private-area/users");
       } catch (error) {
         toast("ארעה שגיאה - הפרויקט לא נשמר");
         return this.setState({
@@ -218,7 +229,7 @@ class CreateProject extends Form {
     try {
       await createProjectWithPics(formData);
       toast("הפרויקט נוצר");
-      return this.props.history.replace("/private-area/projects-search-page");
+      return this.props.history.replace("/private-area/users");
     } catch (error) {
       toast("ארעה שגיאה - הפרויקט לא נשמר");
       this.setState({
@@ -314,13 +325,20 @@ class CreateProject extends Form {
               <hr />
 
               <h3 className="h3Title text-right">חוזים</h3>
-              {this.renderFileInput("contract", "העלה קובץ של החוזה")}
+              {this.renderFileInput(
+                "contract",
+                "העלה קובץ PDF של החוזה",
+                false,
+                ".pdf"
+              )}
               <hr />
 
               <h3 className="h3Title text-right">רישוי</h3>
               {this.renderFileInput(
                 "licensing",
-                "העלה קבצים הקשורים לרישוי הפרויקט"
+                "העלה קבצי PDF הקשורים לרישוי הפרויקט ",
+                false,
+                ".pdf"
               )}
               <hr />
 
@@ -345,14 +363,14 @@ class CreateProject extends Form {
                   "טלפון",
                   false,
                   "text",
-                  "col-4 mb-2 px-2"
+                  "col-3 mb-2 px-2"
                 )}
                 {this.renderFileInput(
                   "expertFile",
-                  "העלה קובץ",
+                  "העלה קובץ PDF",
                   false,
-                  "text",
-                  "col-2 mb-2 pl-0"
+                  ".pdf",
+                  "col-3 mb-2 pl-0"
                 )}
               </div>
               <hr />

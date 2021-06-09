@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import Titles from "../../common/titles";
 import ProjectCard from "./project-card";
 import SearchInput from "../../common/search-input";
-import { getProjects, deleteProject } from "../../../services/projectService";
+import {
+  getProjects,
+  deleteProject,
+  changePublishStatus,
+} from "../../../services/projectService";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { getUsers } from "../../../services/userService";
@@ -63,6 +67,11 @@ class Projects extends Component {
     });
   };
 
+  changProjectPublishStatus = async (projectId, e) => {
+    e.preventDefault();
+    await changePublishStatus(projectId);
+  };
+
   generateProject() {
     const { projects } = this.state;
     if (projects.length) {
@@ -74,6 +83,7 @@ class Projects extends Component {
               project={project}
               width={"card mb-3  col-12 col-md-6 col-lg-4 py-0 px-2 border-0"}
               handleProjectDelete={this.handleProjectDelete}
+              changProjectPublishStatus={this.changProjectPublishStatus}
             />
           ))}
         </div>

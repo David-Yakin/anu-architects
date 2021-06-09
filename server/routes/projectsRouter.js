@@ -90,13 +90,6 @@ router.post("/", auth, async (req, res) => {
             description: checkReq(req.body.desConstraction),
           },
         ],
-        constraction: [
-          {
-            url: checkUrl(req.body.urlConstraction),
-            alt: checkReq(req.body.altConstraction),
-            description: checkReq(req.body.desConstraction),
-          },
-        ],
         sketches: [
           {
             url: checkUrl(req.body.urlSketch),
@@ -158,7 +151,7 @@ router.post("/", auth, async (req, res) => {
 const storage = multer.diskStorage({
   destination: async (req, file, storegePath) => {
     const name = req.body.name;
-    const projectFind = await Project.findOne({ name, year });
+    const projectFind = await Project.findOne({ name });
     if (projectFind)
       return storegePath("פרויקט עם השם הזה כבר נמצא במאגר המידע");
     const nameLowerCase = name.toLowerCase();
@@ -205,7 +198,7 @@ const upload = multer({
   fileFilter,
 });
 
-router.post("/files", upload.array("images", 25), auth, async (req, res) => {
+router.post("/files", upload.array("images", 30), auth, async (req, res) => {
   if (req.user && req.user.isAdmin) {
     const { name } = req.body;
     const folder = name.toLowerCase();
@@ -217,9 +210,9 @@ router.post("/files", upload.array("images", 25), auth, async (req, res) => {
 
     const checkName = name => name.replace(/-/g, " ");
     const checkReq = reqItem => (reqItem ? reqItem : "לא מוגדר");
-    const checkUrl = url =>
-      url ? makeDir(folder, req.body[key]()) : "/images/logo/logo_black.png";
-    const checkPath = path => (path ? path.basename(path) : "לא מוגדר");
+    const checkUrl = (url, key) =>
+      url ? makeDir(folder, key) : "/images/logo/logo_black.png";
+    const checkPath = url => (url ? path.basename(url) : "לא מוגדר");
 
     let project = {
       name: checkName(req.body.name),
@@ -238,14 +231,14 @@ router.post("/files", upload.array("images", 25), auth, async (req, res) => {
         contracts: [
           {
             name: checkPath(req.body.contract),
-            url: checkUrl(req.body.contract),
+            url: checkUrl(req.body.contract, "contract"),
             remarks: "כאן ניתן לכתוב הערות",
           },
         ],
         licensing: [
           {
             name: checkPath(req.body.licensing),
-            url: checkUrl(req.body.licensing),
+            url: checkUrl(req.body.licensing, "licensing"),
             remarks: "כאן ניתן לכתוב הערות",
           },
         ],
@@ -257,7 +250,7 @@ router.post("/files", upload.array("images", 25), auth, async (req, res) => {
             files: [
               {
                 name: checkPath(req.body.expertFile),
-                url: checkUrl(req.body.expertFile),
+                url: checkUrl(req.body.expertFile, "expertFile"),
                 remarks: "כאן ניתן לכתוב הערות",
               },
             ],
@@ -266,37 +259,37 @@ router.post("/files", upload.array("images", 25), auth, async (req, res) => {
       },
       images: {
         card: {
-          url: checkUrl(req.body.cardUrl),
+          url: checkUrl(req.body.cardUrl, "cardUrl"),
           alt: checkReq(req.body.cardAlt),
         },
         panorama: {
-          url: checkUrl(req.body.urlPamorama),
+          url: checkUrl(req.body.urlPamorama, "urlPamorama"),
           alt: checkReq(req.body.altPamorama),
         },
         before: [
           {
-            url: checkUrl(req.body.urlBefore),
+            url: checkUrl(req.body.urlBefore, "urlBefore"),
             alt: checkReq(req.body.altBefore),
             description: checkReq(req.body.desBefore),
           },
         ],
         constraction: [
           {
-            url: checkUrl(req.body.urlConstraction),
+            url: checkUrl(req.body.urlConstraction, "urlConstraction"),
             alt: checkReq(req.body.altConstraction),
             description: checkReq(req.body.desConstraction),
           },
         ],
         constraction: [
           {
-            url: checkUrl(req.body.urlConstraction),
+            url: checkUrl(req.body.urlConstraction, "urlConstraction"),
             alt: checkReq(req.body.altConstraction),
             description: checkReq(req.body.desConstraction),
           },
         ],
         sketches: [
           {
-            url: checkUrl(req.body.urlSketch),
+            url: checkUrl(req.body.urlSketch, "urlSketch"),
             alt: checkReq(req.body.altSketch),
             description: checkReq(req.body.desSketch),
             remarks: "כאן ניתן לכתוב הערות",
@@ -304,7 +297,7 @@ router.post("/files", upload.array("images", 25), auth, async (req, res) => {
         ],
         imaging: [
           {
-            url: checkUrl(req.body.urlImaging),
+            url: checkUrl(req.body.urlImaging, "urlImaging"),
             alt: checkReq(req.body.altImaging),
             description: checkReq(req.body.desImaging),
             remarks: "כאן ניתן לכתוב הערות",
@@ -312,19 +305,19 @@ router.post("/files", upload.array("images", 25), auth, async (req, res) => {
         ],
         references: [
           {
-            url: checkUrl(req.body.referenceUrl),
+            url: checkUrl(req.body.referenceUrl, "referenceUrl"),
             alt: checkReq(req.body.referenceAlt),
             remarks: "כאן ניתן לכתוב הערות",
           },
         ],
         plans: [
           {
-            url: checkUrl(req.body.urlPlans),
+            url: checkUrl(req.body.urlPlans, "urlPlans"),
             alt: checkReq(req.body.altPlans),
             remarks: "כאן ניתן לכתוב הערות",
           },
         ],
-        gallery: [checkUrl(req.body.urlGallery)],
+        gallery: [checkUrl(req.body.urlGallery, "urlGallery")],
       },
       userID: req.body.userID,
     };
@@ -334,6 +327,7 @@ router.post("/files", upload.array("images", 25), auth, async (req, res) => {
 
     project = new Project(project);
     await project.save();
+
     user = await User.findOneAndUpdate(
       { _id: project.userID },
       {
@@ -348,59 +342,11 @@ router.post("/files", upload.array("images", 25), auth, async (req, res) => {
   return res.send("You are not authorized to create projects");
 });
 
-// router.post('/', upload.array("images", 20), auth, async (req, res) => {
-//   if(req.user && req.user.isAdmin){
-//     const name = req.body.name
-//     const year = req.body.year
-//     const folder = name.toLowerCase() + "-" + year.toLowerCase()
-
-//     const makeDir = (folder, key) => {
-//       const image = path.basename(req.body[key]);
-//       return  `/images/projects/${folder}/${image}`
-//     }
-
-//     let project = {
-//         name: req.body.name,
-//         year: req.body.year,
-//         size: req.body.size,
-//         category: req.body.category,
-//         description: req.body.description,
-//         country: req.body.country,
-//         city: req.body.city,
-//         cardUrl: makeDir(folder, "cardUrl"),
-//         cardAlt: req.body.cardAlt,
-//         urlPamorama: makeDir(folder, "urlPamorama"),
-//         altPamorama: req.body.altPamorama,
-//         urlBefore: makeDir(folder, "urlBefore"),
-//         altBefore: req.body.altBefore,
-//         desBefore: req.body.desBefore,
-//         urlSketch: makeDir(folder, "urlSketch"),
-//         altSketch: req.body.altSketch,
-//         desSketch: req.body.desSketch,
-//         urlImaging: makeDir(folder, "urlImaging"),
-//         altImaging: req.body.altImaging,
-//         desImaging: req.body.desImaging,
-//         urlConstraction: makeDir(folder, "urlConstraction"),
-//         altConstraction: req.body.altConstraction,
-//         desConstraction: req.body.desConstraction,
-//         urlGallery: makeDir(folder, "urlGallery"),
-//         altGallery: req.body.altGallery,
-//     }
-
-//     const { error } = validateProject(project);
-//     if (error)return res.status(400).send(error.details[0].message);
-//     project = new Project(project);
-//     await project.save();
-//     return res.send('הפרויקט נשמר בהצלחה');
-//   }
-//   return res.send('You are not authorized to create projects')
-// });
-
 router.delete("/:id", auth, async (req, res) => {
-  // צריך גם למחוק את התעודת זהות של הפרויקט מהמשתמש שיצר אותו
   if (req.user && req.user.isAdmin) {
     let project = await Project.findOne({ _id: req.params.id });
     if (!project) return res.status(404).send("הפרויקט לא נמצא");
+
     const name = project.name;
     const newName = name.replace(/\s/g, "-");
     fs.readdir(`public/images/projects/${newName}`, (err, files) => {
@@ -411,33 +357,17 @@ router.delete("/:id", auth, async (req, res) => {
       }
       fs.rmdirSync(`public/images/projects/${newName}`);
     });
+
+    let user = await User.findOne({ _id: project.userID });
+    if (!user) return res.status(404).send("המשתמש לא נמצא");
+    user.projects = user.projects.filter(i => i != project._id);
+    await user.save();
+
     project = await Project.findOneAndRemove({ _id: req.params.id });
     return res.send("הפרויקט נמחק");
   }
   return res.send("You are not authorized to delete projects");
 });
-
-// router.delete("/:id", auth, async (req, res) => {
-//   if (req.user && req.user.isAdmin) {
-//     let project = await Project.findOne({ _id: req.params.id });
-//     if (!project) return res.status(404).send("הפרויקט לא נמצא");
-//     const name = project.name;
-//     const year = project.year;
-//     const nameLowerCase = name.toLowerCase() + "-" + year.toLowerCase();
-//     const newName = nameLowerCase.replace(/\s/g, "-");
-//     fs.readdir(`public/images/projects/${newName}`, (err, files) => {
-//       if (files.length) {
-//         for (let file of files) {
-//           fs.unlinkSync(`public/images/projects/${newName}/${file}`);
-//         }
-//       }
-//       fs.rmdirSync(`public/images/projects/${newName}`);
-//     });
-//     project = await Project.findOneAndRemove({ _id: req.params.id });
-//     return res.send("הפרויקט נמחק");
-//   }
-//   return res.send("You are not authorized to delete projects");
-// });
 
 router.put("/private-area/edit-project-card/:id", auth, async (req, res) => {
   if (req.user && req.user.isAdmin) {
@@ -538,6 +468,22 @@ router.get("/private-area/edit-project-card/:id", auth, async (req, res) => {
   if (!project)
     return res.status(404).send("The project with the given ID was not found.");
   res.send(project);
+});
+
+router.patch("changePublishStatus/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    let project = await Project.findById(req.params.id);
+    if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+    let status = project.isPublished;
+    let changeStatus = !status;
+    project = await Project.findOneAndUpdate(
+      { _id: req.params.id },
+      { isPublished: changeStatus }
+    );
+    await project.save();
+    res.send(project);
+  }
 });
 
 module.exports = router;

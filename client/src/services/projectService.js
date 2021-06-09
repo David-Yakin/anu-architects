@@ -53,3 +53,7 @@ export async function getProjects() {
 export function getMyProject(projectId) {
   return http.get(`${apiUrl}/projects/project-page/${projectId}`);
 }
+
+export function changePublishStatus(projectId) {
+  return http.patch(`${apiUrl}/projects/changePublishStatus/${projectId}`);
+}
