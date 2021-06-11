@@ -36,13 +36,11 @@ class Projects extends Component {
     const { data } = await getProjects();
     let projects = data;
     const searchTerm = e.target.value;
-
     const filertProjects = projects.filter(
       project =>
         project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.category.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
     this.setState({ projects: filertProjects });
   }
 
@@ -67,8 +65,14 @@ class Projects extends Component {
     });
   };
 
-  changProjectPublishStatus = async (projectId, e) => {
+  changePublishStatus = async (projectId, e) => {
     e.preventDefault();
+    let projects = [...this.state.projects];
+    let project = projects.find(project => project._id === projectId);
+    let status = project.isPublished;
+    let changeStatus = !status;
+    toast("ההרשאה עודכנה");
+    this.setState({ project: (project.isPublished = changeStatus) });
     await changePublishStatus(projectId);
   };
 
@@ -77,15 +81,22 @@ class Projects extends Component {
     if (projects.length) {
       return (
         <div className="row">
-          {projects.map(project => (
-            <ProjectCard
-              key={project._id}
-              project={project}
-              width={"card mb-3  col-12 col-md-6 col-lg-4 py-0 px-2 border-0"}
-              handleProjectDelete={this.handleProjectDelete}
-              changProjectPublishStatus={this.changProjectPublishStatus}
-            />
-          ))}
+          {projects.map(project => {
+            if (project.isPublished) {
+              return (
+                <ProjectCard
+                  key={project._id}
+                  project={project}
+                  width={
+                    "card mb-3  col-12 col-md-6 col-lg-4 py-0 px-2 border-0"
+                  }
+                  handleProjectDelete={this.handleProjectDelete}
+                  changePublishStatus={this.changePublishStatus}
+                />
+              );
+            }
+            return null;
+          })}
         </div>
       );
     }

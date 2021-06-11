@@ -53,7 +53,14 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
-  renderFileInput(name, text, disabled = false, accept, divClass, className) {
+  renderFileInput(
+    name,
+    text,
+    disabled = false,
+    accept = ".png, .jpg, .jpeg",
+    divClass,
+    className
+  ) {
     const { data, errors } = this.state;
     return (
       <InputFile

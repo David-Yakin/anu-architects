@@ -217,6 +217,7 @@ function validateProject(project) {
       gallery: Joi.array().items(Joi.string().min(2).max(256)),
     }),
     userID: Joi.string().min(2).max(256),
+    isPublished: Joi.boolean(),
   });
   return schema.validate(project);
 }

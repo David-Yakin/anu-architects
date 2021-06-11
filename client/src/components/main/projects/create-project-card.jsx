@@ -2,10 +2,7 @@ import React from "react";
 import Titles from "../../common/titles";
 import Joi from "joi-browser";
 import Form from "../../common/form";
-import {
-  createProjectWithPics,
-  createProject,
-} from "../../../services/projectService";
+import { createProject } from "../../../services/projectService";
 import { toast } from "react-toastify";
 
 class CreateProject extends Form {
@@ -130,43 +127,32 @@ class CreateProject extends Form {
 
     checkInput("zip", zip);
     checkInput("description", description);
-
     checkInput("contract", contract);
     checkInput("licensing", licensing);
-
     checkInput("expertFirstName", expertFirstName);
     checkInput("expertLastName", expertLastName);
     checkInput("expertPhone", expertPhone);
     checkInput("expertFile", expertFile);
-
     checkInput("cardUrl", cardUrl);
     checkInput("cardAlt", cardAlt);
-
     checkInput("urlPamorama", urlPamorama);
     checkInput("altPamorama", altPamorama);
-
     checkInput("urlBefore", urlBefore);
     checkInput("altBefore", altBefore);
     checkInput("desBefore", desBefore);
-
     checkInput("urlConstraction", urlConstraction);
     checkInput("altConstraction", altConstraction);
     checkInput("desConstraction", desConstraction);
-
     checkInput("urlSketch", urlSketch);
     checkInput("altSketch", altSketch);
     checkInput("desSketch", desSketch);
-
     checkInput("urlImaging", urlImaging);
     checkInput("altImaging", altImaging);
     checkInput("desImaging", desImaging);
-
     checkInput("referenceUrl", referenceUrl);
     checkInput("referenceAlt", referenceAlt);
-
     checkInput("urlPlans", urlPlans);
     checkInput("altPlans", altPlans);
-
     checkInput("urlGallery", urlGallery);
 
     for (let x = 0; x < images.length; x++) {
@@ -178,56 +164,9 @@ class CreateProject extends Form {
   };
 
   doSubmit = async () => {
-    const { data } = this.state;
-    const {
-      contract,
-      licensing,
-      expertFile,
-      cardUrl,
-      urlPamorama,
-      urlBefore,
-      urlConstraction,
-      urlGallery,
-      urlSketch,
-      urlImaging,
-      urlPlans,
-      referenceUrl,
-    } = data;
-    if (
-      contract === undefined &&
-      licensing === undefined &&
-      expertFile === undefined &&
-      cardUrl === undefined &&
-      urlPamorama === undefined &&
-      urlBefore === undefined &&
-      urlConstraction === undefined &&
-      urlGallery === undefined &&
-      urlSketch === undefined &&
-      urlImaging === undefined &&
-      urlPlans === undefined &&
-      referenceUrl === undefined
-    ) {
-      try {
-        data.userID = this.props.match.params.userID;
-        data.name = this.createName(
-          data.street.trim(),
-          data.houseNumber.trim(),
-          data.city.trim(),
-          data.year
-        );
-        await createProject(data);
-        await toast("הפרויקט נוצר");
-        return this.props.history.replace("/private-area/users");
-      } catch (error) {
-        toast("ארעה שגיאה - הפרויקט לא נשמר");
-        return this.setState({
-          errors: { street: error.message },
-        });
-      }
-    }
     const formData = this.upload();
     try {
-      await createProjectWithPics(formData);
+      await createProject(formData);
       toast("הפרויקט נוצר");
       return this.props.history.replace("/private-area/users");
     } catch (error) {

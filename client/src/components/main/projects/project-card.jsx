@@ -54,6 +54,7 @@ const ProjectCard = ({
                 {" "}
               </a>
               <span> | </span>
+
               <a
                 href="/"
                 className="far fa-eye text-dark text-decoration-none"
@@ -62,7 +63,6 @@ const ProjectCard = ({
                 }}>
                 {" "}
               </a>
-              {/* <hr className="mt-0 mb-2" /> */}
             </span>
           )}
         </div>
@@ -72,3 +72,4 @@ const ProjectCard = ({
 };
 
 export default ProjectCard;
+// לעשות כשלוחצים על העין שלא יראו את הפרויקט
