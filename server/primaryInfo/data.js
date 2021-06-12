@@ -78,7 +78,7 @@ const data = {
         imaging: [
           {
             url: "/images/logo/logo_black.png",
-            alt: "הדמייה של הפרויקט",
+            alt: "הדמיה של הפרויקט",
             description: "לא מוגדר",
             remarks: "כאן ניתן לכתוב הערות",
           },
@@ -93,7 +93,7 @@ const data = {
         plans: [
           {
             url: "/images/logo/logo_black.png",
-            alt: "תוכניות בניה ארכיטקטיות",
+            alt: "תכנית בניה ארכיטקטיות",
             remarks: "כאן ניתן לכתוב הערות",
           },
         ],
@@ -182,7 +182,7 @@ const data = {
         imaging: [
           {
             url: "/images/logo/logo_black.png",
-            alt: "הדמייה של הפרויקט",
+            alt: "הדמיה של הפרויקט",
             description: "לא מוגדר",
             remarks: "כאן ניתן לכתוב הערות",
           },
@@ -197,7 +197,7 @@ const data = {
         plans: [
           {
             url: "/images/logo/logo_black.png",
-            alt: "תוכניות בניה ארכיטקטיות",
+            alt: "תכנית בניה ארכיטקטיות",
             remarks: "כאן ניתן לכתוב הערות",
           },
         ],
@@ -286,7 +286,7 @@ const data = {
         imaging: [
           {
             url: "/images/logo/logo_black.png",
-            alt: "הדמייה של הפרויקט",
+            alt: "הדמיה של הפרויקט",
             description: "לא מוגדר",
             remarks: "כאן ניתן לכתוב הערות",
           },
@@ -301,7 +301,7 @@ const data = {
         plans: [
           {
             url: "/images/logo/logo_black.png",
-            alt: "תוכניות בניה ארכיטקטיות",
+            alt: "תכנית בניה ארכיטקטיות",
             remarks: "כאן ניתן לכתוב הערות",
           },
         ],
@@ -390,7 +390,7 @@ const data = {
         imaging: [
           {
             url: "/images/logo/logo_black.png",
-            alt: "הדמייה של הפרויקט",
+            alt: "הדמיה של הפרויקט",
             description: "לא מוגדר",
             remarks: "כאן ניתן לכתוב הערות",
           },
@@ -405,7 +405,7 @@ const data = {
         plans: [
           {
             url: "/images/logo/logo_black.png",
-            alt: "תוכניות בניה ארכיטקטיות",
+            alt: "תכנית בניה ארכיטקטיות",
             remarks: "כאן ניתן לכתוב הערות",
           },
         ],

@@ -5,7 +5,6 @@ import Form from "../../common/form";
 import {
   getProject,
   editProject,
-  editprojectWithPics,
   changePublishStatus,
 } from "../../../services/projectService";
 import { toast } from "react-toastify";
@@ -149,16 +148,15 @@ class EditProject extends Form {
       desImaging,
       urlPlans,
       altPlans,
+      isPublished,
     } = this.state.data;
-    const projectId = this.props.match.params.id;
     const { images } = this.state;
     const nameChecked = this.checkName(name.trim());
-
     const checkInput = (text, input) =>
       input ? formData.append(text, input.trim()) : null;
 
     const formData = new FormData();
-    formData.append("id", projectId);
+    formData.append("id", this.props.match.params.id);
     formData.append("name", nameChecked);
     formData.append("country", this.checkSpaces(country.trim()));
     formData.append("city", this.checkSpaces(city.trim()));
@@ -188,6 +186,7 @@ class EditProject extends Form {
     checkInput("urlPlans", urlPlans);
     formData.append("altPlans", altPlans);
     checkInput("urlGallery", urlGallery);
+    formData.append("isPublished", isPublished);
 
     for (let x = 0; x < images.length; x++) {
       for (let i of images[x]) {
@@ -198,48 +197,10 @@ class EditProject extends Form {
   };
 
   doSubmit = async () => {
-    // const dataFromState = { ...this.state.data };
-    // const projectId = this.props.match.params.id;
-    // const { data } = await getProject(projectId);
-
-    // const {
-    //   cardUrl,
-    //   urlPamorama,
-    //   urlBefore,
-    //   urlSketch,
-    //   urlImaging,
-    //   urlConstraction,
-    //   urlGallery,
-    //   urlPlans,
-    // } = dataFromState;
-
     try {
-      // if (
-      //   cardUrl === undefined &&
-      //   urlPamorama === undefined &&
-      //   urlBefore === undefined &&
-      //   urlSketch === undefined &&
-      //   urlImaging === undefined &&
-      //   urlConstraction === undefined &&
-      //   urlGallery === undefined &&
-      //   urlPlans === undefined
-      // ) {
-      //   dataFromState.cardUrl = data.cardUrl;
-      //   dataFromState.urlPamorama = data.urlPamorama;
-      //   dataFromState.urlBefore = data.urlBefore;
-      //   dataFromState.urlSketch = data.urlSketch;
-      //   dataFromState.urlImaging = data.urlImaging;
-      //   dataFromState.urlConstraction = data.urlConstraction;
-      //   dataFromState.urlGallery = data.urlGallery;
-      //   dataFromState.urlPlans = data.urlPlans;
-      //   await editProject(dataFromState);
-      //   toast("הפרויקט עודכן בהצלחה!");
-      //   return this.props.history.replace("/private-area/projects-search-page");
-      // }
-
       const formData = this.upload();
-      // const formData = this.upload(data);
-      await editProject(formData);
+      const projectId = this.props.match.params.id;
+      await editProject(formData, projectId);
       toast("הפרויקט עודכן בהצלחה!");
       return this.props.history.replace("/private-area/projects-search-page");
     } catch (err) {
@@ -271,7 +232,6 @@ class EditProject extends Form {
 
   render() {
     const project = this.state.data;
-
     return (
       <div className="edit-project">
         <Titles

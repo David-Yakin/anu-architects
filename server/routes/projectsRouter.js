@@ -24,7 +24,6 @@ const storage = multer.diskStorage({
 const storageFromEditFile = multer.diskStorage({
   destination: async (req, file, storegePath) => {
     const name = req.body.name;
-    console.log(name);
     const nameLowerCase = name.toLowerCase();
     storegePath(null, `public/images/projects/${nameLowerCase}`);
   },
@@ -57,15 +56,16 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
   if (req.user && req.user.isAdmin) {
     const { name } = req.body;
     const folder = name.toLowerCase();
+
     const makeDir = (folder, key) => {
       const image = path.basename(req.body[key]);
       return `/images/projects/${folder}/${image}`;
     };
+    const checkUrl = (url, key) =>
+      url ? makeDir(folder, key) : "/images/logo/logo_black.png";
 
     const checkName = name => name.replace(/-/g, " ");
     const checkReq = reqItem => (reqItem ? reqItem : "לא מוגדר");
-    const checkUrl = (url, key) =>
-      url ? makeDir(folder, key) : "/images/logo/logo_black.png";
     const checkPath = url => (url ? path.basename(url) : "לא מוגדר");
 
     let project = {
@@ -201,303 +201,147 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
   return res.send("You are not authorized to create projects");
 });
 
-// router.put("/private-area/edit-project-card/:id", auth, async (req, res) => {
-//   if (req.user && req.user.isAdmin) {
-//     const name = `${req.body.street}-${req.body.houseNumber}-${req.body.city}-${req.body.year}`;
-//     const folder = name.replace(/\s/g, "-");
-
-//     let project = await Project.findOne({ _id: req.params.id });
-//     if (!project) return status(400).send("no project found");
-
-//     const checkName = name => name.replace(/-/g, " ");
-
-//     project = {
-//       name: checkName(req.body.name),
-//       year: req.body.year,
-//       size: req.body.size,
-//       category: req.body.category,
-//       address: {
-//         country: req.body.country,
-//         city: req.body.city,
-//         street: req.body.street,
-//         houseNumber: req.body.houseNumber,
-//         zip: req.body.zip,
-//       },
-//       description: req.body.description,
-//       files: {
-//         contracts: [
-//           {
-//             name: project.files.contracts[0].name,
-//             url: project.files.contracts[0].url,
-//             remarks: project.files.contracts[0].remarks,
-//           },
-//         ],
-//         licensing: [
-//           {
-//             name: project.files.licensing[0].name,
-//             url: project.files.licensing[0].url,
-//             remarks: project.files.licensing[0].remarks,
-//           },
-//         ],
-//         experts: [
-//           {
-//             firstName: project.files.experts[0].firstName,
-//             lastName: project.files.experts[0].lastName,
-//             phone: project.files.experts[0].phone,
-//             files: [
-//               {
-//                 name: project.files.experts[0].files[0].name,
-//                 url: project.files.experts[0].files[0].url,
-//                 remarks: project.files.experts[0].files[0].remarks,
-//               },
-//             ],
-//           },
-//         ],
-//       },
-
-//       images: {
-//         card: {
-//           url: project.images.card.url,
-//           alt: req.body.cardAlt,
-//         },
-//         panorama: {
-//           url: project.images.panorama.url,
-//           alt: req.body.altPamorama,
-//         },
-//         before: [
-//           {
-//             url: project.images.before[0].url,
-//             alt: req.body.altBefore,
-//             description: req.body.desBefore,
-//           },
-//         ],
-//         constraction: [
-//           {
-//             url: project.images.constraction[0].url,
-//             alt: req.body.altConstraction,
-//             description: req.body.desConstraction,
-//           },
-//         ],
-//         sketches: [
-//           {
-//             url: project.images.sketches[0].url,
-//             alt: req.body.altSketch,
-//             description: req.body.desSketch,
-//             remarks: project.images.sketches[0].remarks,
-//           },
-//         ],
-//         imaging: [
-//           {
-//             url: project.images.imaging[0].url,
-//             alt: req.body.altImaging,
-//             description: req.body.desImaging,
-//             remarks: project.images.imaging[0].remarks,
-//           },
-//         ],
-//         references: [
-//           {
-//             url: project.images.references[0].url,
-//             alt: project.images.references[0].alt,
-//             remarks: project.images.references[0].remarks,
-//           },
-//         ],
-//         plans: [
-//           {
-//             url: project.images.plans[0].url,
-//             alt: req.body.altPlans,
-//             remarks: project.images.plans[0].remarks,
-//           },
-//         ],
-//         gallery: [project.images.gallery[0]],
-//       },
-//       userID: project.userID,
-//       isPublished: req.body.isPublished,
-//     };
-
-//     const { error } = validateProject(project);
-//     if (error) return res.status(400).send(error.details[0].message);
-
-//     project = await Project.findOneAndUpdate({ _id: req.params.id }, project);
-//     return res.send(project);
-//   }
-//   return res.send("You are not authorized to change projects");
-// });
-
-const checkPath = (reqDir, projectDir) => {
-  if (reqDir === projectDir) return projectDir;
-  return reqDir;
-};
-
 router.put(
   "/:id",
   uploadFromEditFile.array("images", 20),
   auth,
   async (req, res) => {
-    //   if (req.user && req.user.isAdmin) {
-    //     const name = `${req.body.street}-${req.body.houseNumber}-${req.body.city}-${req.body.year}`;
-    //     const folder = name.replace(/\s/g, "-");
-
-    //     let project = await Project.findOne({ _id: req.params.id });
-    //     if (!project) return status(400).send("no project found");
-
-    //     const checkName = name => name.replace(/-/g, " ");
-
-    //     project = {
-    //       name: checkName(req.body.name),
-    //       year: req.body.year,
-    //       size: req.body.size,
-    //       category: req.body.category,
-    //       address: {
-    //         country: req.body.country,
-    //         city: req.body.city,
-    //         street: req.body.street,
-    //         houseNumber: req.body.houseNumber,
-    //         zip: req.body.zip,
-    //       },
-    //       description: req.body.description,
-    //       files: {
-    //         contracts: [
-    //           {
-    //             name: project.files.contracts[0].name,
-    //             url: project.files.contracts[0].url,
-    //             remarks: project.files.contracts[0].remarks,
-    //           },
-    //         ],
-    //         licensing: [
-    //           {
-    //             name: project.files.licensing[0].name,
-    //             url: project.files.licensing[0].url,
-    //             remarks: project.files.licensing[0].remarks,
-    //           },
-    //         ],
-    //         experts: [
-    //           {
-    //             firstName: project.files.experts[0].firstName,
-    //             lastName: project.files.experts[0].lastName,
-    //             phone: project.files.experts[0].phone,
-    //             files: [
-    //               {
-    //                 name: project.files.experts[0].files[0].name,
-    //                 url: project.files.experts[0].files[0].url,
-    //                 remarks: project.files.experts[0].files[0].remarks,
-    //               },
-    //             ],
-    //           },
-    //         ],
-    //       },
-
-    //       images: {
-    //         card: {
-    //           url: project.images.card.url,
-    //           alt: req.body.cardAlt,
-    //         },
-    //         panorama: {
-    //           url: project.images.panorama.url,
-    //           alt: req.body.altPamorama,
-    //         },
-    //         before: [
-    //           {
-    //             url: project.images.before[0].url,
-    //             alt: req.body.altBefore,
-    //             description: req.body.desBefore,
-    //           },
-    //         ],
-    //         constraction: [
-    //           {
-    //             url: project.images.constraction[0].url,
-    //             alt: req.body.altConstraction,
-    //             description: req.body.desConstraction,
-    //           },
-    //         ],
-    //         sketches: [
-    //           {
-    //             url: project.images.sketches[0].url,
-    //             alt: req.body.altSketch,
-    //             description: req.body.desSketch,
-    //             remarks: project.images.sketches[0].remarks,
-    //           },
-    //         ],
-    //         imaging: [
-    //           {
-    //             url: project.images.imaging[0].url,
-    //             alt: req.body.altImaging,
-    //             description: req.body.desImaging,
-    //             remarks: project.images.imaging[0].remarks,
-    //           },
-    //         ],
-    //         references: [
-    //           {
-    //             url: project.images.references[0].url,
-    //             alt: project.images.references[0].alt,
-    //             remarks: project.images.references[0].remarks,
-    //           },
-    //         ],
-    //         plans: [
-    //           {
-    //             url: project.images.plans[0].url,
-    //             alt: req.body.altPlans,
-    //             remarks: project.images.plans[0].remarks,
-    //           },
-    //         ],
-    //         gallery: [project.images.gallery[0]],
-    //       },
-    //       userID: project.userID,
-    //       isPublished: req.body.isPublished,
-    //     };
-
-    //     const { error } = validateProject(project);
-    //     if (error) return res.status(400).send(error.details[0].message);
-
-    //     project = await Project.findOneAndUpdate({ _id: req.params.id }, project);
-    //     return res.send(project);
-    //   }
-    //   return res.send("You are not authorized to change projects");
-
     if (req.user && req.user.isAdmin) {
-      let project = await Project.findOne({ _id: req.body.id });
-      if (!project) return res.status(404).send("הפרויקט לא נמצא");
+      let project = await Project.findOne({ _id: req.params.id });
+      if (!project) return status(400).send("no project found");
+      const checkName = name => name.replace(/-/g, " ");
 
-      const folder = project.name.replace(/\s/g, "-");
-
-      const makeDir = (folder, key) => {
+      const makeDir = key => {
+        const folder = req.body.name;
         const image = path.basename(req.body[key]);
-        const reqDir = `/images/projects/${folder}/${image}`;
-        return checkPath(reqDir, project[key]);
+        return `/images/projects/${folder}/${image}`;
       };
 
       project = {
-        name: req.body.name,
+        name: checkName(req.body.name),
         year: req.body.year,
         size: req.body.size,
         category: req.body.category,
+        address: {
+          country: req.body.country,
+          city: req.body.city,
+          street: req.body.street,
+          houseNumber: req.body.houseNumber,
+          zip: req.body.zip,
+        },
         description: req.body.description,
-        country: req.body.country,
-        city: req.body.city,
-        cardUrl: makeDir(folder, "cardUrl"),
-        cardAlt: req.body.cardAlt,
-        urlPamorama: makeDir(folder, "urlPamorama"),
-        altPamorama: req.body.altPamorama,
-        urlBefore: makeDir(folder, "urlBefore"),
-        altBefore: req.body.altBefore,
-        desBefore: req.body.desBefore,
-        urlSketch: makeDir(folder, "urlSketch"),
-        altSketch: req.body.altSketch,
-        desSketch: req.body.desSketch,
-        urlImaging: makeDir(folder, "urlImaging"),
-        altImaging: req.body.altImaging,
-        desImaging: req.body.desImaging,
-        urlConstraction: makeDir(folder, "urlConstraction"),
-        altConstraction: req.body.altConstraction,
-        desConstraction: req.body.desConstraction,
-        urlGallery: makeDir(folder, "urlGallery"),
-        altGallery: req.body.altGallery,
+        files: {
+          contracts: [
+            {
+              name: project.files.contracts[0].name,
+              url: project.files.contracts[0].url,
+              remarks: project.files.contracts[0].remarks,
+            },
+          ],
+          licensing: [
+            {
+              name: project.files.licensing[0].name,
+              url: project.files.licensing[0].url,
+              remarks: project.files.licensing[0].remarks,
+            },
+          ],
+          experts: [
+            {
+              firstName: project.files.experts[0].firstName,
+              lastName: project.files.experts[0].lastName,
+              phone: project.files.experts[0].phone,
+              files: [
+                {
+                  name: project.files.experts[0].files[0].name,
+                  url: project.files.experts[0].files[0].url,
+                  remarks: project.files.experts[0].files[0].remarks,
+                },
+              ],
+            },
+          ],
+        },
+
+        images: {
+          card: {
+            url: req.body.cardUrl
+              ? makeDir("cardUrl")
+              : project.images.card.url,
+            alt: req.body.cardAlt,
+          },
+          panorama: {
+            url: req.body.urlPamorama
+              ? req.body.urlPamorama
+              : project.images.panorama.url,
+            alt: req.body.altPamorama,
+          },
+          before: [
+            {
+              url: req.body.urlBefore
+                ? makeDir("urlBefore")
+                : project.images.before[0].url,
+              alt: req.body.altBefore,
+              description: req.body.desBefore,
+            },
+          ],
+          constraction: [
+            {
+              url: req.body.urlConstraction
+                ? makeDir("urlConstraction")
+                : project.images.constraction[0].url,
+              alt: req.body.altConstraction,
+              description: req.body.desConstraction,
+            },
+          ],
+          sketches: [
+            {
+              url: req.body.urlSketch
+                ? makeDir("urlSketch")
+                : project.images.sketches[0].url,
+              alt: req.body.altSketch,
+              description: req.body.desSketch,
+              remarks: project.images.sketches[0].remarks,
+            },
+          ],
+          imaging: [
+            {
+              url: req.body.urlImaging
+                ? makeDir("urlImaging")
+                : project.images.imaging[0].url,
+              alt: req.body.altImaging,
+              description: req.body.desImaging,
+              remarks: project.images.imaging[0].remarks,
+            },
+          ],
+          references: [
+            {
+              url: project.images.references[0].url,
+              alt: project.images.references[0].alt,
+              remarks: project.images.references[0].remarks,
+            },
+          ],
+          plans: [
+            {
+              url: req.body.urlPlans
+                ? makeDir("urlPlans")
+                : project.images.plans[0].url,
+              alt: req.body.altPlans,
+              remarks: project.images.plans[0].remarks,
+            },
+          ],
+          gallery: [
+            req.body.urlGallery
+              ? makeDir("urlGallery")
+              : project.images.gallery[0],
+          ],
+        },
+        userID: project.userID,
+        isPublished: req.body.isPublished,
       };
 
       const { error } = validateProject(project);
       if (error) return res.status(400).send(error.details[0].message);
 
-      project = await Project.findOneAndUpdate({ _id: req.body.id }, project);
-      project = await Project.findOne({ _id: req.body.id });
+      project = await Project.findOneAndUpdate({ _id: req.params.id }, project);
       return res.send(project);
     }
     return res.send("You are not authorized to change projects");
