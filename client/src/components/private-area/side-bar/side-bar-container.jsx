@@ -4,7 +4,6 @@ import { getCurrentUser } from "../../../services/userService";
 class SideBar extends Component {
   user = getCurrentUser();
   state = {
-    scrolled: false,
     sideItemes: [
       {
         row: { text: "משתמשים", icon: "center far fa-address-card" },
@@ -116,15 +115,6 @@ class SideBar extends Component {
     ],
   };
 
-  scollFn = () => {
-    if (window.scrollY === 0 || window.scrollY === 1) {
-      const { scrolled } = this.state;
-      const onScroll = !scrolled;
-      return this.setState({ scrolled: onScroll });
-    }
-    return this.setState({ scrolled: true });
-  };
-
   toggleSideNav = index => {
     const { sideItemes } = this.state;
     sideItemes.map((item, i) => {
@@ -135,15 +125,10 @@ class SideBar extends Component {
 
   render() {
     const { sideItemes } = this.state;
-    const { scrolled } = this.state;
-    window.addEventListener("scroll", this.scollFn);
     return (
       sideItemes.length && (
         <div className="d-flex justify-content-end ">
-          <div
-            className={
-              scrolled === true ? "side-gap position-fixed col-1 col-xl-2" : ""
-            }></div>
+          <div className="side-gap position-fixed col-1 col-xl-2"></div>
           <div className="side-bar accordion col-1 col-xl-2 position-fixed text-rtl">
             {this.user.isAdmin && (
               <SideRow
