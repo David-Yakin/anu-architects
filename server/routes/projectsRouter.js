@@ -375,10 +375,22 @@ router.delete("/:id", auth, async (req, res) => {
   return res.send("You are not authorized to delete projects");
 });
 
-router.get("/project-page/:id", async (req, res) => {
-  const project = await Project.findOne({ _id: req.params.id });
-  if (!project) return res.status(404).send("הפרוייקט לא נמצא במאגר המידע");
-  res.send(project);
+router.get("/my-projects/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    const user = await User.findById({ _id: req.params.id });
+    let projects = user.projects;
+    const check = async array => {
+      const newArray = [];
+      for (let i = 0; i < array.length; i++) {
+        project = await Project.findById({ _id: projects[i] });
+        newArray.push(project);
+      }
+      return newArray;
+    };
+    let newProjects = await check(projects);
+    return res.send(newProjects);
+  }
+  return "You can not see this user projects";
 });
 
 router.get("/private-area/projects-search-page", async (req, res) => {
@@ -386,10 +398,9 @@ router.get("/private-area/projects-search-page", async (req, res) => {
   res.send(projects);
 });
 
-router.get("/private-area/edit-project-card/:id", auth, async (req, res) => {
-  const project = await Project.findOne({ _id: req.params.id });
-  if (!project)
-    return res.status(404).send("The project with the given ID was not found.");
+router.get("/:id", auth, async (req, res) => {
+  const project = await Project.findById({ _id: req.params.id });
+  if (!project) return res.status(404).send("Project not found.");
   res.send(project);
 });
 

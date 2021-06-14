@@ -28,17 +28,15 @@ export function editProject(project, id) {
 }
 
 export function getProject(projectId) {
-  return http.get(
-    `${apiUrl}/projects/private-area/edit-project-card/${projectId}`
-  );
+  return http.get(`${apiUrl}/projects/${projectId}`);
 }
 
 export async function getProjects() {
   return http.get(`${apiUrl}/projects/private-area/projects-search-page`);
 }
 
-export function getMyProject(projectId) {
-  return http.get(`${apiUrl}/projects/project-page/${projectId}`);
+export function getMyProject(userId) {
+  return http.get(`${apiUrl}/projects/my-projects/${userId}`);
 }
 
 export function changePublishStatus(projectId) {

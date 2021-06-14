@@ -40,11 +40,6 @@ const ProjectCard = ({
           {user && user.isAdmin && (
             <span className="col-12 ">
               <hr className="m-0" />
-
-              <Link
-                to={`/private-area/edit-project-card/${project._id}`}
-                className="far fa-edit text-dark text-decoration-none"></Link>
-              <span> | </span>
               <a
                 href="/"
                 onClick={e => {
@@ -53,6 +48,13 @@ const ProjectCard = ({
                 className="fas fa-trash-alt text-dark text-decoration-none">
                 {" "}
               </a>
+
+              <span> | </span>
+
+              <Link
+                to={`/private-area/edit-project-card/${project._id}`}
+                className="far fa-edit text-dark text-decoration-none"></Link>
+
               <span> | </span>
 
               <a

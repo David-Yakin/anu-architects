@@ -70,15 +70,19 @@ class Recent extends Component {
     if (projects.length >= 4) {
       return (
         <div className="row">
-          {projects.map(project => (
-            <ProjectCard
-              key={project._id}
-              project={project}
-              width="card mb-3 col-lg-6 col-xl-6 py-0 px-2 border-0"
-              handleProjectDelete={this.handleProjectDelete}
-              changePublishStatus={this.changePublishStatus}
-            />
-          ))}
+          {projects.map((project, i) => {
+            if (i < 4)
+              return (
+                <ProjectCard
+                  key={project._id}
+                  project={project}
+                  width="card mb-3 col-lg-6 col-xl-6 py-0 px-2 border-0"
+                  handleProjectDelete={this.handleProjectDelete}
+                  changePublishStatus={this.changePublishStatus}
+                />
+              );
+            return null;
+          })}
         </div>
       );
     }

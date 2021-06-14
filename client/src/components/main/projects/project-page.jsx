@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ALink from "../../common/a-link";
-import { getMyProject } from "../../../services/projectService";
+import { getProject } from "../../../services/projectService";
 import { url } from "../../../config.json";
 
 class Project extends Component {
@@ -56,7 +56,7 @@ class Project extends Component {
 
   async componentDidMount() {
     const projectId = this.props.match.params.id;
-    const { data } = await getMyProject(projectId);
+    const { data } = await getProject(projectId);
     this.setState({ data });
 
     let { counter } = this.state.data;

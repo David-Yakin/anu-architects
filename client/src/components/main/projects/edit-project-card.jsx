@@ -224,8 +224,10 @@ class EditProject extends Form {
         let status = project.isPublished;
         let changeStatus = !status;
         toast("ההרשאה עודכנה");
-        this.setState({ data: (project.isPublished = changeStatus) });
-        return changePublishStatus(projectId);
+        changePublishStatus(projectId);
+        return this.setState({
+          isPublished: (project.isPublished = changeStatus),
+        });
       }
     });
   };
