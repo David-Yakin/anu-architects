@@ -10,127 +10,24 @@ async function primaryProjects(project) {
   await project.save();
 }
 
-async function primaryResumes({
-  firstName,
-  subTitle,
-  profileUrl,
-  profileAlt,
-  firstP,
-  lastName,
-  secondp,
-  thirdP,
-  fourthP,
-}) {
-  let resume = new Resume({
-    firstName,
-    subTitle,
-    profileUrl,
-    profileAlt,
-    firstP,
-    secondp,
-    thirdP,
-    fourthP,
-    lastName,
-  });
+async function primaryResumes(resume) {
+  resume = new Resume(resume);
   await resume.save();
 }
 
-async function primaryQnas({ answer, question, open }) {
-  let qna = new Qna({ answer, question, open });
+async function primaryQnas(qna) {
+  qna = new Qna(qna);
   await qna.save();
 }
 
-async function primaryUsers({
-  userID,
-  firstName,
-  lastName,
-  email,
-  phone,
-  address: { country, city, street, houseNumber, zip },
-  password,
-  isAdmin,
-  isBloger,
-}) {
-  let user = new User({
-    userID,
-    firstName,
-    lastName,
-    email,
-    phone,
-    address: { country, city, street, houseNumber, zip },
-    password,
-    isAdmin,
-    isBloger,
-  });
+async function primaryUsers(user) {
+  user = new User(user);
   const salt = await bcrypt.genSalt(12);
   user.password = await bcrypt.hash(user.password, salt);
-
   await user.save();
 }
-async function primaryBlogs({
-  title,
-  subTitle,
-  author,
-  category,
-  cardUrl,
-  cardAlt,
-  titleImgUrl,
-  titleImgAlt,
-  titleImgCredit,
-  endImgUrl,
-  endImgAlt,
-  endImgCredit,
-  firstInnerTitle,
-  firstP,
-  secondP,
-  thirdP,
-  landscapeImgUrl,
-  landscapeImgAlt,
-  landscapeImgCredit,
-  secondInnerTitle,
-  foruthP,
-  fifthP,
-  sixthP,
-  profileImgUrl,
-  profileImgAlt,
-  profileImgCredit,
-  thirdInnerTitle,
-  seventhP,
-  eighthP,
-  ninthP,
-}) {
-  const blog = new Blog({
-    title,
-    subTitle,
-    author,
-    category,
-    cardUrl,
-    cardAlt,
-    titleImgUrl,
-    titleImgAlt,
-    titleImgCredit,
-    endImgUrl,
-    endImgAlt,
-    endImgCredit,
-    firstInnerTitle,
-    firstP,
-    secondP,
-    thirdP,
-    landscapeImgUrl,
-    landscapeImgAlt,
-    landscapeImgCredit,
-    secondInnerTitle,
-    foruthP,
-    fifthP,
-    sixthP,
-    profileImgUrl,
-    profileImgAlt,
-    profileImgCredit,
-    thirdInnerTitle,
-    seventhP,
-    eighthP,
-    ninthP,
-  });
+async function primaryBlogs(blog) {
+  blog = new Blog(blog);
   await blog.save();
 }
 

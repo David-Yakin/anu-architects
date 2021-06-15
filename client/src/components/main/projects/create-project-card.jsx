@@ -168,7 +168,9 @@ class CreateProject extends Form {
     try {
       await createProject(formData);
       toast("הפרויקט נוצר");
-      return this.props.history.replace("/private-area/users");
+      return this.props.history.replace(
+        `/private-area/user/${this.props.match.params.userID}`
+      );
     } catch (error) {
       toast("ארעה שגיאה - הפרויקט לא נשמר");
       this.setState({

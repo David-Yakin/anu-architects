@@ -6,8 +6,8 @@ import { url } from "../../../config.json";
 const ProjectCard = ({
   project,
   width,
-  handleProjectDelete,
   changePublishStatus,
+  changeLikeStatus,
 }) => {
   const user = getCurrentUser();
   return (
@@ -40,16 +40,6 @@ const ProjectCard = ({
           {user && user.isAdmin && (
             <span className="col-12 ">
               <hr className="m-0" />
-              <a
-                href="/"
-                onClick={e => {
-                  handleProjectDelete(project._id, e);
-                }}
-                className="fas fa-trash-alt text-dark text-decoration-none">
-                {" "}
-              </a>
-
-              <span> | </span>
 
               <Link
                 to={`/private-area/edit-project-card/${project._id}`}
@@ -62,6 +52,21 @@ const ProjectCard = ({
                 className="far fa-eye text-dark text-decoration-none"
                 onClick={e => {
                   changePublishStatus(project._id, e);
+                }}>
+                {" "}
+              </a>
+
+              <span> | </span>
+
+              <a
+                href="/"
+                className={
+                  project.isLiked
+                    ? "fas fa-thumbs-up text-dark text-decoration-none"
+                    : "far fa-thumbs-up  text-dark text-decoration-none"
+                }
+                onClick={e => {
+                  changeLikeStatus(project._id, e);
                 }}>
                 {" "}
               </a>

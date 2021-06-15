@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { getMyProject } from "../../../services/projectService";
+import { getMyProject, deleteProject } from "../../../services/projectService";
 import { getDate } from "../../../services/timeService";
 import { getUser } from "../../../services/userService";
 import ALink from "../../common/a-link";
 import Titles from "../../common/titles";
 import EditUserProjects from "./edit-user-projects";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 class UserInfo extends Component {
   state = {
@@ -30,6 +32,27 @@ class UserInfo extends Component {
     });
   };
 
+  handleProjectDelete = async (projectId, e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "?האם אתה בטוח",
+      text: "!הפרויקט יימחק ממאגר המידע",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "כן, אני רוצה למחוק!",
+      cancelButtonText: "בטל",
+    }).then(result => {
+      if (result.isConfirmed) {
+        let projects = [...this.state.projects];
+        projects = projects.filter(project => project._id !== projectId);
+        this.setState({ projects });
+        deleteProject(projectId);
+        toast("הפרויקט נמחק");
+      }
+    });
+  };
+
   generateProject() {
     const { projects } = this.state;
     if (projects.length) {
@@ -43,6 +66,7 @@ class UserInfo extends Component {
                   project={project}
                   index={index}
                   toggleProjects={this.toggleProjects}
+                  handleProjectDelete={this.handleProjectDelete}
                 />
               );
             })}

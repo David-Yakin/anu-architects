@@ -1,8 +1,15 @@
 import React, { Component } from "react";
-import MyProjects from "./users/my-projects";
-import MyContracts from "./users/my-contracts";
-import MyBlueprints from "./users/my-blueprints";
-import MySketchs from "./users/my-sketchs";
+import MyContracts from "./users/my-project/my-contracts";
+import MySketchs from "./users/my-project/my-sketchs";
+import MyLicensing from "./users/my-project/my-licensing";
+import MyExperts from "./users/my-project/my-experts";
+import MyPlans from "./users/my-project/my-plans";
+import MyImaging from "./users/my-project/my-imaging";
+import MyReferences from "./users/my-project/my-references";
+import MyBefore from "./users/my-project/my-before";
+import MyConstraction from "./users/my-project/my-constraction";
+import MyGallery from "./users/my-project/my-gallery";
+
 import Singin from "./users/sign-in";
 import Singup from "./users/sign-up";
 import Logout from "../../components/private-area/users/logout";
@@ -48,7 +55,6 @@ class Main extends Component {
             path="/private-area/reset-password/:id/:token"
             component={ResetPassword}
           />
-          <Route path="/private-area/my-projects" component={MyProjects} />
         </Switch>
 
         <div className="col-11 col-xl-10 p-0">
@@ -57,12 +63,45 @@ class Main extends Component {
               path="/private-area/update-user/:id"
               component={UpdateUser}
             />
-            <Route path="/private-area/my-contracts" component={MyContracts} />
+
             <Route
-              path="/private-area/my-blueprints"
-              component={MyBlueprints}
+              path="/private-area/project/contracts/:id"
+              component={MyContracts}
             />
-            <Route path="/private-area/my-sketchs" component={MySketchs} />
+            <Route
+              path="/private-area/project/licensing/:id"
+              component={MyLicensing}
+            />
+            <Route
+              path="/private-area/project/experts/:id"
+              component={MyExperts}
+            />
+            <Route path="/private-area/project/plans/:id" component={MyPlans} />
+            <Route
+              path="/private-area/project/sketches/:id"
+              component={MySketchs}
+            />
+            <Route
+              path="/private-area/project/imaging/:id"
+              component={MyImaging}
+            />
+            <Route
+              path="/private-area/project/references/:id"
+              component={MyReferences}
+            />
+            <Route
+              path="/private-area/project/before/:id"
+              component={MyBefore}
+            />
+            <Route
+              path="/private-area/project/constraction/:id"
+              component={MyConstraction}
+            />
+            <Route
+              path="/private-area/project/gallery/:id"
+              component={MyGallery}
+            />
+
             <Route path="/private-area/logout" component={Logout} />
 
             <Route path="/private-area/users" component={Users} />

@@ -111,6 +111,7 @@ const schema = new mongoose.Schema({
   userID: string256R,
   isPublished: { type: Boolean, default: false },
   isOpen: { type: Boolean, default: false },
+  isLiked: { type: Boolean, default: false },
   counter: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
 });

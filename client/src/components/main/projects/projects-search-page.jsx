@@ -4,15 +4,15 @@ import ProjectCard from "./project-card";
 import SearchInput from "../../common/search-input";
 import {
   getProjects,
-  deleteProject,
   changePublishStatus,
+  changeLikeStatus,
 } from "../../../services/projectService";
-import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { getUsers } from "../../../services/userService";
 
 class Projects extends Component {
   state = {
+    unmounted: false,
     categories: [
       { value: "", text: "כולם" },
       { value: "שיפוץ דירה", text: "שיפוץ דירה" },
@@ -29,6 +29,7 @@ class Projects extends Component {
       this.setState({
         projects: projectsData,
         users: usersData,
+        unmounted: true,
       });
   }
 
@@ -44,25 +45,15 @@ class Projects extends Component {
     this.setState({ projects: filertProjects });
   }
 
-  handleProjectDelete = async (projectId, e) => {
+  changeLikeStatus = async (projectId, e) => {
     e.preventDefault();
-    Swal.fire({
-      title: "?האם אתה בטוח",
-      text: "!הפרויקט יימחק ממאגר המידע",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "כן, אני רוצה למחוק!",
-      cancelButtonText: "בטל",
-    }).then(result => {
-      if (result.isConfirmed) {
-        let projects = [...this.state.projects];
-        projects = projects.filter(project => project._id !== projectId);
-        this.setState({ projects });
-        deleteProject(projectId);
-        toast("הפרויקט נמחק");
-      }
-    });
+    let projects = [...this.state.projects];
+    let project = projects.find(project => project._id === projectId);
+    let status = project.isLiked;
+    let changeStatus = !status;
+    toast("ההרשאה עודכנה");
+    this.setState({ project: (project.isLiked = changeStatus) });
+    await changeLikeStatus(projectId);
   };
 
   changePublishStatus = async (projectId, e) => {
@@ -90,8 +81,8 @@ class Projects extends Component {
                   width={
                     "card mb-3  col-12 col-md-6 col-lg-4 py-0 px-2 border-0"
                   }
-                  handleProjectDelete={this.handleProjectDelete}
                   changePublishStatus={this.changePublishStatus}
+                  changeLikeStatus={this.changeLikeStatus}
                 />
               );
             }
@@ -104,31 +95,33 @@ class Projects extends Component {
   }
 
   render() {
-    const { categories } = this.state;
+    const { categories, unmounted } = this.state;
+    if (unmounted) {
+      return (
+        <div className="containr-fluid">
+          <div className="container">
+            <Titles
+              titleBold="הפרויקטים"
+              title="של אנו אדריכלים"
+              subTitle="כאן תוכל למצוא מגוון פרויקטים שצוות אנו אדריכלים עיצב במהלך השנים"
+            />
 
-    return (
-      <div className="containr-fluid">
-        <div className="container">
-          <Titles
-            titleBold="הפרויקטים"
-            title="של אנו אדריכלים"
-            subTitle="כאן תוכל למצוא מגוון פרויקטים שצוות אנו אדריכלים עיצב במהלך השנים"
-          />
+            <SearchInput
+              categories={categories}
+              placeholder="חפש פרויקט"
+              handleChange={e => {
+                this.handleChange(e);
+              }}
+            />
+          </div>
 
-          <SearchInput
-            categories={categories}
-            placeholder="חפש פרויקט"
-            handleChange={e => {
-              this.handleChange(e);
-            }}
-          />
+          <div className="center">
+            <div className="col-10">{this.generateProject()}</div>
+          </div>
         </div>
-
-        <div className="center">
-          <div className="col-10">{this.generateProject()}</div>
-        </div>
-      </div>
-    );
+      );
+    }
+    return null;
   }
 }
 

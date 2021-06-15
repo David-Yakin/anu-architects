@@ -42,3 +42,7 @@ export function getMyProject(userId) {
 export function changePublishStatus(projectId) {
   return http.patch(`${apiUrl}/projects/changePublishStatus/${projectId}`);
 }
+
+export function changeLikeStatus(projectId) {
+  return http.patch(`${apiUrl}/projects/changeLikeStatus/${projectId}`);
+}

@@ -398,7 +398,7 @@ router.get("/private-area/projects-search-page", async (req, res) => {
   res.send(projects);
 });
 
-router.get("/:id", auth, async (req, res) => {
+router.get("/:id", async (req, res) => {
   const project = await Project.findById({ _id: req.params.id });
   if (!project) return res.status(404).send("Project not found.");
   res.send(project);
@@ -413,6 +413,21 @@ router.patch("/changePublishStatus/:id", auth, async (req, res) => {
     project = await Project.findOneAndUpdate(
       { _id: req.params.id },
       { isPublished: changeStatus }
+    );
+    await project.save();
+    res.send(project);
+  }
+});
+
+router.patch("/changeLikeStatus/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    let project = await Project.findById(req.params.id);
+    if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+    let status = project.isLiked;
+    let changeStatus = !status;
+    project = await Project.findOneAndUpdate(
+      { _id: req.params.id },
+      { isLiked: changeStatus }
     );
     await project.save();
     res.send(project);
