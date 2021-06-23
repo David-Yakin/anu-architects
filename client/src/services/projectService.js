@@ -46,3 +46,15 @@ export function changePublishStatus(projectId) {
 export function changeLikeStatus(projectId) {
   return http.patch(`${apiUrl}/projects/changeLikeStatus/${projectId}`);
 }
+
+export function uploadImage(image, projectId, route) {
+  return http.patch(`${apiUrl}/projects/${route}/${projectId}`, image);
+}
+
+export function deleteImage(images, projectId, route) {
+  return http.patch(`${apiUrl}/projects/${route}/${projectId}`, images);
+}
+
+export function editImage(projectId, image, route) {
+  return http.patch(`${apiUrl}/projects/${route}/${projectId}`, image);
+}

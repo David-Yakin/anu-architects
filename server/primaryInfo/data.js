@@ -97,7 +97,12 @@ const data = {
             remarks: "כאן ניתן לכתוב הערות",
           },
         ],
-        gallery: ["/images/logo/logo_black.png"],
+        gallery: [
+          {
+            url: "/images/logo/logo_black.png",
+            alt: "תמונה מגלריית תמונות",
+          },
+        ],
       },
       userID: "000000000",
       isPublished: true,
@@ -202,7 +207,12 @@ const data = {
             remarks: "כאן ניתן לכתוב הערות",
           },
         ],
-        gallery: ["/images/logo/logo_black.png"],
+        gallery: [
+          {
+            url: "/images/logo/logo_black.png",
+            alt: "תמונה מגלריית תמונות",
+          },
+        ],
       },
       userID: "000000000",
       isPublished: true,
@@ -307,7 +317,12 @@ const data = {
             remarks: "כאן ניתן לכתוב הערות",
           },
         ],
-        gallery: ["/images/logo/logo_black.png"],
+        gallery: [
+          {
+            url: "/images/logo/logo_black.png",
+            alt: "תמונה מגלריית תמונות",
+          },
+        ],
       },
       userID: "000000000",
       isPublished: true,
@@ -412,7 +427,12 @@ const data = {
             remarks: "כאן ניתן לכתוב הערות",
           },
         ],
-        gallery: ["/images/logo/logo_black.png"],
+        gallery: [
+          {
+            url: "/images/logo/logo_black.png",
+            alt: "תמונה מגלריית תמונות",
+          },
+        ],
       },
       userID: "000000000",
       isPublished: true,
@@ -512,7 +532,9 @@ const data = {
         "והי עובדה מבוססת שדעתו של הקורא תהיה מוסחת על ידי טקטס קריא כאשר הוא י...",
       ninthP:
         "ם אתה הולך להשתמש במקטעים של של Lorem Ipsum אתה צריך להיות בטוח שאין מ...",
+      isPublished: true,
     },
+
     {
       title: "מאמר בנושא ניהול פרוייקט בנייה",
       subTitle: "כותרת משנה של מאמר בנושא ניהול פרוייקט בנייה",
@@ -553,6 +575,7 @@ const data = {
         "והי עובדה מבוססת שדעתו של הקורא תהיה מוסחת על ידי טקטס קריא כאשר הוא י...",
       ninthP:
         "ם אתה הולך להשתמש במקטעים של של Lorem Ipsum אתה צריך להיות בטוח שאין מ...",
+      isPublished: true,
     },
     {
       title: "מאמר בנושא עיצוב פנים",
@@ -594,6 +617,7 @@ const data = {
         "והי עובדה מבוססת שדעתו של הקורא תהיה מוסחת על ידי טקטס קריא כאשר הוא י...",
       ninthP:
         "ם אתה הולך להשתמש במקטעים של של Lorem Ipsum אתה צריך להיות בטוח שאין מ...",
+      isPublished: true,
     },
   ],
   users: [

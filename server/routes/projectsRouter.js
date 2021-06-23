@@ -1,11 +1,18 @@
 const express = require("express");
-const { Project, validateProject } = require("../models/project");
+const {
+  Project,
+  validateProject,
+  validateImage,
+} = require("../models/project");
 const { User } = require("../models/user");
 const auth = require("../middleware/auth");
 const router = express.Router();
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
+const { generateTemplate } = require("../mail-templates/mail-templates");
+const { mailReq } = require("./mailRouter");
+const { log } = require("console");
 
 const storage = multer.diskStorage({
   destination: async (req, file, storegePath) => {
@@ -23,9 +30,8 @@ const storage = multer.diskStorage({
 
 const storageFromEditFile = multer.diskStorage({
   destination: async (req, file, storegePath) => {
-    const name = req.body.name;
-    const nameLowerCase = name.toLowerCase();
-    storegePath(null, `public/images/projects/${nameLowerCase}`);
+    const folder = req.body.name;
+    storegePath(null, `public/images/projects/${folder}`);
   },
   filename: (req, file, setName) => setName(null, file.originalname),
 });
@@ -171,7 +177,12 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
             remarks: "כאן ניתן לכתוב הערות",
           },
         ],
-        gallery: [checkUrl(req.body.urlGallery, "urlGallery")],
+        gallery: [
+          {
+            url: checkUrl(req.body.urlGallery, "urlGallery"),
+            alt: checkReq(req.body.altGallery),
+          },
+        ],
       },
       userID: req.body.userID,
       isPublished: false,
@@ -201,148 +212,195 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
   return res.send("You are not authorized to create projects");
 });
 
+/************** edit *************/
 router.put(
   "/:id",
   uploadFromEditFile.array("images", 20),
   auth,
   async (req, res) => {
     if (req.user && req.user.isAdmin) {
-      let project = await Project.findOne({ _id: req.params.id });
-      if (!project) return status(400).send("no project found");
-      const checkName = name => name.replace(/-/g, " ");
+      try {
+        let project = await Project.findOne({ _id: req.params.id });
+        if (!project) return status(400).send("no project found");
+        const { body } = req;
 
-      const makeDir = key => {
-        const folder = req.body.name;
-        const image = path.basename(req.body[key]);
-        return `/images/projects/${folder}/${image}`;
-      };
+        const makeDir = key => {
+          const folder = req.body.name;
+          const image = path.basename(req.body[key]);
+          return `/images/projects/${folder}/${image}`;
+        };
 
-      project = {
-        name: checkName(req.body.name),
-        year: req.body.year,
-        size: req.body.size,
-        category: req.body.category,
-        address: {
-          country: req.body.country,
-          city: req.body.city,
-          street: req.body.street,
-          houseNumber: req.body.houseNumber,
-          zip: req.body.zip,
-        },
-        description: req.body.description,
-        files: {
-          contracts: [
-            {
-              name: project.files.contracts[0].name,
-              url: project.files.contracts[0].url,
-              remarks: project.files.contracts[0].remarks,
-            },
-          ],
-          licensing: [
-            {
-              name: project.files.licensing[0].name,
-              url: project.files.licensing[0].url,
-              remarks: project.files.licensing[0].remarks,
-            },
-          ],
-          experts: [
-            {
-              firstName: project.files.experts[0].firstName,
-              lastName: project.files.experts[0].lastName,
-              phone: project.files.experts[0].phone,
-              files: [
-                {
-                  name: project.files.experts[0].files[0].name,
-                  url: project.files.experts[0].files[0].url,
-                  remarks: project.files.experts[0].files[0].remarks,
-                },
-              ],
-            },
-          ],
-        },
+        const checkName = name => name.replace(/-/g, " ");
 
-        images: {
-          card: {
-            url: req.body.cardUrl
-              ? makeDir("cardUrl")
-              : project.images.card.url,
-            alt: req.body.cardAlt,
+        project = {
+          name: checkName(body.name),
+          year: project.year,
+          size: project.size,
+          category: project.category,
+          address: {
+            country: project.address.country,
+            city: project.address.city,
+            street: project.address.street,
+            houseNumber: project.address.houseNumber,
+            zip: body.zip,
           },
-          panorama: {
-            url: req.body.urlPamorama
-              ? req.body.urlPamorama
-              : project.images.panorama.url,
-            alt: req.body.altPamorama,
+          description: body.description,
+          files: {
+            contracts: project.files.contracts.map(i => {
+              return { name: i.name, url: i.url, remarks: i.remarks };
+            }),
+
+            licensing: project.files.licensing.map(i => {
+              return { name: i.name, url: i.url, remarks: i.remarks };
+            }),
+
+            experts: project.files.experts.map(i => {
+              return {
+                firstName: i.firstName,
+                lastName: i.lastName,
+                phone: i.phone,
+                files: i.files.map(x => {
+                  return {
+                    name: x.name,
+                    url: x.url,
+                    remarks: x.remarks,
+                  };
+                }),
+              };
+            }),
           },
-          before: [
-            {
-              url: req.body.urlBefore
-                ? makeDir("urlBefore")
-                : project.images.before[0].url,
-              alt: req.body.altBefore,
-              description: req.body.desBefore,
-            },
-          ],
-          constraction: [
-            {
-              url: req.body.urlConstraction
-                ? makeDir("urlConstraction")
-                : project.images.constraction[0].url,
-              alt: req.body.altConstraction,
-              description: req.body.desConstraction,
-            },
-          ],
-          sketches: [
-            {
-              url: req.body.urlSketch
-                ? makeDir("urlSketch")
-                : project.images.sketches[0].url,
-              alt: req.body.altSketch,
-              description: req.body.desSketch,
-              remarks: project.images.sketches[0].remarks,
-            },
-          ],
-          imaging: [
-            {
-              url: req.body.urlImaging
-                ? makeDir("urlImaging")
-                : project.images.imaging[0].url,
-              alt: req.body.altImaging,
-              description: req.body.desImaging,
-              remarks: project.images.imaging[0].remarks,
-            },
-          ],
-          references: [
-            {
-              url: project.images.references[0].url,
-              alt: project.images.references[0].alt,
-              remarks: project.images.references[0].remarks,
-            },
-          ],
-          plans: [
-            {
-              url: req.body.urlPlans
-                ? makeDir("urlPlans")
-                : project.images.plans[0].url,
-              alt: req.body.altPlans,
-              remarks: project.images.plans[0].remarks,
-            },
-          ],
-          gallery: [
-            req.body.urlGallery
-              ? makeDir("urlGallery")
-              : project.images.gallery[0],
-          ],
-        },
-        userID: project.userID,
-        isPublished: req.body.isPublished,
-      };
 
-      const { error } = validateProject(project);
-      if (error) return res.status(400).send(error.details[0].message);
+          images: {
+            card: {
+              url: body.cardUrl ? makeDir("cardUrl") : project.images.card.url,
+              alt: body.cardAlt,
+            },
+            panorama: {
+              url: body.urlPamorama
+                ? body.urlPamorama
+                : project.images.panorama.url,
+              alt: body.altPamorama,
+            },
 
-      project = await Project.findOneAndUpdate({ _id: req.params.id }, project);
-      return res.send(project);
+            before: project.images.before.map(i => {
+              return {
+                url: i.url,
+                alt: i.alt,
+                description: i.description,
+              };
+            }),
+            constraction: project.images.constraction.map(i => {
+              return {
+                url: i.url,
+                alt: i.alt,
+                description: i.description,
+              };
+            }),
+            sketches: project.images.sketches.map(i => {
+              return {
+                url: i.url,
+                alt: i.alt,
+                description: i.description,
+                remarks: i.remarks,
+              };
+            }),
+            imaging: project.images.imaging.map(i => {
+              return {
+                url: i.url,
+                alt: i.alt,
+                description: i.description,
+                remarks: i.remarks,
+              };
+            }),
+            references: project.images.references.map(i => {
+              return {
+                url: i.url,
+                alt: i.alt,
+                remarks: i.remarks,
+              };
+            }),
+
+            plans: project.images.plans.map(i => {
+              return {
+                url: i.url,
+                alt: i.alt,
+                remarks: i.remarks,
+              };
+            }),
+            gallery: project.images.gallery.map(i => {
+              return {
+                url: i.url,
+                alt: i.alt,
+              };
+            }),
+          },
+          userID: project.userID,
+          isPublished: body.isPublished,
+        };
+
+        if (body.urlBefore !== undefined) {
+          project.images.before.push({
+            url: makeDir("urlBefore"),
+            alt: body.altBefore,
+            description: body.desBefore,
+          });
+        }
+
+        if (body.urlConstraction !== undefined)
+          project.images.constraction.push({
+            url: makeDir("urlConstraction"),
+            alt: body.altConstraction,
+            description: body.desConstraction,
+          });
+
+        if (body.urlSketch !== undefined) {
+          project.images.sketches.push({
+            url: makeDir("urlSketch"),
+            alt: body.altSketch,
+            description: body.desSketch,
+            remarks: "כאן ניתן לכתוב הערות",
+          });
+        }
+
+        if (body.urlImaging !== undefined) {
+          project.images.imaging.push({
+            url: makeDir("urlImaging"),
+            alt: body.altImaging,
+            description: body.desImaging,
+            remarks: "כאן ניתן לכתוב הערות",
+          });
+        }
+
+        if (body.urlPlans !== undefined) {
+          project.images.plans.push({
+            url: makeDir("urlPlans"),
+            alt: body.altPlans,
+            remarks: "כאן ניתן לכתוב הערות",
+          });
+        }
+
+        if (body.urlGallery !== undefined) {
+          project.images.gallery.push({
+            url: makeDir("urlGallery"),
+            alt: body.altGallery,
+          });
+        }
+
+        const { error } = validateProject(project);
+        if (error) {
+          console.log(error.details[0].message);
+          return res.status(400).send(error.details[0].message);
+        }
+
+        project = await Project.findOneAndUpdate(
+          { _id: req.params.id },
+          project
+        );
+        return res.send(project);
+      } catch (error) {
+        console.log(error.message);
+        return res.status(400).send(error.message);
+      }
     }
     return res.send("You are not authorized to change projects");
   }
@@ -432,6 +490,786 @@ router.patch("/changeLikeStatus/:id", auth, async (req, res) => {
     await project.save();
     res.send(project);
   }
+});
+
+const storageImage = multer.diskStorage({
+  destination: async (req, file, storegePath) => {
+    const project = await Project.findById({ _id: req.params.id });
+    const name = project.name;
+    const folder = name.replace(/\s/g, "-");
+    storegePath(null, `public/images/projects/${folder}`);
+  },
+  filename: (req, file, setName) => setName(null, file.originalname),
+});
+
+const uploadImage = multer({
+  storage: storageImage,
+  limits: { fileSize: 1024 * 1024 * 10 },
+  fileFilter,
+});
+
+/************** Referances ****************/
+router.patch(
+  "/uploadReferance/:id",
+  uploadImage.array("images"),
+  auth,
+  async (req, res) => {
+    if (req.user && req.user.isAdmin) {
+      try {
+        let project = await Project.findById(req.params.id);
+        if (!project)
+          return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+        const userId = project.userID;
+        user = await User.findById(userId);
+        if (!user)
+          return res.send("This project is not associated with a user");
+
+        const name = project.name;
+        const folder = name.replace(/\s/g, "-");
+        const makeDir = (folder, key) => {
+          const image = path.basename(req.body[key]);
+          return `/images/projects/${folder}/${image}`;
+        };
+
+        const url = makeDir(folder, "imageUrl");
+        const alt = req.body.imageAlt;
+        const remarks = "לא מוגדר";
+
+        const { error } = validateImage(req.body);
+        if (error) return console.log(error.message);
+
+        project = await Project.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $push: {
+              "images.references": {
+                url,
+                alt,
+                remarks,
+              },
+            },
+          }
+        );
+        await project.save();
+
+        const to = user.email;
+        const subject = "Anu-architects send you a picture or a pdf file";
+        const link = `http://localhost:3000/private-area/project/references/${project._id}`;
+        const mail = { projectId: project._id, description: req.body.imageAlt };
+        const html = generateTemplate(mail).sendImage;
+
+        return mailReq(to, subject, link, html)
+          .then(res.send("Email sent!"))
+          .catch(error => res.status(404).send(error.message));
+      } catch (error) {
+        return res.status(404).send(error.message);
+      }
+    }
+    return res.send("only admin can add images!");
+  }
+);
+
+router.patch("/delete-referance/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "images.references": req.body,
+        }
+      );
+
+      await project.save();
+      return res.send(project);
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete images!");
+});
+
+router.patch("/edit-referance/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+      let array = project.images.references;
+
+      const references = array.filter(image => {
+        if (image._id == req.body.imageId) {
+          image.remarks = req.body.remarks;
+          return image;
+        }
+        return image;
+      });
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "images.references": references,
+        }
+      );
+
+      await project.save();
+
+      let userId = project.userID;
+      let user = await User.findById(userId);
+
+      const to = "anu.arch.rl@gmail.com";
+      const subject = "הלקוח העיר על התמונה שהעלית";
+      const link = `http://localhost:3000/private-area/project/references/${project._id}`;
+      const mail = {
+        projectId: project._id,
+        remarks: req.body.remarks,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        fild: "references",
+      };
+      const html = generateTemplate(mail).receiveComments;
+
+      return mailReq(to, subject, link, html)
+        .then(res.send("Email sent!"))
+        .catch(error => res.status(404).send(error.message));
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete images!");
+});
+
+/************** Sketches ****************/
+router.patch(
+  "/uploadSketches/:id",
+  uploadImage.array("images"),
+  auth,
+  async (req, res) => {
+    if (req.user && req.user.isAdmin) {
+      try {
+        let project = await Project.findById(req.params.id);
+        if (!project)
+          return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+        const userId = project.userID;
+        user = await User.findById(userId);
+        if (!user)
+          return res.send("This project is not associated with a user");
+
+        const name = project.name;
+        const folder = name.replace(/\s/g, "-");
+        const makeDir = (folder, key) => {
+          const image = path.basename(req.body[key]);
+          return `/images/projects/${folder}/${image}`;
+        };
+
+        const url = makeDir(folder, "imageUrl");
+        const alt = req.body.imageAlt;
+        const remarks = "לא מוגדר";
+
+        const { error } = validateImage(req.body);
+        if (error) return console.log(error.message);
+
+        project = await Project.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $push: {
+              "images.sketches": {
+                url,
+                alt,
+                remarks,
+              },
+            },
+          }
+        );
+        await project.save();
+
+        const to = user.email;
+        const subject = "Anu-architects send you a picture or a pdf file";
+        const link = `http://localhost:3000/private-area/project/sketches/${project._id}`;
+        const mail = { projectId: project._id, description: req.body.imageAlt };
+        const html = generateTemplate(mail).sendImage;
+
+        return mailReq(to, subject, link, html)
+          .then(res.send("Email sent!"))
+          .catch(error => res.status(404).send(error.message));
+      } catch (error) {
+        return res.status(404).send(error.message);
+      }
+    }
+    return res.send("only admin can add images!");
+  }
+);
+
+router.patch("/delete-sketches/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "images.sketches": req.body,
+        }
+      );
+
+      await project.save();
+      return res.send(project);
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete images!");
+});
+
+router.patch("/edit-sketches/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+      let array = project.images.sketches;
+
+      const sketches = array.filter(image => {
+        if (image._id == req.body.imageId) {
+          image.remarks = req.body.remarks;
+          return image;
+        }
+        return image;
+      });
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "images.sketches": sketches,
+        }
+      );
+
+      await project.save();
+
+      let userId = project.userID;
+      let user = await User.findById(userId);
+
+      const to = "anu.arch.rl@gmail.com";
+      const subject = "הלקוח העיר על התמונה שהעלית";
+      const link = `http://localhost:3000/private-area/project/sketches/${project._id}`;
+      const mail = {
+        projectId: project._id,
+        remarks: req.body.remarks,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        fild: "sketches",
+      };
+      const html = generateTemplate(mail).receiveComments;
+
+      return mailReq(to, subject, link, html)
+        .then(res.send("Email sent!"))
+        .catch(error => res.status(404).send(error.message));
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete images!");
+});
+
+/************** Imaging ****************/
+router.patch(
+  "/uploadImaging/:id",
+  uploadImage.array("images"),
+  auth,
+  async (req, res) => {
+    if (req.user && req.user.isAdmin) {
+      try {
+        let project = await Project.findById(req.params.id);
+        if (!project)
+          return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+        const userId = project.userID;
+        user = await User.findById(userId);
+        if (!user)
+          return res.send("This project is not associated with a user");
+
+        const name = project.name;
+        const folder = name.replace(/\s/g, "-");
+        const makeDir = (folder, key) => {
+          const image = path.basename(req.body[key]);
+          return `/images/projects/${folder}/${image}`;
+        };
+
+        const url = makeDir(folder, "imageUrl");
+        const alt = req.body.imageAlt;
+        const remarks = "לא מוגדר";
+
+        const { error } = validateImage(req.body);
+        if (error) return console.log(error.message);
+
+        project = await Project.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $push: {
+              "images.imaging": {
+                url,
+                alt,
+                remarks,
+              },
+            },
+          }
+        );
+        await project.save();
+
+        const to = user.email;
+        const subject = "Anu-architects send you a picture or a pdf file";
+        const link = `http://localhost:3000/private-area/project/imaging/${project._id}`;
+        const mail = { projectId: project._id, description: req.body.imageAlt };
+        const html = generateTemplate(mail).sendImage;
+
+        return mailReq(to, subject, link, html)
+          .then(res.send("Email sent!"))
+          .catch(error => res.status(404).send(error.message));
+      } catch (error) {
+        return res.status(404).send(error.message);
+      }
+    }
+    return res.send("only admin can add images!");
+  }
+);
+
+router.patch("/delete-imaging/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "images.imaging": req.body,
+        }
+      );
+
+      await project.save();
+      return res.send(project);
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete images!");
+});
+
+router.patch("/edit-imaging/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+      let array = project.images.imaging;
+
+      const imaging = array.filter(image => {
+        if (image._id == req.body.imageId) {
+          image.remarks = req.body.remarks;
+          return image;
+        }
+        return image;
+      });
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "images.imaging": imaging,
+        }
+      );
+
+      await project.save();
+
+      let userId = project.userID;
+      let user = await User.findById(userId);
+
+      const to = "anu.arch.rl@gmail.com";
+      const subject = "הלקוח העיר על התמונה שהעלית";
+      const link = `http://localhost:3000/private-area/project/imaging/${project._id}`;
+      const mail = {
+        projectId: project._id,
+        remarks: req.body.remarks,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        fild: "imaging",
+      };
+      const html = generateTemplate(mail).receiveComments;
+
+      return mailReq(to, subject, link, html)
+        .then(res.send("Email sent!"))
+        .catch(error => res.status(404).send(error.message));
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete images!");
+});
+
+/************** Plans ****************/
+router.patch(
+  "/uploadPlans/:id",
+  uploadImage.array("images"),
+  auth,
+  async (req, res) => {
+    if (req.user && req.user.isAdmin) {
+      try {
+        let project = await Project.findById(req.params.id);
+        if (!project)
+          return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+        const userId = project.userID;
+        user = await User.findById(userId);
+        if (!user)
+          return res.send("This project is not associated with a user");
+
+        const name = project.name;
+        const folder = name.replace(/\s/g, "-");
+        const makeDir = (folder, key) => {
+          const image = path.basename(req.body[key]);
+          return `/images/projects/${folder}/${image}`;
+        };
+
+        const url = makeDir(folder, "imageUrl");
+        const alt = req.body.imageAlt;
+        const remarks = "לא מוגדר";
+
+        const { error } = validateImage(req.body);
+        if (error) return res.send(error.message);
+
+        project = await Project.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $push: {
+              "images.plans": {
+                url,
+                alt,
+                remarks,
+              },
+            },
+          }
+        );
+        await project.save();
+
+        const to = user.email;
+        const subject = "Anu-architects send you a picture or a pdf file";
+        const link = `http://localhost:3000/private-area/project/plans/${project._id}`;
+        const mail = { projectId: project._id, description: req.body.imageAlt };
+        const html = generateTemplate(mail).sendImage;
+
+        return mailReq(to, subject, link, html)
+          .then(res.send("Email sent!"))
+          .catch(error => res.status(404).send(error.message));
+      } catch (error) {
+        return res.status(404).send(error.message);
+      }
+    }
+    return res.send("only admin can add images!");
+  }
+);
+
+router.patch("/delete-plans/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "images.plans": req.body,
+        }
+      );
+
+      await project.save();
+      return res.send(project);
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete images!");
+});
+
+router.patch("/edit-plans/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+      let array = project.images.plans;
+
+      const plans = array.filter(image => {
+        if (image._id == req.body.imageId) {
+          image.remarks = req.body.remarks;
+          return image;
+        }
+        return image;
+      });
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "images.plans": plans,
+        }
+      );
+
+      await project.save();
+
+      let userId = project.userID;
+      let user = await User.findById(userId);
+
+      const to = "anu.arch.rl@gmail.com";
+      const subject = "הלקוח העיר על התמונה שהעלית";
+      const link = `http://localhost:3000/private-area/project/plans/${project._id}`;
+      const mail = {
+        projectId: project._id,
+        remarks: req.body.remarks,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        fild: "plans",
+      };
+      const html = generateTemplate(mail).receiveComments;
+
+      return mailReq(to, subject, link, html)
+        .then(res.send("Email sent!"))
+        .catch(error => res.status(404).send(error.message));
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete images!");
+});
+
+/************** Constraction ****************/
+router.patch(
+  "/uploadConstraction/:id",
+  uploadImage.array("images"),
+  auth,
+  async (req, res) => {
+    if (req.user && req.user.isAdmin) {
+      try {
+        let project = await Project.findById(req.params.id);
+        if (!project)
+          return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+        const userId = project.userID;
+        user = await User.findById(userId);
+        if (!user)
+          return res.send("This project is not associated with a user");
+
+        const name = project.name;
+        const folder = name.replace(/\s/g, "-");
+        const makeDir = (folder, key) => {
+          const image = path.basename(req.body[key]);
+          return `/images/projects/${folder}/${image}`;
+        };
+
+        const url = makeDir(folder, "imageUrl");
+        const alt = req.body.imageAlt;
+        const remarks = "לא מוגדר";
+
+        const { error } = validateImage(req.body);
+        if (error) return res.send(error.message);
+
+        project = await Project.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $push: {
+              "images.constraction": {
+                url,
+                alt,
+                remarks,
+              },
+            },
+          }
+        );
+        await project.save();
+        return res.send(project);
+      } catch (error) {
+        return res.status(404).send(error.message);
+      }
+    }
+    return res.send("only admin can add images!");
+  }
+);
+
+router.patch("/delete-constraction/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "images.constraction": req.body,
+        }
+      );
+
+      await project.save();
+      return res.send(project);
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete images!");
+});
+
+/************** Before ****************/
+router.patch(
+  "/uploadBefore/:id",
+  uploadImage.array("images"),
+  auth,
+  async (req, res) => {
+    if (req.user && req.user.isAdmin) {
+      try {
+        let project = await Project.findById(req.params.id);
+        if (!project)
+          return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+        const userId = project.userID;
+        user = await User.findById(userId);
+        if (!user)
+          return res.send("This project is not associated with a user");
+
+        const name = project.name;
+        const folder = name.replace(/\s/g, "-");
+        const makeDir = (folder, key) => {
+          const image = path.basename(req.body[key]);
+          return `/images/projects/${folder}/${image}`;
+        };
+
+        const url = makeDir(folder, "imageUrl");
+        const alt = req.body.imageAlt;
+        const remarks = "לא מוגדר";
+
+        const { error } = validateImage(req.body);
+        if (error) return console.log(error.message);
+
+        project = await Project.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $push: {
+              "images.before": {
+                url,
+                alt,
+                remarks,
+              },
+            },
+          }
+        );
+        await project.save();
+        return res.send(project);
+      } catch (error) {
+        return res.status(404).send(error.message);
+      }
+    }
+    return res.send("only admin can add images!");
+  }
+);
+
+router.patch("/delete-before/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "images.before": req.body,
+        }
+      );
+
+      await project.save();
+      return res.send(project);
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete images!");
+});
+
+/************** Gallery ****************/
+router.patch(
+  "/uploadGallery/:id",
+  uploadImage.array("images"),
+  auth,
+  async (req, res) => {
+    if (req.user && req.user.isAdmin) {
+      try {
+        let project = await Project.findById(req.params.id);
+        if (!project)
+          return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+        const userId = project.userID;
+        user = await User.findById(userId);
+        if (!user)
+          return res.send("This project is not associated with a user");
+
+        const name = project.name;
+        const folder = name.replace(/\s/g, "-");
+        const makeDir = (folder, key) => {
+          const image = path.basename(req.body[key]);
+          return `/images/projects/${folder}/${image}`;
+        };
+
+        const url = makeDir(folder, "imageUrl");
+        const alt = req.body.imageAlt;
+        const remarks = "לא מוגדר";
+
+        const { error } = validateImage(req.body);
+        if (error) return console.log(error.message);
+
+        project = await Project.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $push: {
+              "images.gallery": {
+                url,
+                alt,
+              },
+            },
+          }
+        );
+        await project.save();
+        return res.send(project);
+      } catch (error) {
+        return res.status(404).send(error.message);
+      }
+    }
+    return res.send("only admin can add images!");
+  }
+);
+
+router.patch("/delete-gallery/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "images.gallery": req.body,
+        }
+      );
+
+      await project.save();
+      return res.send(project);
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete images!");
 });
 
 module.exports = router;

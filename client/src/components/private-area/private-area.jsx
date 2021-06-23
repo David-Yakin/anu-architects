@@ -10,6 +10,11 @@ import MyBefore from "./users/my-project/my-before";
 import MyConstraction from "./users/my-project/my-constraction";
 import MyGallery from "./users/my-project/my-gallery";
 
+import UploadReferance from "./users/my-project/upload-referance";
+import UploadPlans from "./users/my-project/upload-plans";
+import UploadSketches from "./users/my-project/upload-sketches";
+import UploadImaging from "./users/my-project/upload-imaging";
+
 import Singin from "./users/sign-in";
 import Singup from "./users/sign-up";
 import Logout from "../../components/private-area/users/logout";
@@ -76,27 +81,54 @@ class Main extends Component {
               path="/private-area/project/experts/:id"
               component={MyExperts}
             />
+
             <Route path="/private-area/project/plans/:id" component={MyPlans} />
+            <ProtectedRoute
+              path="/private-area/project/uploadPlans/:id"
+              component={UploadPlans}
+              title={"isAdmin"}
+            />
+
             <Route
               path="/private-area/project/sketches/:id"
               component={MySketchs}
             />
+            <ProtectedRoute
+              path="/private-area/project/uploadSketches/:id"
+              component={UploadSketches}
+              title={"isAdmin"}
+            />
+
             <Route
               path="/private-area/project/imaging/:id"
               component={MyImaging}
             />
+            <ProtectedRoute
+              path="/private-area/project/uploadImaging/:id"
+              component={UploadImaging}
+              title={"isAdmin"}
+            />
+
             <Route
               path="/private-area/project/references/:id"
               component={MyReferences}
             />
+            <ProtectedRoute
+              path="/private-area/project/uploadReferance/:id"
+              component={UploadReferance}
+              title={"isAdmin"}
+            />
+
             <Route
               path="/private-area/project/before/:id"
               component={MyBefore}
             />
+
             <Route
               path="/private-area/project/constraction/:id"
               component={MyConstraction}
             />
+
             <Route
               path="/private-area/project/gallery/:id"
               component={MyGallery}

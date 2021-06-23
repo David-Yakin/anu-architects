@@ -34,16 +34,18 @@ class EditProject extends Form {
       altImaging: "",
       desImaging: "",
       altPlans: "",
+      altGallery: "",
       isPublished: "",
     },
     errors: {},
     images: [],
+    project: "",
   };
 
   async componentDidMount() {
     const projectId = this.props.match.params.id;
     const { data } = await getProject(projectId);
-    this.setState({ data: this.mapToNewModel(data) });
+    this.setState({ data: this.mapToNewModel(data), project: data });
   }
 
   mapToNewModel(project) {
@@ -69,6 +71,7 @@ class EditProject extends Form {
       altImaging: project.images.imaging[0].alt,
       desImaging: project.images.imaging[0].description,
       altPlans: project.images.plans[0].alt,
+      altGallery: project.images.gallery[0].alt,
       isPublished: project.isPublished,
     };
   }
@@ -83,34 +86,43 @@ class EditProject extends Form {
     year: Joi.string().required().min(4).max(4).label("year"),
     size: Joi.string().required().min(1).max(255).label("size"),
     category: Joi.string().required().min(2).max(255).label("category"),
-    description: Joi.string().min(2).max(1024).label("description"),
-    contract: Joi.string().min(2).max(255).label("contract"),
-    licensing: Joi.string().min(2).max(255).label("licensing"),
-    expertFile: Joi.string().min(2).max(255).label("expertFile"),
-    expertPhone: Joi.string().min(8).max(14).label("expertPhone"),
-    expertLastName: Joi.string().min(2).max(256).label("expertLastName"),
-    expertFirstName: Joi.string().min(2).max(256).label("expertFirstName"),
+    description: Joi.string().required().min(2).max(1024).label("description"),
+
     cardUrl: Joi.string().min(2).max(255).label("cardUrl"),
-    cardAlt: Joi.string().min(2).max(255).label("cardAlt"),
+    cardAlt: Joi.string().required().min(2).max(255).label("cardAlt"),
+
     urlPamorama: Joi.string().min(2).max(255).label("urlPamorama"),
-    altPamorama: Joi.string().min(2).max(255).label("altPamorama"),
+    altPamorama: Joi.string().required().min(2).max(255).label("altPamorama"),
+
     urlBefore: Joi.string().min(2).max(255).label("urlBefore"),
-    altBefore: Joi.string().min(2).max(255).label("altBefore"),
-    desBefore: Joi.string().min(2).max(1024).label("desBefore"),
+    altBefore: Joi.string().required().min(2).max(255).label("altBefore"),
+    desBefore: Joi.string().required().min(2).max(1024).label("desBefore"),
+
     urlConstraction: Joi.string().min(2).max(255).label("urlConstraction"),
-    altConstraction: Joi.string().min(2).max(255).label("altConstraction"),
-    desConstraction: Joi.string().min(2).max(1024).label("desConstraction"),
+    altConstraction: Joi.string()
+      .required()
+      .min(2)
+      .max(255)
+      .label("altConstraction"),
+    desConstraction: Joi.string()
+      .required()
+      .min(2)
+      .max(1024)
+      .label("desConstraction"),
+
     urlGallery: Joi.string().min(2).max(1024).label("urlGallery"),
+    altGallery: Joi.string().required().min(2).max(1024).label("altGallery"),
+
     urlSketch: Joi.string().min(2).max(255).label("urlSketch"),
-    altSketch: Joi.string().min(2).max(255).label("altSketch"),
-    desSketch: Joi.string().min(2).max(1024).label("desSketch"),
+    altSketch: Joi.string().required().min(2).max(255).label("altSketch"),
+    desSketch: Joi.string().required().min(2).max(1024).label("desSketch"),
+
     urlImaging: Joi.string().min(2).max(255).label("urlImaging"),
-    altImaging: Joi.string().min(2).max(255).label("altImaging"),
-    desImaging: Joi.string().min(2).max(1024).label("desImaging"),
+    altImaging: Joi.string().required().min(2).max(255).label("altImaging"),
+    desImaging: Joi.string().required().min(2).max(1024).label("desImaging"),
+
     urlPlans: Joi.string().min(2).max(1024).label("urlPlans"),
-    altPlans: Joi.string().min(2).max(1024).label("altPlans"),
-    referenceUrl: Joi.string().min(2).max(1024).label("referenceUrl"),
-    referenceAlt: Joi.string().min(2).max(1024).label("referenceAlt"),
+    altPlans: Joi.string().required().min(2).max(1024).label("altPlans"),
     isPublished: Joi.boolean(),
   };
 
@@ -120,14 +132,7 @@ class EditProject extends Form {
   upload = () => {
     const {
       name,
-      country,
-      city,
-      houseNumber,
-      street,
       zip,
-      year,
-      size,
-      category,
       description,
       cardUrl,
       cardAlt,
@@ -140,6 +145,7 @@ class EditProject extends Form {
       altConstraction,
       desConstraction,
       urlGallery,
+      altGallery,
       urlSketch,
       altSketch,
       desSketch,
@@ -150,21 +156,14 @@ class EditProject extends Form {
       altPlans,
       isPublished,
     } = this.state.data;
+
     const { images } = this.state;
+
     const nameChecked = this.checkName(name.trim());
     const checkInput = (text, input) =>
       input ? formData.append(text, input.trim()) : null;
-
     const formData = new FormData();
-    formData.append("id", this.props.match.params.id);
     formData.append("name", nameChecked);
-    formData.append("country", this.checkSpaces(country.trim()));
-    formData.append("city", this.checkSpaces(city.trim()));
-    formData.append("houseNumber", houseNumber.trim());
-    formData.append("street", street.trim());
-    formData.append("year", year.trim());
-    formData.append("size", size.trim());
-    formData.append("category", category.trim());
     formData.append("zip", zip);
     formData.append("description", description);
     checkInput("cardUrl", cardUrl);
@@ -186,6 +185,7 @@ class EditProject extends Form {
     checkInput("urlPlans", urlPlans);
     formData.append("altPlans", altPlans);
     checkInput("urlGallery", urlGallery);
+    formData.append("altGallery", altGallery);
     formData.append("isPublished", isPublished);
 
     for (let x = 0; x < images.length; x++) {
@@ -193,6 +193,7 @@ class EditProject extends Form {
         formData.append("images", i);
       }
     }
+
     return formData;
   };
 
@@ -225,9 +226,10 @@ class EditProject extends Form {
         let changeStatus = !status;
         toast("ההרשאה עודכנה");
         changePublishStatus(projectId);
-        return this.setState({
+        this.setState({
           isPublished: (project.isPublished = changeStatus),
         });
+        return this.doSubmit();
       }
     });
   };
@@ -250,7 +252,8 @@ class EditProject extends Form {
               className="col-10 bg-light rounded mb-4 pt-2"
               onSubmit={this.handleSubmit}
               autoComplete="off"
-              method="POST">
+              method="POST"
+              encType="multipart/form-data">
               <h3 className="h3Title text-right">פרטים ראשוניים על הפרויקט</h3>
               <div className="d-flex flex-row-reverse">
                 {this.renderInput(
@@ -294,7 +297,7 @@ class EditProject extends Form {
                 {this.renderInput(
                   "size",
                   "גודל הנכס במטרים *",
-                  false,
+                  true,
                   "number",
                   "col-3 mb-2 px-0"
                 )}
@@ -308,7 +311,9 @@ class EditProject extends Form {
                     { text: "קומפלקס דירות", value: "apartment-complex" },
                     { text: "מלון", value: "hotel" },
                   ],
-                  "col-4 mb-2 px-2"
+                  "col-4 mb-2 px-2",
+                  "form-select p-2 rounded mb-2",
+                  true
                 )}
                 {this.renderInput(
                   "zip",
@@ -330,7 +335,7 @@ class EditProject extends Form {
                   "text",
                   "col-8 mb-2  pr-0 pl-1"
                 )}
-                {this.renderFileInput(
+                {this.renderFileInputEdit(
                   "cardUrl",
                   "העלה תמונה לכרטיס הפרוייקט",
                   false,
@@ -347,7 +352,7 @@ class EditProject extends Form {
                   "text",
                   "col-8 mb-2  pr-0 pl-1"
                 )}
-                {this.renderFileInput(
+                {this.renderFileInputEdit(
                   "urlPamorama",
                   "העלה תמונה של הנכס מבחוץ",
                   false,
@@ -364,7 +369,7 @@ class EditProject extends Form {
                   "text",
                   "col-8 mb-2  pr-0 pl-1"
                 )}
-                {this.renderFileInput(
+                {this.renderFileInputEdit(
                   "urlBefore",
                   "העלה התמונה לפני הבניה/ השיפוץ",
                   false,
@@ -385,7 +390,7 @@ class EditProject extends Form {
                   "text",
                   "col-8 mb-2  pr-0 pl-1"
                 )}
-                {this.renderFileInput(
+                {this.renderFileInputEdit(
                   "urlConstraction",
                   "העלה תמונה מהשיפוצים/ הבנייה",
                   false,
@@ -398,10 +403,22 @@ class EditProject extends Form {
                 "תיאור תהליך הבנייה / השיפוץ"
               )}
 
-              {this.renderFileInput(
-                "urlGallery",
-                "העלה תמונות של הפרויקט גמור"
-              )}
+              <div className="d-flex flex-row-reverse">
+                {this.renderInput(
+                  "altGallery",
+                  "תיאור התמונה לצורך נגישות",
+                  false,
+                  "text",
+                  "col-8 mb-2  pr-0 pl-1"
+                )}
+                {this.renderFileInputEdit(
+                  "urlGallery",
+                  "העלה תמונה לגלריית התמונות",
+                  false,
+                  "text",
+                  "col-4 mb-2 pr-1 pl-0"
+                )}
+              </div>
               <hr />
 
               <h3 className="h3Title text-right">תוכניות הדמיות וסקיצות</h3>
@@ -414,7 +431,7 @@ class EditProject extends Form {
                   "text",
                   "col-8 mb-2  pr-0 pl-1"
                 )}
-                {this.renderFileInput(
+                {this.renderFileInputEdit(
                   "urlSketch",
                   "העלה סקיצה",
                   false,
@@ -432,7 +449,7 @@ class EditProject extends Form {
                   "text",
                   "col-8 mb-2  pr-0 pl-1"
                 )}
-                {this.renderFileInput(
+                {this.renderFileInputEdit(
                   "urlImaging",
                   "העלה הדמייה",
                   false,
@@ -453,7 +470,7 @@ class EditProject extends Form {
                   "text",
                   "col-8 mb-2  pr-0 pl-1"
                 )}
-                {this.renderFileInput(
+                {this.renderFileInputEdit(
                   "urlPlans",
                   "העלה תוכנית ארכיטקטית ",
                   false,

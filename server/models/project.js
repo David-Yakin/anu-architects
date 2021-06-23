@@ -106,7 +106,12 @@ const schema = new mongoose.Schema({
         remarks: string1024,
       },
     ],
-    gallery: [string256],
+    gallery: [
+      {
+        url: string256,
+        alt: string256,
+      },
+    ],
   },
   userID: string256R,
   isPublished: { type: Boolean, default: false },
@@ -215,7 +220,12 @@ function validateProject(project) {
           remarks: Joi.string().min(2).max(1024),
         })
       ),
-      gallery: Joi.array().items(Joi.string().min(2).max(256)),
+      gallery: Joi.array().items(
+        Joi.object().keys({
+          url: Joi.string().min(2).max(256),
+          alt: Joi.string().min(2).max(256),
+        })
+      ),
     }),
     userID: Joi.string().min(2).max(256),
     isPublished: Joi.boolean(),
@@ -223,5 +233,14 @@ function validateProject(project) {
   return schema.validate(project);
 }
 
+function validateImage(image) {
+  const schema = Joi.object({
+    imageUrl: Joi.string().min(2).max(256).required(),
+    imageAlt: Joi.string().min(2).max(1024).required(),
+  });
+  return schema.validate(image);
+}
+
 exports.Project = Project;
 exports.validateProject = validateProject;
+exports.validateImage = validateImage;

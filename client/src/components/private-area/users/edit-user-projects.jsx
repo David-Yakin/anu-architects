@@ -100,7 +100,7 @@ const EditUserProjects = ({
               <Link
                 to={`/private-area/project/gallery/${project._id}`}
                 className="user-item">
-                תמונות אחרי הבניה והשיפוץ
+                גלריית תמונות
               </Link>
               <hr className="m-0" />
             </div>

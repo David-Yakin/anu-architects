@@ -21,7 +21,6 @@ const InputFile = ({
         name={name}
         id={name}
         hidden
-        multiple
         disabled={disabled}
       />
 

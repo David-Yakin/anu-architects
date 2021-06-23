@@ -79,7 +79,7 @@ class Projects extends Component {
                   key={project._id}
                   project={project}
                   width={
-                    "card mb-3  col-12 col-md-6 col-lg-4 py-0 px-2 border-0"
+                    "card mb-3 col-12 col-md-6 col-lg-4 py-0 px-2 border-0"
                   }
                   changePublishStatus={this.changePublishStatus}
                   changeLikeStatus={this.changeLikeStatus}

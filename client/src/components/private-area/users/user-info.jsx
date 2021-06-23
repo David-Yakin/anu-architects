@@ -138,7 +138,7 @@ class UserInfo extends Component {
           <Titles
             titleBold="דף"
             title="לקוח"
-            subTitle="כאן תוכל לראות את פרטי הלקוח המלאים "
+            subTitle="כאן תוכל לראות את פרטי הלקוח המלאים ואת הפרויקטים שלו. לחץ על הפרויקט על מנת להעלות אליו תמונות וקבצים "
           />
           <div className="center">{this.generateTable()}</div>
           <div className="accordion mb-4">{this.generateProject()}</div>

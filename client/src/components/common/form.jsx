@@ -89,7 +89,14 @@ class Form extends Component {
     this.setState({ data, errors, images: stateImage });
   };
 
-  renderFileInputEdit(name, text, accept, className, divClass) {
+  renderFileInputEdit(
+    name,
+    text,
+    disabled = false,
+    accept = ".png, .jpg, .jpeg",
+    divClass,
+    className
+  ) {
     const { data, errors } = this.state;
     return (
       <InputFile
@@ -101,10 +108,11 @@ class Form extends Component {
         value={data[name]}
         onChange={this.handleFileChangeEdit}
         error={errors[name]}
+        disabled={disabled}
       />
     );
   }
-
+  /** */
   handleFileChangeEdit = ({ target: input }) => {
     const errors = { ...this.state.errors };
     delete errors[input.name];
@@ -115,7 +123,7 @@ class Form extends Component {
     this.setState({ data, errors, images: stateImage });
   };
 
-  renderTextarea(name, placeholder, divClass, className, rows) {
+  renderTextarea(name, placeholder, divClass, className, rows, disabled) {
     const { data, errors } = this.state;
     return (
       <Textarea
@@ -127,11 +135,19 @@ class Form extends Component {
         rows={rows}
         onChange={this.handleChange}
         error={errors[name]}
+        disabled={disabled}
       />
     );
   }
 
-  renderSelectBox(name, defaultText, options, divClass, className) {
+  renderSelectBox(
+    name,
+    defaultText,
+    options,
+    divClass,
+    className,
+    disabled = false
+  ) {
     const { data, errors } = this.state;
     return (
       <SelectBox
@@ -143,6 +159,7 @@ class Form extends Component {
         value={data[name]}
         onChange={this.handleChange}
         error={errors[name]}
+        disabled={disabled}
       />
     );
   }
