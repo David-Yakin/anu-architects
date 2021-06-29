@@ -59,7 +59,7 @@ class UserInfo extends Component {
     if (projects.length) {
       return (
         <div className="center">
-          <div className="col-10 p-0">
+          <div className="col-12 p-0">
             {projects.map((project, index) => {
               return (
                 <EditUserProjects

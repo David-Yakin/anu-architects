@@ -67,6 +67,7 @@ app.use(morgan("dev"));
 
 // primaryQnas(data.qnas[0]);
 // primaryQnas(data.qnas[1]);
+// primaryQnas(data.qnas[2]);
 
 const PORT = 8181;
 app.listen(PORT, () =>
