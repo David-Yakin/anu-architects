@@ -18,15 +18,13 @@ const data = {
         contracts: [
           {
             name: "לא מוגדר",
-            url: "/images/logo/logo_black.png",
-            remarks: "לא מוגדר",
+            url: "/files/testing.pdf",
           },
         ],
         licensing: [
           {
             name: "לא מוגדר",
-            url: "/images/logo/logo_black.png",
-            remarks: "לא מוגדר",
+            url: "/files/testing.pdf",
           },
         ],
         experts: [
@@ -37,8 +35,7 @@ const data = {
             files: [
               {
                 name: "לא מוגדר",
-                url: "/images/logo/logo_black.png",
-                remarks: "לא מוגדר",
+                url: "/files/testing.pdf",
               },
             ],
           },
@@ -128,15 +125,13 @@ const data = {
         contracts: [
           {
             name: "לא מוגדר",
-            url: "/images/logo/logo_black.png",
-            remarks: "לא מוגדר",
+            url: "/files/testing.pdf",
           },
         ],
         licensing: [
           {
             name: "לא מוגדר",
-            url: "/images/logo/logo_black.png",
-            remarks: "לא מוגדר",
+            url: "/files/testing.pdf",
           },
         ],
         experts: [
@@ -147,8 +142,7 @@ const data = {
             files: [
               {
                 name: "לא מוגדר",
-                url: "/images/logo/logo_black.png",
-                remarks: "לא מוגדר",
+                url: "/files/testing.pdf",
               },
             ],
           },
@@ -238,15 +232,13 @@ const data = {
         contracts: [
           {
             name: "לא מוגדר",
-            url: "/images/logo/logo_black.png",
-            remarks: "לא מוגדר",
+            url: "/files/testing.pdf",
           },
         ],
         licensing: [
           {
             name: "לא מוגדר",
-            url: "/images/logo/logo_black.png",
-            remarks: "לא מוגדר",
+            url: "/files/testing.pdf",
           },
         ],
         experts: [
@@ -257,8 +249,7 @@ const data = {
             files: [
               {
                 name: "לא מוגדר",
-                url: "/images/logo/logo_black.png",
-                remarks: "לא מוגדר",
+                url: "/files/testing.pdf",
               },
             ],
           },
@@ -348,15 +339,13 @@ const data = {
         contracts: [
           {
             name: "לא מוגדר",
-            url: "/images/logo/logo_black.png",
-            remarks: "לא מוגדר",
+            url: "/files/testing.pdf",
           },
         ],
         licensing: [
           {
             name: "לא מוגדר",
-            url: "/images/logo/logo_black.png",
-            remarks: "לא מוגדר",
+            url: "/files/testing.pdf",
           },
         ],
         experts: [
@@ -367,8 +356,7 @@ const data = {
             files: [
               {
                 name: "לא מוגדר",
-                url: "/images/logo/logo_black.png",
-                remarks: "לא מוגדר",
+                url: "/files/testing.pdf",
               },
             ],
           },

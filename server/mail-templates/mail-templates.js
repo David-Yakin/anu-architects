@@ -39,7 +39,7 @@ function generateTemplate(mail) {
         <h2 align="right" cellpadding='0'>לחץ על הלינק על מנת לראות את התמונה</h2>
         </td>
     </tr>
-    <tr ><td><p>http://localhost:3000/private-area/project/references/${mail.projectId}</p></td></tr>
+    <tr ><td><p>http://localhost:3000/private-area/project/${mail.route}/${mail.projectId}</p></td></tr>
     <tr><td>${mail.description}</td></tr>
 </table>`,
     receiveComments: `<table cellpadding='0' cellspacing='0'>

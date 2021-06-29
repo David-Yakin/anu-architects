@@ -21,6 +21,7 @@ class UserInfo extends Component {
     user = userData.data;
     let projectsData = await getMyProject(user._id);
     let projects = projectsData.data;
+    projects[0].isOpen = true;
     this.setState({ user, projects });
   }
 

@@ -14,6 +14,8 @@ import UploadReferance from "./users/my-project/upload-referance";
 import UploadPlans from "./users/my-project/upload-plans";
 import UploadSketches from "./users/my-project/upload-sketches";
 import UploadImaging from "./users/my-project/upload-imaging";
+import UploadContracts from "./users/my-project/upload-contract";
+import UploadLicensing from "./users/my-project/upload-licensing";
 
 import Singin from "./users/sign-in";
 import Singup from "./users/sign-up";
@@ -73,10 +75,22 @@ class Main extends Component {
               path="/private-area/project/contracts/:id"
               component={MyContracts}
             />
+            <ProtectedRoute
+              path="/private-area/project/uploadContracts/:id"
+              component={UploadContracts}
+              title={"isAdmin"}
+            />
+
             <Route
               path="/private-area/project/licensing/:id"
               component={MyLicensing}
             />
+            <ProtectedRoute
+              path="/private-area/project/UploadLicensing/:id"
+              component={UploadLicensing}
+              title={"isAdmin"}
+            />
+
             <Route
               path="/private-area/project/experts/:id"
               component={MyExperts}

@@ -92,14 +92,14 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
           {
             name: checkPath(req.body.contract),
             url: checkUrl(req.body.contract, "contract"),
-            remarks: "כאן ניתן לכתוב הערות",
+            // remarks: "כאן ניתן לכתוב הערות",
           },
         ],
         licensing: [
           {
             name: checkPath(req.body.licensing),
             url: checkUrl(req.body.licensing, "licensing"),
-            remarks: "כאן ניתן לכתוב הערות",
+            // remarks: "כאן ניתן לכתוב הערות",
           },
         ],
         experts: [
@@ -111,7 +111,7 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
               {
                 name: checkPath(req.body.expertFile),
                 url: checkUrl(req.body.expertFile, "expertFile"),
-                remarks: "כאן ניתן לכתוב הערות",
+                // remarks: "כאן ניתן לכתוב הערות",
               },
             ],
           },
@@ -247,11 +247,13 @@ router.put(
           description: body.description,
           files: {
             contracts: project.files.contracts.map(i => {
-              return { name: i.name, url: i.url, remarks: i.remarks };
+              return { name: i.name, url: i.url };
+              // return { name: i.name, url: i.url, remarks: i.remarks };
             }),
 
             licensing: project.files.licensing.map(i => {
-              return { name: i.name, url: i.url, remarks: i.remarks };
+              return { name: i.name, url: i.url };
+              // return { name: i.name, url: i.url, remarks: i.remarks };
             }),
 
             experts: project.files.experts.map(i => {
@@ -263,7 +265,7 @@ router.put(
                   return {
                     name: x.name,
                     url: x.url,
-                    remarks: x.remarks,
+                    // remarks: x.remarks,
                   };
                 }),
               };
@@ -556,7 +558,11 @@ router.patch(
         const to = user.email;
         const subject = "Anu-architects send you a picture or a pdf file";
         const link = `http://localhost:3000/private-area/project/references/${project._id}`;
-        const mail = { projectId: project._id, description: req.body.imageAlt };
+        const mail = {
+          projectId: project._id,
+          description: req.body.imageAlt,
+          route: "references",
+        };
         const html = generateTemplate(mail).sendImage;
 
         return mailReq(to, subject, link, html)
@@ -691,7 +697,11 @@ router.patch(
         const to = user.email;
         const subject = "Anu-architects send you a picture or a pdf file";
         const link = `http://localhost:3000/private-area/project/sketches/${project._id}`;
-        const mail = { projectId: project._id, description: req.body.imageAlt };
+        const mail = {
+          projectId: project._id,
+          description: req.body.imageAlt,
+          route: "sketches",
+        };
         const html = generateTemplate(mail).sendImage;
 
         return mailReq(to, subject, link, html)
@@ -826,7 +836,11 @@ router.patch(
         const to = user.email;
         const subject = "Anu-architects send you a picture or a pdf file";
         const link = `http://localhost:3000/private-area/project/imaging/${project._id}`;
-        const mail = { projectId: project._id, description: req.body.imageAlt };
+        const mail = {
+          projectId: project._id,
+          description: req.body.imageAlt,
+          route: "imaging",
+        };
         const html = generateTemplate(mail).sendImage;
 
         return mailReq(to, subject, link, html)
@@ -961,7 +975,11 @@ router.patch(
         const to = user.email;
         const subject = "Anu-architects send you a picture or a pdf file";
         const link = `http://localhost:3000/private-area/project/plans/${project._id}`;
-        const mail = { projectId: project._id, description: req.body.imageAlt };
+        const mail = {
+          projectId: project._id,
+          description: req.body.imageAlt,
+          route: "plans",
+        };
         const html = generateTemplate(mail).sendImage;
 
         return mailReq(to, subject, link, html)
@@ -1046,6 +1064,199 @@ router.patch("/edit-plans/:id", auth, async (req, res) => {
     }
   }
   return res.send("only admin can delete images!");
+});
+
+/************** Contracts ****************/
+router.patch(
+  "/uploadContracts/:id",
+  uploadImage.array("images"),
+  auth,
+  async (req, res) => {
+    if (req.user && req.user.isAdmin) {
+      try {
+        let project = await Project.findById(req.params.id);
+        if (!project)
+          return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+        const userId = project.userID;
+        user = await User.findById(userId);
+        if (!user)
+          return res.send("This project is not associated with a user");
+
+        const name = project.name;
+        const folder = name.replace(/\s/g, "-");
+        const makeDir = (folder, key) => {
+          const image = path.basename(req.body[key]);
+          return `/images/projects/${folder}/${image}`;
+        };
+
+        const url = makeDir(folder, "imageUrl");
+        const alt = req.body.imageAlt;
+
+        const { error } = validateImage(req.body);
+        if (error) return res.send(error.message);
+
+        project = await Project.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $push: {
+              "files.contracts": {
+                url,
+                name: alt,
+              },
+            },
+          }
+        );
+        await project.save();
+
+        const to = user.email;
+        const subject = "Anu-architects send you a picture or a pdf file";
+        const link = `http://localhost:3000/private-area/project/contracts/${project._id}`;
+        const mail = {
+          projectId: project._id,
+          description: req.body.imageAlt,
+          route: "contracts",
+        };
+        const html = generateTemplate(mail).sendImage;
+
+        return mailReq(to, subject, link, html)
+          .then(res.send("Email sent!"))
+          .catch(error => res.status(404).send(error.message));
+      } catch (error) {
+        return res.status(404).send(error.message);
+      }
+    }
+    return res.send("only admin can add files!");
+  }
+);
+
+router.patch("/delete-contracts/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+      req.body.map(i => {
+        const obj = {
+          imageUrl: i.url,
+          imageAlt: i.name,
+        };
+        const { error } = validateImage(obj);
+        if (error) {
+          console.log(error);
+          return res.send(error.message);
+        }
+      });
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "files.contracts": req.body,
+        }
+      );
+      await project.save();
+      return res.send(project);
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete files!");
+});
+
+/************** Licensing ****************/
+router.patch(
+  "/UploadLicensing/:id",
+  uploadImage.array("images"),
+  auth,
+  async (req, res) => {
+    if (req.user && req.user.isAdmin) {
+      try {
+        let project = await Project.findById(req.params.id);
+        if (!project)
+          return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+        const userId = project.userID;
+        user = await User.findById(userId);
+        if (!user)
+          return res.send("This project is not associated with a user");
+
+        const name = project.name;
+        const folder = name.replace(/\s/g, "-");
+        const makeDir = (folder, key) => {
+          const image = path.basename(req.body[key]);
+          return `/images/projects/${folder}/${image}`;
+        };
+
+        const url = makeDir(folder, "imageUrl");
+        const alt = req.body.imageAlt;
+
+        const { error } = validateImage(req.body);
+        if (error) return res.send(error.message);
+
+        project = await Project.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $push: {
+              "files.licensing": {
+                url,
+                name: alt,
+              },
+            },
+          }
+        );
+        await project.save();
+
+        const to = user.email;
+        const subject = "Anu-architects send you a picture or a pdf file";
+        const link = `http://localhost:3000/private-area/project/licensing/${project._id}`;
+        const mail = {
+          projectId: project._id,
+          description: req.body.imageAlt,
+          route: "licensing",
+        };
+        const html = generateTemplate(mail).sendImage;
+
+        return mailReq(to, subject, link, html)
+          .then(res.send("Email sent!"))
+          .catch(error => res.status(404).send(error.message));
+      } catch (error) {
+        return res.status(404).send(error.message);
+      }
+    }
+    return res.send("only admin can add files!");
+  }
+);
+
+router.patch("/delete-licensing/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+      req.body.map(i => {
+        const obj = {
+          imageUrl: i.url,
+          imageAlt: i.name,
+        };
+        const { error } = validateImage(obj);
+        if (error) {
+          console.log(error);
+          return res.send(error.message);
+        }
+      });
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "files.licensing": req.body,
+        }
+      );
+
+      await project.save();
+      return res.send(project);
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete files!");
 });
 
 /************** Constraction ****************/
