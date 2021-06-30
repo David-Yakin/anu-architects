@@ -1,22 +1,22 @@
 import React from "react";
-import Titles from "../../../common/titles";
-import { url } from "../../../../config.json";
-import Form from "../../../common/form";
+import Titles from "../../../../common/titles";
+import { url } from "../../../../../config.json";
+import Form from "../../../../common/form";
 import {
   deleteImage,
   editImage,
   getProject,
-} from "../../../../services/projectService";
+} from "../../../../../services/projectService";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
-import { getCurrentUser } from "../../../../services/userService";
+import { getCurrentUser } from "../../../../../services/userService";
 import Swal from "sweetalert2";
 import { Link, Redirect } from "react-router-dom";
 
-class MySketchs extends Form {
+class MyImaging extends Form {
   state = {
     data: {
-      sketches: "",
+      imaging: "",
     },
     errors: {},
     counter: 0,
@@ -27,13 +27,13 @@ class MySketchs extends Form {
   async componentDidMount() {
     let project = this.props.match.params.id;
     let { data } = await getProject(project);
-    let images = data.images.sketches;
+    let images = data.images.imaging;
     const counter = images.length - 1;
     this.setState({ images, counter, project: data });
   }
 
   schema = {
-    sketches: Joi.string().required().min(2).max(255).label("sketches"),
+    imaging: Joi.string().required().min(2).max(255).label("imaging"),
   };
 
   doSubmit = async () => {
@@ -41,20 +41,20 @@ class MySketchs extends Form {
     const projectId = project._id;
     const image = {
       imageId: images[counter]._id,
-      remarks: data.sketches,
+      remarks: data.imaging,
     };
 
     try {
       const remarks = images.filter(image => {
         if (image._id === images[counter]._id) {
-          image.remarks = data.sketches;
+          image.remarks = data.imaging;
           return image;
         }
         return image;
       });
 
-      this.setState({ images: remarks, data: { sketches: "" } });
-      await editImage(projectId, image, "edit-sketches");
+      this.setState({ images: remarks, data: { imaging: "" } });
+      await editImage(projectId, image, "edit-imaging");
       return toast("ההערה נשלחה בהצלחה!");
     } catch (error) {
       return toast(error.message);
@@ -69,7 +69,7 @@ class MySketchs extends Form {
     } else if (symbol === "-") {
       counter !== 0 ? counter-- : (counter = images.length - 1);
     } else counter = symbol;
-    this.setState({ counter, data: { sketches: "" } });
+    this.setState({ counter, data: { imaging: "" } });
   }
 
   generateGallery() {
@@ -92,7 +92,7 @@ class MySketchs extends Form {
         );
       });
     }
-    return "אין סקיצות לפרויקט הזה במאגר המידע";
+    return "אין הדמיות לפרויקט הזה במאגר המידע";
   }
 
   handleImageDelete = async (imageID, e) => {
@@ -111,7 +111,7 @@ class MySketchs extends Form {
         images = images.filter(image => image._id !== imageID);
         const projectId = this.props.match.params.id;
         const counter = images.length - 1;
-        deleteImage(images, projectId, "delete-sketches");
+        deleteImage(images, projectId, "delete-imaging");
         this.setState({ images, counter });
         toast("התמונה נמחקה");
       }
@@ -137,7 +137,7 @@ class MySketchs extends Form {
           <article className="col-12 col-lg-4 text-rtl">
             <form onSubmit={this.handleSubmit} autoComplete="off" method="POST">
               {this.renderTextarea(
-                "sketches",
+                "imaging",
                 images[counter].remarks,
                 "my-2 px-0 col-12 border border-0",
                 "text-rtl m-0 col-12 rounded",
@@ -170,7 +170,7 @@ class MySketchs extends Form {
         </div>
       );
     }
-    return "אין סקיצות במאגר המידע";
+    return "אין הדמיות במאגר המידע";
   }
 
   render() {
@@ -181,18 +181,18 @@ class MySketchs extends Form {
       return (
         <div id="theProcess" className=" container-fluid">
           <Titles
-            titleBold="סקיצות"
+            titleBold="הדמיות"
             title=""
             subTitle={`כאן תוכל לראות ${
               user && user.isAdmin ? "להוסיף למחוק" : " "
-            }  ולהעיר על הסקיצות `}
+            }  ולהעיר על הדמיות `}
           />
 
           <div className="center pb-3">
             <Link
-              to={`/private-area/project/uploadSketches/${this.props.match.params.id}`}
+              to={`/private-area/project/uploadImaging/${this.props.match.params.id}`}
               className="btn btn-outline-success border border-dark mt-2 ">
-              &#10133; העלה סקיצה חדשה
+              &#10133; העלה הדמיה חדשה
             </Link>
           </div>
 
@@ -216,4 +216,4 @@ class MySketchs extends Form {
   }
 }
 
-export default MySketchs;
+export default MyImaging;

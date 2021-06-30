@@ -1,21 +1,28 @@
 import React, { Component } from "react";
-import MyContracts from "./users/my-project/my-contracts";
-import MySketchs from "./users/my-project/my-sketchs";
-import MyLicensing from "./users/my-project/my-licensing";
-import MyExperts from "./users/my-project/my-experts";
-import MyPlans from "./users/my-project/my-plans";
-import MyImaging from "./users/my-project/my-imaging";
-import MyReferences from "./users/my-project/my-references";
+import MyContracts from "./users/my-project/contracts/my-contracts";
+import UploadContracts from "./users/my-project/contracts/upload-contract";
+
+import MySketchs from "./users/my-project/sketchs/my-sketchs";
+import UploadSketches from "./users/my-project/sketchs/upload-sketches";
+
+import MyLicensing from "./users/my-project/licensing/my-licensing";
+import UploadLicensing from "./users/my-project/licensing/upload-licensing";
+
+import MyExperts from "./users/my-project/experts/my-experts";
+import CreateExpert from "./users/my-project/experts/create-expert";
+
+import MyPlans from "./users/my-project/plans/my-plans";
+import UploadPlans from "./users/my-project/plans/upload-plans";
+
+import MyImaging from "./users/my-project/imaging/my-imaging";
+import UploadImaging from "./users/my-project/imaging/upload-imaging";
+
+import MyReferences from "./users/my-project/referance/my-references";
+import UploadReferance from "./users/my-project/referance/upload-referance";
+
 import MyBefore from "./users/my-project/my-before";
 import MyConstraction from "./users/my-project/my-constraction";
 import MyGallery from "./users/my-project/my-gallery";
-
-import UploadReferance from "./users/my-project/upload-referance";
-import UploadPlans from "./users/my-project/upload-plans";
-import UploadSketches from "./users/my-project/upload-sketches";
-import UploadImaging from "./users/my-project/upload-imaging";
-import UploadContracts from "./users/my-project/upload-contract";
-import UploadLicensing from "./users/my-project/upload-licensing";
 
 import Singin from "./users/sign-in";
 import Singup from "./users/sign-up";
@@ -94,6 +101,11 @@ class Main extends Component {
             <Route
               path="/private-area/project/experts/:id"
               component={MyExperts}
+            />
+            <ProtectedRoute
+              path="/private-area/project/CreateExpert/:id"
+              component={CreateExpert}
+              title={"isAdmin"}
             />
 
             <Route path="/private-area/project/plans/:id" component={MyPlans} />

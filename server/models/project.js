@@ -38,18 +38,20 @@ const schema = new mongoose.Schema({
   files: {
     contracts: [{ name: string256, url: string256 }],
     licensing: [{ name: string256, url: string256 }],
-    // contracts: [{ name: string256, url: string256, remarks: string1024 }],
-    // licensing: [{ name: string256, url: string256, remarks: string1024 }],
     experts: [
       {
         firstName: string256,
         lastName: string256,
         phone: string256,
+        category: {
+          text: string256,
+          value: string256,
+        },
+
         files: [
           {
             name: string256,
             url: string256,
-            // remarks: string1024,
           },
         ],
       },
@@ -144,14 +146,12 @@ function validateProject(project) {
         Joi.object().keys({
           name: Joi.string().min(2).max(256),
           url: Joi.string().min(2).max(256),
-          // remarks: Joi.string().min(2).max(1024),
         })
       ),
       licensing: Joi.array().items(
         Joi.object().keys({
           name: Joi.string().min(2).max(256),
           url: Joi.string().min(2).max(256),
-          // remarks: Joi.string().min(2).max(1024),
         })
       ),
       experts: Joi.array().items(
@@ -159,11 +159,14 @@ function validateProject(project) {
           firstName: Joi.string().min(2).max(256),
           lastName: Joi.string().min(2).max(256),
           phone: Joi.string().min(2).max(256),
+          category: Joi.object().keys({
+            text: Joi.string().min(2).max(256),
+            value: Joi.string().min(2).max(256),
+          }),
           files: Joi.array().items(
             Joi.object().keys({
               name: Joi.string().min(2).max(256),
               url: Joi.string().min(2).max(256),
-              // remarks: Joi.string().min(2).max(1024),
             })
           ),
         })

@@ -58,6 +58,8 @@ const upload = multer({
   fileFilter,
 });
 
+/************* Create Project *********************/
+
 router.post("/", upload.array("images", 30), auth, async (req, res) => {
   if (req.user && req.user.isAdmin) {
     const { name } = req.body;
@@ -92,14 +94,12 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
           {
             name: checkPath(req.body.contract),
             url: checkUrl(req.body.contract, "contract"),
-            // remarks: "כאן ניתן לכתוב הערות",
           },
         ],
         licensing: [
           {
             name: checkPath(req.body.licensing),
             url: checkUrl(req.body.licensing, "licensing"),
-            // remarks: "כאן ניתן לכתוב הערות",
           },
         ],
         experts: [
@@ -107,11 +107,11 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
             firstName: checkReq(req.body.expertFirstName),
             lastName: checkReq(req.body.expertLastName),
             phone: checkReq(req.body.expertPhone),
+            category: { text: "בחר", value: "all" },
             files: [
               {
-                name: checkPath(req.body.expertFile),
+                name: checkPath(req.body.expertFileAtl),
                 url: checkUrl(req.body.expertFile, "expertFile"),
-                // remarks: "כאן ניתן לכתוב הערות",
               },
             ],
           },
@@ -212,7 +212,8 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
   return res.send("You are not authorized to create projects");
 });
 
-/************** edit *************/
+/************** Edit Project *************/
+
 router.put(
   "/:id",
   uploadFromEditFile.array("images", 20),
@@ -248,12 +249,10 @@ router.put(
           files: {
             contracts: project.files.contracts.map(i => {
               return { name: i.name, url: i.url };
-              // return { name: i.name, url: i.url, remarks: i.remarks };
             }),
 
             licensing: project.files.licensing.map(i => {
               return { name: i.name, url: i.url };
-              // return { name: i.name, url: i.url, remarks: i.remarks };
             }),
 
             experts: project.files.experts.map(i => {
@@ -261,11 +260,11 @@ router.put(
                 firstName: i.firstName,
                 lastName: i.lastName,
                 phone: i.phone,
+                category: { text: i.category.text, value: i.category.value },
                 files: i.files.map(x => {
                   return {
                     name: x.name,
                     url: x.url,
-                    // remarks: x.remarks,
                   };
                 }),
               };
@@ -407,6 +406,8 @@ router.put(
     return res.send("You are not authorized to change projects");
   }
 );
+
+/******************* Delete Project *********************/
 
 router.delete("/:id", auth, async (req, res) => {
   if (req.user && req.user.isAdmin) {
@@ -1165,6 +1166,104 @@ router.patch("/delete-contracts/:id", auth, async (req, res) => {
 /************** Licensing ****************/
 router.patch(
   "/UploadLicensing/:id",
+  uploadImage.array("images"),
+  auth,
+  async (req, res) => {
+    if (req.user && req.user.isAdmin) {
+      try {
+        let project = await Project.findById(req.params.id);
+        if (!project)
+          return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+
+        const userId = project.userID;
+        user = await User.findById(userId);
+        if (!user)
+          return res.send("This project is not associated with a user");
+
+        const name = project.name;
+        const folder = name.replace(/\s/g, "-");
+        const makeDir = (folder, key) => {
+          const image = path.basename(req.body[key]);
+          return `/images/projects/${folder}/${image}`;
+        };
+
+        const url = makeDir(folder, "imageUrl");
+        const alt = req.body.imageAlt;
+
+        const { error } = validateImage(req.body);
+        if (error) return res.send(error.message);
+
+        project = await Project.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $push: {
+              "files.licensing": {
+                url,
+                name: alt,
+              },
+            },
+          }
+        );
+        await project.save();
+
+        const to = user.email;
+        const subject = "Anu-architects send you a picture or a pdf file";
+        const link = `http://localhost:3000/private-area/project/licensing/${project._id}`;
+        const mail = {
+          projectId: project._id,
+          description: req.body.imageAlt,
+          route: "licensing",
+        };
+        const html = generateTemplate(mail).sendImage;
+
+        return mailReq(to, subject, link, html)
+          .then(res.send("Email sent!"))
+          .catch(error => res.status(404).send(error.message));
+      } catch (error) {
+        return res.status(404).send(error.message);
+      }
+    }
+    return res.send("only admin can add files!");
+  }
+);
+
+router.patch("/delete-licensing/:id", auth, async (req, res) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      let project = await Project.findById(req.params.id);
+      if (!project) return res.status(404).send("הפרויקט לא נמצא במאגר המידע");
+      req.body.map(i => {
+        const obj = {
+          imageUrl: i.url,
+          imageAlt: i.name,
+        };
+        const { error } = validateImage(obj);
+        if (error) {
+          console.log(error);
+          return res.send(error.message);
+        }
+      });
+
+      project = await Project.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          "files.licensing": req.body,
+        }
+      );
+
+      await project.save();
+      return res.send(project);
+    } catch (error) {
+      return res.status(404).send(error.message);
+    }
+  }
+  return res.send("only admin can delete files!");
+});
+
+/************** Experts ****************/
+
+router.patch(
+  "/UploadExperts/:id",
   uploadImage.array("images"),
   auth,
   async (req, res) => {

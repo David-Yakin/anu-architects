@@ -1,11 +1,11 @@
 import React from "react";
 import Joi from "joi-browser";
-import Form from "../../../common/form";
+import Form from "../../../../common/form";
 import { Link } from "react-router-dom";
-import { uploadImage } from "../../../../services/projectService";
+import { uploadImage } from "../../../../../services/projectService";
 import { toast } from "react-toastify";
 
-class UploadPlans extends Form {
+class UploadLicensing extends Form {
   state = {
     data: { imageUrl: "", imageAlt: "" },
     images: [],
@@ -36,10 +36,10 @@ class UploadPlans extends Form {
     try {
       const image = this.upload();
       const projectId = this.props.match.params.id;
-      await uploadImage(image, projectId, "uploadPlans");
+      await uploadImage(image, projectId, "uploadLicensing");
       toast("הפרויקט עודכן בהצלחה!");
       return this.props.history.replace(
-        `/private-area/project/plans/${this.props.match.params.id}`
+        `/private-area/project/licensing/${this.props.match.params.id}`
       );
     } catch (error) {
       console.log(error.message);
@@ -59,16 +59,16 @@ class UploadPlans extends Form {
             method="POST"
             className="border border-light rounded p-4 bg-light">
             <h1 className="h3 mb-3 font-weight-normal text-dark text-center px-0">
-              תוכניות ארכיטקטיות
+              טופסי רישוי
             </h1>
 
-            {this.renderFileInput("imageUrl", "העלה")}
-            {this.renderInput("imageAlt", "תאר את התכנית הארכיטקטית")}
+            {this.renderFileInput("imageUrl", "העלה", false, ".pdf")}
+            {this.renderInput("imageAlt", "תאר את סוג טופס הרישוי")}
 
             <div className="center">
               <Link
                 className="a-herf mb-2 text-rtl"
-                to={`/private-area/project/plans/${this.props.match.params.id}`}>
+                to={`/private-area/project/licensing/${this.props.match.params.id}`}>
                 {" "}
                 התחרטת?
                 <span className="font-weight-bold text-primary"> לחץ כאן</span>
@@ -83,4 +83,4 @@ class UploadPlans extends Form {
   }
 }
 
-export default UploadPlans;
+export default UploadLicensing;

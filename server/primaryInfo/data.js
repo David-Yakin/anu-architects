@@ -32,6 +32,7 @@ const data = {
             firstName: "לא מוגדר",
             lastName: "לא מוגדר",
             phone: "לא מוגדר",
+            category: { text: "בחר", value: "all" },
             files: [
               {
                 name: "לא מוגדר",
@@ -139,6 +140,7 @@ const data = {
             firstName: "לא מוגדר",
             lastName: "לא מוגדר",
             phone: "לא מוגדר",
+            category: { text: "בחר", value: "all" },
             files: [
               {
                 name: "לא מוגדר",
@@ -246,6 +248,7 @@ const data = {
             firstName: "לא מוגדר",
             lastName: "לא מוגדר",
             phone: "לא מוגדר",
+            category: { text: "בחר", value: "all" },
             files: [
               {
                 name: "לא מוגדר",
@@ -353,6 +356,7 @@ const data = {
             firstName: "לא מוגדר",
             lastName: "לא מוגדר",
             phone: "לא מוגדר",
+            category: { text: "בחר", value: "all" },
             files: [
               {
                 name: "לא מוגדר",

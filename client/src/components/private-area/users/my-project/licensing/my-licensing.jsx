@@ -1,16 +1,18 @@
-import Titles from "../../../common/titles";
-import { url } from "../../../../config.json";
+import Titles from "../../../../common/titles";
+import { url } from "../../../../../config.json";
 import React, { useState, useEffect } from "react";
-import { getProject } from "../../../../services/projectService";
+import {
+  getProject,
+  deleteImage,
+} from "../../../../../services/projectService";
 import { useParams } from "react-router-dom";
 import WebViewer from "@pdftron/webviewer";
-import { getCurrentUser } from "../../../../services/userService";
+import { getCurrentUser } from "../../../../../services/userService";
 import { Link, Redirect } from "react-router-dom";
 import Swal from "sweetalert2";
-import { deleteImage } from "../../../../services/projectService";
 import { toast } from "react-toastify";
 
-const MyContracts = () => {
+const MyLicensing = () => {
   const [project, setProject] = useState({});
   const [counter, setCounter] = useState(0);
   const [files, setFiles] = useState([]);
@@ -23,13 +25,14 @@ const MyContracts = () => {
     getProject(id)
       .then(res => {
         setProject(res.data);
-        setFiles(res.data.files.contracts);
+        setFiles(res.data.files.licensing);
       })
       .catch(error => console.log(error.message));
   }, []);
 
   useEffect(() => {
     if (files.length > 0) {
+      // setCounter(files.length - 1);
       WebViewer(
         {
           path: `${url}/lib`,
@@ -43,12 +46,12 @@ const MyContracts = () => {
         })
         .catch(error => console.log(error));
     }
-  }, [files, viewerUrl, counter]);
+  }, [files, viewerUrl, counter, reverseFiles]);
 
   const handleImageDelete = async fileID => {
     Swal.fire({
       title: "?האם אתה בטוח",
-      text: "!החוזה ימחק באופן סופי ממאגר המידע",
+      text: "!טופס הרישוי ימחק באופן סופי ממאגר המידע",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
@@ -59,7 +62,7 @@ const MyContracts = () => {
         const filter = files.filter(file => file._id !== fileID);
         setFiles(filter);
         setCounter(filter.length - 1);
-        deleteImage(filter, id, "delete-contracts");
+        deleteImage(filter, id, "delete-licensing");
         toast("הקובץ נמחק בהצלחה!");
       }
     });
@@ -70,19 +73,19 @@ const MyContracts = () => {
     return (
       <div className="container">
         <Titles
-          titleBold="חוזים"
-          title=" "
+          titleBold="טופסי"
+          title="רישוי"
           subTitle={`כאן תוכל לראות ${
             user.isAdmin && "להוסיף ולמחוק "
-          }את החוזים של הפרויקט ${project.name}`}
+          }את טופסי הרישוי של הפרויקט ${project.name}`}
         />
 
         {/********** PDF upload Link ************/}
         <div className="center pb-3">
           <Link
-            to={`/private-area/project/uploadContracts/${id}`}
+            to={`/private-area/project/uploadLicensing/${id}`}
             className="btn btn-outline-success border border-dark col-12 col-md-6 ">
-            &#10133; העלה חוזה חדש
+            &#10133; העלה טופס רישוי חדש
           </Link>
         </div>
 
@@ -94,7 +97,8 @@ const MyContracts = () => {
           <button
             className="btn btn-outline-danger col-12 col-md-6 my-4"
             onClick={() => handleImageDelete(reverseFiles[counter]._id)}>
-            <i className="fas fa-trash-alt mr-2"></i> מחק את החוזה ממאגר המידע
+            <i className="fas fa-trash-alt mr-2"></i> מחק את טופס הרישוי ממאגר
+            המידע
           </button>
         </div>
 
@@ -132,4 +136,4 @@ const MyContracts = () => {
     );
 };
 
-export default MyContracts;
+export default MyLicensing;

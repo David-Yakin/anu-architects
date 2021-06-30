@@ -1,15 +1,15 @@
 import React from "react";
-import Titles from "../../../common/titles";
-import { url } from "../../../../config.json";
-import Form from "../../../common/form";
+import Titles from "../../../../common/titles";
+import { url } from "../../../../../config.json";
+import Form from "../../../../common/form";
 import {
   deleteImage,
   editImage,
   getProject,
-} from "../../../../services/projectService";
+} from "../../../../../services/projectService";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
-import { getCurrentUser } from "../../../../services/userService";
+import { getCurrentUser } from "../../../../../services/userService";
 import Swal from "sweetalert2";
 import { Link, Redirect } from "react-router-dom";
 

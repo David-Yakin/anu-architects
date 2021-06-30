@@ -1,11 +1,11 @@
 import React from "react";
 import Joi from "joi-browser";
-import Form from "../../../common/form";
+import Form from "../../../../common/form";
 import { Link } from "react-router-dom";
-import { uploadImage } from "../../../../services/projectService";
+import { uploadImage } from "../../../../../services/projectService";
 import { toast } from "react-toastify";
 
-class UploadReferance extends Form {
+class UploadPlans extends Form {
   state = {
     data: { imageUrl: "", imageAlt: "" },
     images: [],
@@ -36,10 +36,10 @@ class UploadReferance extends Form {
     try {
       const image = this.upload();
       const projectId = this.props.match.params.id;
-      await uploadImage(image, projectId, "uploadReferance");
+      await uploadImage(image, projectId, "uploadPlans");
       toast("הפרויקט עודכן בהצלחה!");
       return this.props.history.replace(
-        `/private-area/project/references/${this.props.match.params.id}`
+        `/private-area/project/plans/${this.props.match.params.id}`
       );
     } catch (error) {
       console.log(error.message);
@@ -59,16 +59,16 @@ class UploadReferance extends Form {
             method="POST"
             className="border border-light rounded p-4 bg-light">
             <h1 className="h3 mb-3 font-weight-normal text-dark text-center px-0">
-              תמונת רפרנס
+              תוכניות ארכיטקטיות
             </h1>
 
             {this.renderFileInput("imageUrl", "העלה")}
-            {this.renderInput("imageAlt", "תאר את תמונת הרפרנס")}
+            {this.renderInput("imageAlt", "תאר את התכנית הארכיטקטית")}
 
             <div className="center">
               <Link
                 className="a-herf mb-2 text-rtl"
-                to={`/private-area/project/references/${this.props.match.params.id}`}>
+                to={`/private-area/project/plans/${this.props.match.params.id}`}>
                 {" "}
                 התחרטת?
                 <span className="font-weight-bold text-primary"> לחץ כאן</span>
@@ -83,4 +83,4 @@ class UploadReferance extends Form {
   }
 }
 
-export default UploadReferance;
+export default UploadPlans;

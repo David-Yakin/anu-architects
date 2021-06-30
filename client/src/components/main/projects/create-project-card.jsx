@@ -36,6 +36,8 @@ class CreateProject extends Form {
     expertPhone: Joi.string().min(8).max(14).label("expertPhone"),
     expertLastName: Joi.string().min(2).max(256).label("expertLastName"),
     expertFirstName: Joi.string().min(2).max(256).label("expertFirstName"),
+    expertCategory: Joi.string().min(2).max(255).label("expertCategory"),
+    expertFileAtl: Joi.string().min(2).max(255).label("expertFileAtl"),
     cardUrl: Joi.string().min(2).max(255).label("cardUrl"),
     cardAlt: Joi.string().min(2).max(255).label("cardAlt"),
     urlPamorama: Joi.string().min(2).max(255).label("urlPamorama"),
@@ -69,6 +71,7 @@ class CreateProject extends Form {
 
   upload = () => {
     const {
+      expertFileAtl,
       country,
       city,
       houseNumber,
@@ -84,6 +87,7 @@ class CreateProject extends Form {
       expertPhone,
       expertLastName,
       expertFirstName,
+      expertCategory,
       cardUrl,
       cardAlt,
       urlPamorama,
@@ -135,6 +139,7 @@ class CreateProject extends Form {
     checkInput("expertLastName", expertLastName);
     checkInput("expertPhone", expertPhone);
     checkInput("expertFile", expertFile);
+    checkInput("expertFileAtl", expertFileAtl);
     checkInput("cardUrl", cardUrl);
     checkInput("cardAlt", cardAlt);
     checkInput("urlPamorama", urlPamorama);
@@ -157,6 +162,7 @@ class CreateProject extends Form {
     checkInput("altPlans", altPlans);
     checkInput("urlGallery", urlGallery);
     checkInput("altGallery", altGallery);
+    checkInput("expertCategory", expertCategory);
 
     for (let x = 0; x < images.length; x++) {
       for (let i of images[x]) {
@@ -307,14 +313,44 @@ class CreateProject extends Form {
                   "טלפון",
                   false,
                   "text",
-                  "col-3 mb-2 px-2"
+                  "col-4 mb-2 px-2"
+                )}
+                {this.renderSelectBox("expertCategory", "בחר קטגוריה", [
+                  { text: "ייזום וארגון", value: "entrepreneur" },
+                  { text: "ניהול פרויקט", value: "project-managing" },
+                  { text: "אדריכל שימור", value: "conservation-architect" },
+                  { text: "קונסטרוקציה", value: "construction" },
+                  { text: "מיזוג אוויר", value: "air-conditioning" },
+                  { text: "אינסטלציה", value: "plumbing" },
+                  { text: "חשמל", value: "electricity" },
+                  { text: "בריכות", value: "pools" },
+                  { text: "הידרולוג", value: "Hydrologist" },
+                  { text: "קרקע", value: "ground" },
+                  { text: "מעליות", value: "elevators" },
+                  { text: "בטיחות", value: "safety" },
+                  { text: "מיגון", value: "protection" },
+                  { text: "אשפה", value: "trash" },
+                  { text: "איטום", value: "sealing" },
+                  { text: "אקוסטיקה", value: "acoustics" },
+                  { text: "העתקות", value: "duplication" },
+                  "col-2 mb-2 pl-0",
+                ])}
+              </div>
+
+              <div className="d-flex flex-row-reverse">
+                {this.renderInput(
+                  "expertFileAtl",
+                  "שם או תיאור סוג הטופס",
+                  false,
+                  "text",
+                  "col-8 mb-2  pr-0 pl-1"
                 )}
                 {this.renderFileInput(
                   "expertFile",
                   "העלה קובץ PDF",
                   false,
                   ".pdf",
-                  "col-3 mb-2 pl-0"
+                  "col-4 mb-2 pr-1 pl-0"
                 )}
               </div>
               <hr />

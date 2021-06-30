@@ -202,7 +202,7 @@ class MyBefore extends Form {
     const project = this.state.project;
     if (!user | (user.isAdmin === false))
       return <Redirect to="/private-area/sign-in" />;
-    if (user && user.isAdmin | (user._i === project.userID))
+    if (user && user.isAdmin | (user._id === project.userID))
       return (
         <div id="theProcess" className=" container-fluid">
           <Titles

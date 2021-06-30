@@ -1,8 +1,8 @@
 import React from "react";
 import Joi from "joi-browser";
-import Form from "../../../common/form";
+import Form from "../../../../common/form";
 import { Link } from "react-router-dom";
-import { uploadImage } from "../../../../services/projectService";
+import { uploadImage } from "../../../../../services/projectService";
 import { toast } from "react-toastify";
 
 class UploadSketches extends Form {

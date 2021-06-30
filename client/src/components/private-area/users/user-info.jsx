@@ -21,7 +21,7 @@ class UserInfo extends Component {
     user = userData.data;
     let projectsData = await getMyProject(user._id);
     let projects = projectsData.data;
-    projects[0].isOpen = true;
+    projects.length && (projects[0].isOpen = true);
     this.setState({ user, projects });
   }
 
@@ -56,7 +56,7 @@ class UserInfo extends Component {
 
   generateProject() {
     const { projects } = this.state;
-    if (projects.length) {
+    if (projects && projects.length) {
       return (
         <div className="center">
           <div className="col-12 p-0">
