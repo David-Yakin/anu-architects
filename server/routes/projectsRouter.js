@@ -1334,11 +1334,11 @@ router.patch(
 
         const to = user.email;
         const subject = "Anu-architects send you a picture or a pdf file";
-        const link = `http://localhost:3000/private-area/project/expert/${project._id}`;
+        const link = `http://localhost:3000/private-area/project/experts/${project._id}`;
         const mail = {
           projectId: project._id,
           description: req.body.imageAlt,
-          route: "licensing",
+          route: "experts",
         };
         const html = generateTemplate(mail).sendImage;
 
