@@ -47,13 +47,10 @@ const schema = new mongoose.Schema({
           text: string256,
           value: string256,
         },
-
-        files: [
-          {
-            name: string256,
-            url: string256,
-          },
-        ],
+        file: {
+          name: string256,
+          url: string256,
+        },
       },
     ],
   },
@@ -163,12 +160,10 @@ function validateProject(project) {
             text: Joi.string().min(2).max(256),
             value: Joi.string().min(2).max(256),
           }),
-          files: Joi.array().items(
-            Joi.object().keys({
-              name: Joi.string().min(2).max(256),
-              url: Joi.string().min(2).max(256),
-            })
-          ),
+          file: Joi.object().keys({
+            name: Joi.string().min(2).max(256),
+            url: Joi.string().min(2).max(256),
+          }),
         })
       ),
     },
@@ -246,6 +241,20 @@ function validateImage(image) {
   return schema.validate(image);
 }
 
+function validateExpert(expert) {
+  const schema = Joi.object({
+    firstName: Joi.string().min(2).max(256).required(),
+    lastName: Joi.string().min(2).max(256).required(),
+    phone: Joi.string().min(2).max(256).required(),
+    category: Joi.string().min(2).max(256).required(),
+    categoryText: Joi.string().min(2).max(256).required(),
+    imageUrl: Joi.string().min(2).max(256).required(),
+    imageAlt: Joi.string().min(2).max(1024).required(),
+  });
+  return schema.validate(expert);
+}
+
 exports.Project = Project;
 exports.validateProject = validateProject;
 exports.validateImage = validateImage;
+exports.validateExpert = validateExpert;

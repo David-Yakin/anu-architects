@@ -68,7 +68,26 @@ class CreateProject extends Form {
       "-"
     )}-${year}`;
   checkSpaces = text => text.replace(/\s/g, "-");
-
+  categoryText = value => {
+    if (value === "entrepreneur") return "ייזום וארגון";
+    if (value === "project-managing") return "ניהול פרויקט";
+    if (value === "conservation-architect") return "אדריכל שימור";
+    if (value === "construction") return "קונסטרוקציה";
+    if (value === "air-conditioning") return "מיזוג אוויר";
+    if (value === "plumbing") return "אינסטלציה";
+    if (value === "electricity") return "חשמל";
+    if (value === "pools") return "בריכות";
+    if (value === "Hydrologist") return "הידרולוג";
+    if (value === "ground") return "קרקע";
+    if (value === "elevators") return "מעליות";
+    if (value === "safety") return "בטיחות";
+    if (value === "protection") return "מיגון";
+    if (value === "trash") return "אשפה";
+    if (value === "sealing") return "איטום";
+    if (value === "acoustics") return "אקוסטיקה";
+    if (value === "duplication") return "העתקות";
+    return null;
+  };
   upload = () => {
     const {
       expertFileAtl,
@@ -163,6 +182,12 @@ class CreateProject extends Form {
     checkInput("urlGallery", urlGallery);
     checkInput("altGallery", altGallery);
     checkInput("expertCategory", expertCategory);
+
+    if (expertCategory)
+      return formData.append(
+        "categoryText",
+        this.categoryText(expertCategory.trim())
+      );
 
     for (let x = 0; x < images.length; x++) {
       for (let i of images[x]) {

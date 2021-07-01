@@ -31,6 +31,27 @@ class CreateExpert extends Form {
   upload = () => {
     const { imageUrl, imageAlt, firstName, lastName, phone, category } =
       this.state.data;
+
+    const categoryText = value => {
+      if (value === "entrepreneur") return "ייזום וארגון";
+      if (value === "project-managing") return "ניהול פרויקט";
+      if (value === "conservation-architect") return "אדריכל שימור";
+      if (value === "construction") return "קונסטרוקציה";
+      if (value === "air-conditioning") return "מיזוג אוויר";
+      if (value === "plumbing") return "אינסטלציה";
+      if (value === "electricity") return "חשמל";
+      if (value === "pools") return "בריכות";
+      if (value === "Hydrologist") return "הידרולוג";
+      if (value === "ground") return "קרקע";
+      if (value === "elevators") return "מעליות";
+      if (value === "safety") return "בטיחות";
+      if (value === "protection") return "מיגון";
+      if (value === "trash") return "אשפה";
+      if (value === "sealing") return "איטום";
+      if (value === "acoustics") return "אקוסטיקה";
+      if (value === "duplication") return "העתקות";
+    };
+
     const { images } = this.state;
     const data = new FormData();
     data.append("imageUrl", imageUrl);
@@ -39,6 +60,7 @@ class CreateExpert extends Form {
     data.append("lastName", lastName);
     data.append("phone", phone);
     data.append("category", category);
+    data.append("categoryText", categoryText(category.trim()));
 
     for (let x = 0; x < images.length; x++) {
       for (let i of images[x]) {
@@ -52,10 +74,10 @@ class CreateExpert extends Form {
     try {
       const image = this.upload();
       const projectId = this.props.match.params.id;
-      await uploadImage(image, projectId, "CreateExpert");
+      await uploadImage(image, projectId, "createExpert");
       toast("הפרויקט עודכן בהצלחה!");
       return this.props.history.replace(
-        `/private-area/project/contracts/${this.props.match.params.id}`
+        `/private-area/project/experts/${this.props.match.params.id}`
       );
     } catch (error) {
       console.log(error.message);
@@ -101,7 +123,7 @@ class CreateExpert extends Form {
             {this.renderInput("lastName", "שם משפחה *")}
             {this.renderInput("phone", "טלפון *")}
             {this.renderFileInput("imageUrl", "העלה טופס", false, ".pdf")}
-            {this.renderInput("imageAlt", "תאר את סוג הטופס")}
+            {this.renderInput("imageAlt", "תאר את סוג הטופס *")}
 
             <div className="center">
               <Link

@@ -2,29 +2,35 @@ import http from "./httpService";
 import { apiUrl } from "../config.json";
 
 export function createProject(project) {
-  return http.post(`${apiUrl}/projects`, project, {
-    onUploadProgress: ProgressEvent =>
-      console.log(
-        `upload progress: ${Math.round(
-          (ProgressEvent.loaded / ProgressEvent.total) * 100
-        )}%`
-      ),
-  });
+  return http
+    .post(`${apiUrl}/projects`, project, {
+      onUploadProgress: ProgressEvent =>
+        console.log(
+          `upload progress: ${Math.round(
+            (ProgressEvent.loaded / ProgressEvent.total) * 100
+          )}%`
+        ),
+    })
+    .catch(error => console.log(error.message));
 }
 
 export function deleteProject(projectId) {
-  return http.delete(`${apiUrl}/projects/${projectId}`);
+  return http
+    .delete(`${apiUrl}/projects/${projectId}`)
+    .catch(error => console.log(error.message));
 }
 
 export function editProject(project, id) {
-  return http.put(`${apiUrl}/projects/${id}`, project, {
-    onUploadProgress: ProgressEvent =>
-      console.log(
-        `upload progress: ${Math.round(
-          (ProgressEvent.loaded / ProgressEvent.total) * 100
-        )}%`
-      ),
-  });
+  return http
+    .put(`${apiUrl}/projects/${id}`, project, {
+      onUploadProgress: ProgressEvent =>
+        console.log(
+          `upload progress: ${Math.round(
+            (ProgressEvent.loaded / ProgressEvent.total) * 100
+          )}%`
+        ),
+    })
+    .catch(err => console.log(err.message));
 }
 
 export function getProject(projectId) {

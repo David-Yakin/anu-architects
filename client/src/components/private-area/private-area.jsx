@@ -10,6 +10,7 @@ import UploadLicensing from "./users/my-project/licensing/upload-licensing";
 
 import MyExperts from "./users/my-project/experts/my-experts";
 import CreateExpert from "./users/my-project/experts/create-expert";
+import ExpertInfo from "./users/my-project/experts/expert-info.jsx";
 
 import MyPlans from "./users/my-project/plans/my-plans";
 import UploadPlans from "./users/my-project/plans/upload-plans";
@@ -101,6 +102,10 @@ class Main extends Component {
             <Route
               path="/private-area/project/experts/:id"
               component={MyExperts}
+            />
+            <Route
+              path="/private-area/expert-info/:id/:expertId"
+              component={ExpertInfo}
             />
             <ProtectedRoute
               path="/private-area/project/CreateExpert/:id"

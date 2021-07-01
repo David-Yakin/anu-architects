@@ -6,7 +6,10 @@ import { getCurrentUser } from "../../../../../services/userService";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { Link, Redirect } from "react-router-dom";
-import { getProject } from "../../../../../services/projectService";
+import {
+  getProject,
+  deleteImage,
+} from "../../../../../services/projectService";
 
 class MyExperts extends Component {
   state = {
@@ -24,39 +27,41 @@ class MyExperts extends Component {
     this.setState({ project: data, experts, categories });
   }
 
-  // async handleChange(e) {
-  //   const { data } = await getUsers();
-  //   let users = data;
-  //   const searchTerm = e.target.value;
-  //   const filertUsers = users.filter(
-  //     user =>
-  //       user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //       user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //       user.isBloger.toString().includes(searchTerm)
-  //   );
-  //   this.setState({ users: filertUsers });
-  // }
+  async handleChange(e) {
+    const { data } = await getProject(this.props.match.params.id);
+    const experts = data.files.experts;
+    const searchTerm = e.target.value;
+    if (searchTerm === "all") return this.setState({ experts });
+    const filertExperts = experts.filter(
+      expert =>
+        expert.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        expert.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        expert.category.value.toString().includes(searchTerm)
+    );
+    this.setState({ experts: filertExperts });
+  }
 
-  // handleExpertDelete = async (userId, e) => {
-  //   e.preventDefault();
-  //   Swal.fire({
-  //     title: "?האם אתה בטוח",
-  //     text: "!המשתמש יימחק ממאגר המידע",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "כן, אני רוצה למחוק!",
-  //     cancelButtonText: "בטל",
-  //   }).then(result => {
-  //     if (result.isConfirmed) {
-  //       let users = [...this.state.users];
-  //       users = users.filter(user => user._id !== userId);
-  //       this.setState({ users });
-  //       // deleteUser(userId);
-  //       toast("המשתמש נמחק");
-  //     }
-  //   });
-  // };
+  handleExpertDelete = async (expertID, e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "?האם אתה בטוח",
+      text: "!היועץ ימחק ממאגר המידע",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "כן, אני רוצה למחוק!",
+      cancelButtonText: "בטל",
+    }).then(result => {
+      if (result.isConfirmed) {
+        let experts = [...this.state.experts];
+        experts = experts.filter(expert => expert._id !== expertID);
+        const projectId = this.props.match.params.id;
+        deleteImage(experts, projectId, "delete-expert");
+        this.setState({ experts });
+        toast("היועץ נמחק ממאגר המידע");
+      }
+    });
+  };
 
   generateTable() {
     const { project, experts } = this.state;
@@ -79,36 +84,36 @@ class MyExperts extends Component {
               <tr key={index}>
                 <td>
                   <Link
-                    className="text-decoration-none text-dark"
-                    to={`/private-area/users/my-project/experts/${project._id}/${expert._id}`}>
+                    to={`/private-area/expert-info/${project._id}/${expert._id}`}
+                    className="user-item">
                     {index + 1}
                   </Link>
                 </td>
                 <td>
                   <Link
-                    className="text-decoration-none text-dark"
-                    to={`/private-area/users/my-project/experts/${project._id}/${expert._id}`}>
+                    to={`/private-area/expert-info/${project._id}/${expert._id}`}
+                    className="user-item">
                     {expert.firstName}
                   </Link>
                 </td>
                 <td>
                   <Link
-                    className="text-decoration-none text-dark"
-                    to={`/private-area/users/my-project/experts/${project._id}/${expert._id}`}>
+                    to={`/private-area/expert-info/${project._id}/${expert._id}`}
+                    className="user-item">
                     {expert.lastName}
                   </Link>
                 </td>
                 <td>
                   <Link
-                    className="text-decoration-none text-dark"
-                    to={`/private-area/users/my-project/experts/${project._id}/${expert._id}`}>
+                    to={`/private-area/expert-info/${project._id}/${expert._id}`}
+                    className="user-item">
                     {expert.phone}
                   </Link>
                 </td>
                 <td>
                   <Link
-                    className="text-decoration-none text-dark"
-                    to={`/private-area/users/my-project/experts/${project._id}/${expert._id}`}>
+                    to={`/private-area/expert-info/${project._id}/${expert._id}`}
+                    className="user-item">
                     {expert.category.text}
                   </Link>
                 </td>
@@ -139,8 +144,6 @@ class MyExperts extends Component {
 
   render() {
     const user = getCurrentUser();
-    if (!user | (user.isAdmin === false))
-      return <Redirect to="/private-area/sign-in" />;
     const { categories, project } = this.state;
     if (user && user.isAdmin | (user._id === project.userID)) {
       if (project._id !== undefined)
@@ -149,7 +152,7 @@ class MyExperts extends Component {
             <Titles
               titleBold="מומחים"
               title="ויועצים"
-              subTitle="כאן תוכל לחפש ליצור ולמחוק מומחים ויועצים של הפרויקט "
+              subTitle="כאן תוכל לחפש ליצור ולמחוק מומחים ויועצים של הפרויקט. לחץ על היועץ שאתה מעוניין לראות את הטופס שלו "
             />
 
             <div className="container">
@@ -173,11 +176,20 @@ class MyExperts extends Component {
                   &#10133; צור מומחה או יועץ חדש
                 </Link>
               </div>
+
+              <div className="center pb-3">
+                <Link
+                  to={`/private-area/user/${project.userID}`}
+                  className="btn btn-outline-dark border border-dark mt-2 ">
+                  חזור לכרטיס המשתמש
+                </Link>
+              </div>
             </div>
           </div>
         );
       return "Loading Project";
     }
+    return <Redirect to="/private-area/sign-in" />;
   }
 }
 

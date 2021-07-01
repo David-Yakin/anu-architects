@@ -32,13 +32,11 @@ const data = {
             firstName: "לא מוגדר",
             lastName: "לא מוגדר",
             phone: "לא מוגדר",
-            category: { text: "בחר", value: "all" },
-            files: [
-              {
-                name: "לא מוגדר",
-                url: "/files/testing.pdf",
-              },
-            ],
+            category: { text: "כולם", value: "all" },
+            file: {
+              name: "לא מוגדר",
+              url: "/files/testing.pdf",
+            },
           },
         ],
       },
@@ -140,13 +138,11 @@ const data = {
             firstName: "לא מוגדר",
             lastName: "לא מוגדר",
             phone: "לא מוגדר",
-            category: { text: "בחר", value: "all" },
-            files: [
-              {
-                name: "לא מוגדר",
-                url: "/files/testing.pdf",
-              },
-            ],
+            category: { text: "כולם", value: "all" },
+            file: {
+              name: "לא מוגדר",
+              url: "/files/testing.pdf",
+            },
           },
         ],
       },
@@ -248,13 +244,11 @@ const data = {
             firstName: "לא מוגדר",
             lastName: "לא מוגדר",
             phone: "לא מוגדר",
-            category: { text: "בחר", value: "all" },
-            files: [
-              {
-                name: "לא מוגדר",
-                url: "/files/testing.pdf",
-              },
-            ],
+            category: { text: "כולם", value: "all" },
+            file: {
+              name: "לא מוגדר",
+              url: "/files/testing.pdf",
+            },
           },
         ],
       },
@@ -356,13 +350,11 @@ const data = {
             firstName: "לא מוגדר",
             lastName: "לא מוגדר",
             phone: "לא מוגדר",
-            category: { text: "בחר", value: "all" },
-            files: [
-              {
-                name: "לא מוגדר",
-                url: "/files/testing.pdf",
-              },
-            ],
+            category: { text: "כולם", value: "all" },
+            file: {
+              name: "לא מוגדר",
+              url: "/files/testing.pdf",
+            },
           },
         ],
       },
