@@ -73,34 +73,38 @@ const MyContracts = () => {
           titleBold="חוזים"
           title=" "
           subTitle={`כאן תוכל לראות ${
-            user.isAdmin && "להוסיף ולמחוק "
+            user.isAdmin ? "להוסיף ולמחוק " : ""
           }את החוזים של הפרויקט ${project.name}`}
         />
 
         {/********** PDF upload Link ************/}
-        <div className="center pb-3">
-          <Link
-            to={`/private-area/project/uploadContracts/${id}`}
-            className="btn btn-outline-success border border-dark col-12 col-md-6 ">
-            &#10133; העלה חוזה חדש
-          </Link>
-        </div>
+        {user.isAdmin && (
+          <div className="center pb-3">
+            <Link
+              to={`/private-area/project/uploadContracts/${id}`}
+              className="btn btn-outline-success border border-dark col-12 col-md-6 ">
+              &#10133; העלה חוזה חדש
+            </Link>
+          </div>
+        )}
 
         {/********** PDF VIEWER ************/}
         <div className="web-viewer" id="viewer"></div>
 
         {/********** DELETE BUTTON ************/}
-        <div className="center">
-          <button
-            className="btn btn-outline-danger col-12 col-md-6 my-4"
-            onClick={() => handleImageDelete(reverseFiles[counter]._id)}>
-            <i className="fas fa-trash-alt mr-2"></i> מחק את החוזה ממאגר המידע
-          </button>
-        </div>
+        {user.isAdmin && (
+          <div className="center">
+            <button
+              className="btn btn-outline-danger col-12 col-md-6 my-4"
+              onClick={() => handleImageDelete(reverseFiles[counter]._id)}>
+              <i className="fas fa-trash-alt mr-2"></i> מחק את החוזה ממאגר המידע
+            </button>
+          </div>
+        )}
 
         {/********** PDF Select Box ************/}
         {files !== undefined && (
-          <div className="d-flex flex-row-reverse">
+          <div className="d-flex flex-row-reverse mt-2">
             <div className="col-12 col-md-6">
               <h2 className="text-rtl h3Title ">בחר קובץ</h2>
               <select
@@ -130,6 +134,7 @@ const MyContracts = () => {
         </div>
       </div>
     );
+  return "no contracts found";
 };
 
 export default MyContracts;

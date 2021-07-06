@@ -200,18 +200,21 @@ class MyGallery extends Form {
   render() {
     const user = getCurrentUser();
     const project = this.state.project;
-    if (!user | (user.isAdmin === false))
-      return <Redirect to="/private-area/sign-in" />;
-    if (user && user.isAdmin)
+    if (!user) return <Redirect to="/private-area/sign-in" />;
+    if (user && user.isAdmin | (user._id === project.userID))
       return (
         <div id="theProcess" className=" container-fluid">
           <Titles
             titleBold="גלריית"
             title="תמונות"
-            subTitle="כאן תוכל לראות להוסיף או למחוק תמונות מגלריית התמונות"
+            subTitle={`כאן תוכל לראות ${
+              user.isAdmin ? "להוסיף או למחוק" : ""
+            } תמונות של הנכס ${project.name} לאחר הבניה והשיפוץ`}
           />
 
-          <div className="container">{this.generateForm()}</div>
+          {user.isAdmin && (
+            <div className="container">{this.generateForm()}</div>
+          )}
 
           <div className="slideShow_container pb-5">
             <div className="center shadow-lg">
@@ -229,7 +232,7 @@ class MyGallery extends Form {
           </div>
         </div>
       );
-    return <Redirect to="/private-area/sign-in" />;
+    return "אין תמונות גלריה להצגה";
   }
 }
 

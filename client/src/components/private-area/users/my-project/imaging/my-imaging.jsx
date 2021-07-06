@@ -185,16 +185,18 @@ class MyImaging extends Form {
             title=""
             subTitle={`כאן תוכל לראות ${
               user && user.isAdmin ? "להוסיף למחוק" : " "
-            }  ולהעיר על הדמיות `}
+            }  ולהעיר על הדמיות של הפרויקט ${project.name}`}
           />
 
-          <div className="center pb-3">
-            <Link
-              to={`/private-area/project/uploadImaging/${this.props.match.params.id}`}
-              className="btn btn-outline-success border border-dark mt-2 ">
-              &#10133; העלה הדמיה חדשה
-            </Link>
-          </div>
+          {user.isAdmin && (
+            <div className="center pb-3">
+              <Link
+                to={`/private-area/project/uploadImaging/${this.props.match.params.id}`}
+                className="btn btn-outline-success border border-dark mt-2 ">
+                &#10133; העלה הדמיה חדשה
+              </Link>
+            </div>
+          )}
 
           <div className="slideShow_container pb-5">
             <div className="center shadow-lg">
@@ -212,7 +214,7 @@ class MyImaging extends Form {
           </div>
         </div>
       );
-    return <Redirect to="/private-area/sign-in" />;
+    return "אין הדמיות בפויקט זה";
   }
 }
 

@@ -87,17 +87,7 @@ const ExpertInfo = () => {
       );
     return "Loding Page";
   }
+  return "אין פרטים על המומחה";
 };
 
 export default ExpertInfo;
-
-// import React, { Component } from "react";
-
-// class ExpertInfo extends Component {
-//   state = {};
-//   render() {
-//     return <div>expert-info works!</div>;
-//   }
-// }
-
-// export default ExpertInfo;

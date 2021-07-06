@@ -1,12 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
-// import { getCurrentUser } from "../../../services/userService";
-// import Titles from '../../common/titles';
-// import ALink from '../../common/a-link';
-// // import { getUser  } from "../../../services/userService"
-// // import Swal from 'sweetalert2';
-// // import { toast } from 'react-toastify'
+import { getCurrentUser } from "../../../services/userService";
 
 const EditUserProjects = ({
   project,
@@ -14,6 +8,8 @@ const EditUserProjects = ({
   toggleProjects,
   handleProjectDelete,
 }) => {
+  const user = getCurrentUser();
+
   if (project)
     return (
       <div>
@@ -25,7 +21,7 @@ const EditUserProjects = ({
               {project.name}
             </h2>
 
-            {project.isPublished !== true && (
+            {user && user.isAdmin && project.isPublished !== true && (
               <Link
                 to={`/private-area/edit-project-card/${project._id}`}
                 className="btn btn-outline-danger col-2">
@@ -33,14 +29,16 @@ const EditUserProjects = ({
               </Link>
             )}
 
-            <a
-              href="/"
-              onClick={e => {
-                handleProjectDelete(project._id, e);
-              }}
-              className="btn btn-outline-danger col-2 mr-2">
-              מחק
-            </a>
+            {user && user.isAdmin && (
+              <a
+                href="/"
+                onClick={e => {
+                  handleProjectDelete(project._id, e);
+                }}
+                className="btn btn-outline-danger col-2 mr-2">
+                מחק
+              </a>
+            )}
           </div>
           <hr className="m-0 border-dark" />
           <div className={project.isOpen ? "qna-open m-0" : "qna-close m-0"}>

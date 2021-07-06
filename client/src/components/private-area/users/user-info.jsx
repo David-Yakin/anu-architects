@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { getMyProject, deleteProject } from "../../../services/projectService";
 import { getDate } from "../../../services/timeService";
-import { getUser } from "../../../services/userService";
+import { getCurrentUser, getUser } from "../../../services/userService";
 import ALink from "../../common/a-link";
 import Titles from "../../common/titles";
 import EditUserProjects from "./edit-user-projects";
@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 
 class UserInfo extends Component {
   state = {
+    didMount: false,
     user: "",
     projects: [],
   };
@@ -22,7 +23,7 @@ class UserInfo extends Component {
     let projectsData = await getMyProject(user._id);
     let projects = projectsData.data;
     projects.length && (projects[0].isOpen = true);
-    this.setState({ user, projects });
+    this.setState({ user, projects, didMount: true });
   }
 
   toggleProjects = index => {
@@ -133,30 +134,48 @@ class UserInfo extends Component {
 
   render() {
     const { user } = this.state;
+    const userCheck = getCurrentUser();
+    const { isAdmin } = userCheck;
     if (user) {
       return (
         <div className="container">
           <Titles
-            titleBold="דף"
-            title="לקוח"
-            subTitle="כאן תוכל לראות את פרטי הלקוח המלאים ואת הפרויקטים שלו. לחץ על הפרויקט על מנת להעלות אליו תמונות וקבצים "
+            titleBold={
+              isAdmin && userCheck._id !== user._id ? "דף" : "הפרויקטים"
+            }
+            title={isAdmin && userCheck._id !== user._id ? "לקוח" : "שלי"}
+            subTitle={`כאן תוכל לראות את ${
+              isAdmin && userCheck._id !== user._id
+                ? "פרטי הלקוח המלאים ואת"
+                : ""
+            } הפרויקטים ${
+              isAdmin && userCheck._id !== user._id ? "שלו." : "שלך"
+            } ${
+              isAdmin ? "לחץ על הפרויקט על מנת להעלות אליו תמונות וקבצים" : ""
+            }`}
           />
-          <div className="center">{this.generateTable()}</div>
+          {isAdmin && userCheck._id !== user._id && (
+            <div className="center">{this.generateTable()}</div>
+          )}
           <div className="accordion mb-4">{this.generateProject()}</div>
 
-          <div className="center pb-3">
-            <Link
-              to={`/private-area/create-project-card/${this.props.match.params.id}`}
-              className="btn btn-info border border-dark">
-              &#10133; צור פרויקט חדש
-            </Link>
-          </div>
+          {isAdmin && (
+            <div>
+              <div className="center">
+                <Link
+                  to={`/private-area/create-project-card/${this.props.match.params.id}`}
+                  className="col-12 col-md-6 btn btn-info border border-dark">
+                  &#10133; צור פרויקט חדש
+                </Link>
+              </div>
 
-          <hr />
+              <hr />
 
-          <div className="center pb-3">
-            <ALink to="/private-area/users" text="למשתמשים נוספים" />
-          </div>
+              <div className="center pb-3">
+                <ALink to="/private-area/users" text="למשתמשים נוספים" />
+              </div>
+            </div>
+          )}
         </div>
       );
     }

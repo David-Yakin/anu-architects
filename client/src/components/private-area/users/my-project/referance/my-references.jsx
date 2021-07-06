@@ -185,16 +185,18 @@ class MyReferences extends Form {
             title="רפרנס"
             subTitle={`כאן תוכל לראות ${
               user && user.isAdmin ? "להוסיף למחוק" : " "
-            }  ולהעיר על תמונות הרפרנס `}
+            }  ולהעיר על תמונות הרפרנס של הפרויקט ${project.name}`}
           />
 
-          <div className="center pb-3">
-            <Link
-              to={`/private-area/project/uploadReferance/${this.props.match.params.id}`}
-              className="btn btn-outline-success border border-dark mt-2 ">
-              &#10133; העלה תמונת רפרנס חדשה
-            </Link>
-          </div>
+          {user.isAdmin && (
+            <div className="center pb-3">
+              <Link
+                to={`/private-area/project/uploadReferance/${this.props.match.params.id}`}
+                className="btn btn-outline-success border border-dark mt-2 ">
+                &#10133; העלה תמונת רפרנס חדשה
+              </Link>
+            </div>
+          )}
 
           <div className="slideShow_container pb-5">
             <div className="center shadow-lg">
@@ -212,7 +214,7 @@ class MyReferences extends Form {
           </div>
         </div>
       );
-    return <Redirect to="/private-area/sign-in" />;
+    return "אין תמונות רפרנס";
   }
 }
 

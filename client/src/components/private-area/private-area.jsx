@@ -174,11 +174,9 @@ class Main extends Component {
               component={CreateProject}
               title={"isAdmin"}
             />
-            <ProtectedRoute
-              path="/private-area/user/:id"
-              component={UserInfo}
-              title={"isAdmin"}
-            />
+
+            <Route path="/private-area/user/:id" component={UserInfo} />
+
             <ProtectedRoute
               path="/private-area/edit-project-card/:id"
               component={EditProject}

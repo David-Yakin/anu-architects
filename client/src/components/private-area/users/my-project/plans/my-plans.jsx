@@ -185,16 +185,18 @@ class MyPlans extends Form {
             title="ארכיטקטיות"
             subTitle={`כאן תוכל לראות ${
               user && user.isAdmin ? "להוסיף למחוק" : " "
-            }  ולהעיר על תוכניות ארכיטקטיות `}
+            }  ולהעיר על תוכניות ארכיטקטיות של הפרויקט ${project.name}`}
           />
 
-          <div className="center pb-3">
-            <Link
-              to={`/private-area/project/uploadPlans/${this.props.match.params.id}`}
-              className="btn btn-outline-success border border-dark mt-2 ">
-              &#10133; העלה תכנית ארכיטקטית חדשה
-            </Link>
-          </div>
+          {user.isAdmin && (
+            <div className="center pb-3">
+              <Link
+                to={`/private-area/project/uploadPlans/${this.props.match.params.id}`}
+                className="btn btn-outline-success border border-dark mt-2 ">
+                &#10133; העלה תכנית ארכיטקטית חדשה
+              </Link>
+            </div>
+          )}
 
           <div className="slideShow_container pb-5">
             <div className="center shadow-lg">
@@ -212,7 +214,7 @@ class MyPlans extends Form {
           </div>
         </div>
       );
-    return <Redirect to="/private-area/sign-in" />;
+    return "No Plans";
   }
 }
 

@@ -448,7 +448,7 @@ router.delete("/:id", auth, async (req, res) => {
 });
 
 router.get("/my-projects/:id", auth, async (req, res) => {
-  if (req.user && req.user.isAdmin) {
+  if ((req.user && req.user.isAdmin) | (req.user._id === req.params.id)) {
     const user = await User.findById({ _id: req.params.id });
     let projects = user.projects;
     const check = async array => {

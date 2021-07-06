@@ -65,6 +65,7 @@ class MyExperts extends Component {
 
   generateTable() {
     const { project, experts } = this.state;
+    const user = getCurrentUser();
 
     if (experts.length) {
       return (
@@ -74,9 +75,9 @@ class MyExperts extends Component {
               <th scope="col">מס'</th>
               <th scope="col">שם פרטי</th>
               <th scope="col">שם משפחה</th>
-              <th scope="col">טלפון</th>
+              {user.isAdmin && <th scope="col">טלפון</th>}
               <th scope="col">קטגוריה</th>
-              <th scope="col">מחק</th>
+              {user.isAdmin && <th scope="col">מחק</th>}
             </tr>
           </thead>
           <tbody>
@@ -103,13 +104,15 @@ class MyExperts extends Component {
                     {expert.lastName}
                   </Link>
                 </td>
-                <td>
-                  <Link
-                    to={`/private-area/expert-info/${project._id}/${expert._id}`}
-                    className="user-item">
-                    {expert.phone}
-                  </Link>
-                </td>
+                {user.isAdmin && (
+                  <td>
+                    <Link
+                      to={`/private-area/expert-info/${project._id}/${expert._id}`}
+                      className="user-item">
+                      {expert.phone}
+                    </Link>
+                  </td>
+                )}
                 <td>
                   <Link
                     to={`/private-area/expert-info/${project._id}/${expert._id}`}
@@ -117,16 +120,18 @@ class MyExperts extends Component {
                     {expert.category.text}
                   </Link>
                 </td>
-                <td>
-                  <a
-                    href="/"
-                    onClick={e => {
-                      this.handleExpertDelete(expert._id, e);
-                    }}
-                    className="fas fa-user-slash text-dark text-decoration-none">
-                    {" "}
-                  </a>
-                </td>
+                {user.isAdmin && (
+                  <td>
+                    <a
+                      href="/"
+                      onClick={e => {
+                        this.handleExpertDelete(expert._id, e);
+                      }}
+                      className="fas fa-user-slash text-dark text-decoration-none">
+                      {" "}
+                    </a>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -145,30 +150,35 @@ class MyExperts extends Component {
   render() {
     const user = getCurrentUser();
     const { categories, project } = this.state;
-    if (user && user.isAdmin | (user._id === project.userID)) {
-      if (project._id !== undefined)
-        return (
-          <div>
-            <Titles
-              titleBold="מומחים"
-              title="ויועצים"
-              subTitle="כאן תוכל לחפש ליצור ולמחוק מומחים ויועצים של הפרויקט. לחץ על היועץ שאתה מעוניין לראות את הטופס שלו "
-            />
+    if (!user) return <Redirect to="/private-area/sign-in" />;
+    if (user && user.isAdmin | (user._id === project.userID))
+      return (
+        <div>
+          <Titles
+            titleBold="מומחים"
+            title="ויועצים"
+            subTitle={`כאן תוכל לחפש ${
+              user.isAdmin ? "ליצור ולמחוק" : ""
+            } מומחים ויועצים של הפרויקט ${
+              project.name
+            }. לחץ על היועץ שאתה מעוניין לראות את הטופס שלו`}
+          />
 
-            <div className="container">
-              <div className="center">
-                <div className="col-10">
-                  <SearchInput
-                    categories={categories}
-                    placeholder="חפש יועץ"
-                    handleChange={e => {
-                      this.handleChange(e);
-                    }}
-                  />
-                </div>
+          <div className="container">
+            <div className="center">
+              <div className="col-10">
+                <SearchInput
+                  categories={categories}
+                  placeholder="חפש יועץ"
+                  handleChange={e => {
+                    this.handleChange(e);
+                  }}
+                />
               </div>
-              {this.generateTable()}
+            </div>
+            {this.generateTable()}
 
+            {user.isAdmin && (
               <div className="center pb-3">
                 <Link
                   to={`/private-area/project/CreateExpert/${this.props.match.params.id}`}
@@ -176,20 +186,19 @@ class MyExperts extends Component {
                   &#10133; צור מומחה או יועץ חדש
                 </Link>
               </div>
+            )}
 
-              <div className="center pb-3">
-                <Link
-                  to={`/private-area/user/${project.userID}`}
-                  className="btn btn-outline-dark border border-dark mt-2 ">
-                  חזור לכרטיס המשתמש
-                </Link>
-              </div>
+            <div className="center pb-3">
+              <Link
+                to={`/private-area/user/${project.userID}`}
+                className="btn btn-outline-dark border border-dark mt-2 ">
+                חזור לכרטיס המשתמש
+              </Link>
             </div>
           </div>
-        );
-      return "Loading Project";
-    }
-    return <Redirect to="/private-area/sign-in" />;
+        </div>
+      );
+    return "אין יועצים בפרויקט זה";
   }
 }
 

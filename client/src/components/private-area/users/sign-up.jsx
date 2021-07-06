@@ -64,7 +64,7 @@ class Signup extends Form {
   render() {
     let user = getCurrentUser();
     if (user && user.isAdmin) return <Redirect to="/private-area/users" />;
-    if (user) return <Redirect to="/private-area/my-projects" />;
+    if (user) return <Redirect to={`/private-area/user/${user._id}`} />;
 
     return (
       <div className="container-fluid sign-up">

@@ -79,24 +79,9 @@ class SideBar extends Component {
         row: { text: "הפרויקטים שלי", icon: "center fas fa-folder-open" },
         navs: [
           {
-            text: "לוחות זמנים",
-            page: "/private-area/create-blog-card",
+            text: "דף הפרויקטים",
+            page: `/private-area/user/${this.user._id}`,
             icon: "side-nav center far fa-clock",
-          },
-          {
-            text: "תוכניות",
-            page: "/private-area/blogs-search-page",
-            icon: "side-nav center far fa-paper-plane",
-          },
-          {
-            text: "סקיצות",
-            page: "/private-area/blogs-search-page",
-            icon: "side-nav center fas fa-pencil-alt",
-          },
-          {
-            text: "חוזים",
-            page: "/private-area/blogs-search-page",
-            icon: "side-nav center fas fa-file-signature",
           },
         ],
         open: false,
@@ -170,7 +155,7 @@ class SideBar extends Component {
                 index={4}
               />
             )}
-            {this.user && !this.user.isAdmin && (
+            {this.user && (
               <SideRow
                 toggleSideNav={this.toggleSideNav}
                 key={6}
