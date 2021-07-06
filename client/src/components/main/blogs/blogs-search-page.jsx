@@ -2,9 +2,14 @@ import React, { Component } from "react";
 import Titles from "../../common/titles";
 import SearchInput from "../../common/search-input";
 import BlogCard from "./blog-card";
-import { getBlogs, deleteBlog } from "../../../services/blogService";
+import {
+  getBlogs,
+  deleteBlog,
+  changePublishStatus,
+} from "../../../services/blogService";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { getCurrentUser } from "../../../services/userService";
 
 class Blogs extends Component {
   state = {
@@ -44,16 +49,16 @@ class Blogs extends Component {
     });
   };
 
-  //   changePublishStatus = async (blogId, e) => {
-  //     e.preventDefault();
-  //     let blogs = [...this.state.blogs];
-  //     let blog = blogs.find(blog => blog._id === blogId);
-  //     let status = blog.isPublished;
-  //     let changeStatus = !status;
-  //     toast("ההרשאה עודכנה");
-  //     this.setState({ blog: (blog.isPublished = changeStatus) });
-  //     await changePublishStatus(blogId);
-  //   };
+  changePublishStatus = async (blogId, e) => {
+    e.preventDefault();
+    let blogs = [...this.state.blogs];
+    let blog = blogs.find(blog => blog._id === blogId);
+    let status = blog.isPublished;
+    let changeStatus = !status;
+    toast("ההרשאה עודכנה");
+    this.setState({ blog: (blog.isPublished = changeStatus) });
+    return await changePublishStatus(blogId);
+  };
 
   async handleChange(e) {
     const { data } = await getBlogs();
@@ -69,7 +74,24 @@ class Blogs extends Component {
 
   generateBlogs() {
     const { blogs } = this.state;
-    if (blogs.length)
+    const user = getCurrentUser();
+
+    if (blogs.length) {
+      if (user.isBloger)
+        return (
+          <div className="row px-0 mx-0">
+            {blogs.map(blog => {
+              return (
+                <BlogCard
+                  key={blog._id}
+                  blog={blog}
+                  handleBlogDelete={this.handleBlogDelete}
+                  changePublishStatus={this.changePublishStatus}
+                />
+              );
+            })}
+          </div>
+        );
       return (
         <div className="row px-0 mx-0">
           {blogs.map(blog => {
@@ -79,14 +101,40 @@ class Blogs extends Component {
                   key={blog._id}
                   blog={blog}
                   handleBlogDelete={this.handleBlogDelete}
+                  changePublishStatus={this.changePublishStatus}
                 />
               );
             return null;
           })}
         </div>
       );
+    }
     return <p className="text-rtl">מצטערים לא נמצאו מאמרים במאגר המידע...</p>;
   }
+
+  // generateBlogs() {
+  //   const { blogs } = this.state;
+  //   const user = getCurrentUser();
+  //   if (blogs.length) {
+  //     return (
+  //       <div className="row px-0 mx-0">
+  //         {blogs.map(blog => {
+  //           if (blog.isPublished)
+  //             return (
+  //               <BlogCard
+  //                 key={blog._id}
+  //                 blog={blog}
+  //                 handleBlogDelete={this.handleBlogDelete}
+  //                 changePublishStatus={this.changePublishStatus}
+  //               />
+  //             );
+  //           return null;
+  //         })}
+  //       </div>
+  //     );
+  //   }
+  //   return <p className="text-rtl">מצטערים לא נמצאו מאמרים במאגר המידע...</p>;
+  // }
 
   render() {
     const { categories } = this.state;

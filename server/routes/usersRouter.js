@@ -70,16 +70,21 @@ router.delete("/:id", auth, async (req, res) => {
 
 router.patch("/:id", auth, async (req, res) => {
   if (req.user && req.user.isAdmin === true) {
-    user = await User.findById(req.params.id);
-    if (!user) return res.status(404).send("לא נמצא המשתמש");
-    let status = user.isBloger;
-    let changeStatus = !status;
-    user = await User.findOneAndUpdate(
-      { _id: req.params.id },
-      { isBloger: changeStatus }
-    );
-    user = await user.save();
-    res.send(user);
+    try {
+      user = await User.findById(req.params.id);
+      if (!user) return res.status(404).send("לא נמצא המשתמש");
+      let status = user.isBloger;
+      let changeStatus = !status;
+      user = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        { isBloger: changeStatus }
+      );
+      user = await user.save();
+      res.send(user);
+    } catch (error) {
+      console.log(error);
+      return res.send(error.message);
+    }
   }
   return res.send("you are not authorized to edit users");
 });

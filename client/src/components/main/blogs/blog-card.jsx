@@ -44,7 +44,11 @@ const BlogCard = ({ blog, handleBlogDelete, changePublishStatus }) => {
                     <span> | </span>
                     <a
                       href="/"
-                      className="far fa-eye text-dark text-decoration-none"
+                      className={
+                        blog.isPublished
+                          ? "far fa-eye text-dark text-decoration-none"
+                          : "fas fa-eye-slash text-decoration-none text-dark"
+                      }
                       onClick={e => {
                         changePublishStatus(blog._id, e);
                       }}>

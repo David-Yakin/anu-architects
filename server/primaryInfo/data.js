@@ -606,7 +606,7 @@ const data = {
   ],
   users: [
     {
-      userID: "000000000",
+      userID: "00000000",
       firstName: "user",
       lastName: "user",
       email: "user@gmail.com",
@@ -618,7 +618,7 @@ const data = {
         houseNumber: "26",
         zip: "6766339",
       },
-      password: "$2b$10$wtmDgFgnTq7cmEn.yGjGXeme34WT91B7RDRPWgOb4Q9KFguCMaiLy",
+      password: "12345678",
       isAdmin: false,
       isBloger: false,
       projects: [],
