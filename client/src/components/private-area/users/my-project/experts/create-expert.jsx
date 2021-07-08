@@ -24,7 +24,12 @@ class CreateExpert extends Form {
     imageAlt: Joi.string().required().min(2).max(255).label("imageAlt"),
     firstName: Joi.string().required().min(2).max(255).label("firstName"),
     lastName: Joi.string().required().min(2).max(255).label("lastName"),
-    phone: Joi.string().required().min(2).max(255).label("phone"),
+    phone: Joi.string()
+      .required()
+      .min(2)
+      .max(255)
+      .regex(/0[0-9]{1,2}-?\s?[0-9]{3}\s?[0-9]{4}/)
+      .label("phone"),
     category: Joi.string().required().min(2).max(255).label("category"),
   };
 

@@ -54,6 +54,36 @@ function generateTemplate(mail) {
     <tr><td>המייל של הלקוח: ${mail.email}</td></tr>
     <tr><td>הטלפון של הלקוח: ${mail.phone}</td></tr>
 </table>`,
+    projectCreated: `<table cellpadding='0' cellspacing='0'>
+<tr>
+    <td>
+    <h1 align="right">נוצר פרויקט חדש עבורך</h1>
+    <h2 align="right" cellpadding='0'>לחץ על הלינק על מנת לראות את הפרויקט</h2>
+    </td>
+</tr>
+<tr ><td><p>http://localhost:3000/private-area/user/${mail.userId}</p></td></tr>
+<tr><td>${mail.description}</td></tr>
+</table>`,
+    blogCreated: `<table cellpadding='0' cellspacing='0'>
+<tr>
+    <td>
+    <h1 align="right">נוצר מאמר חדש</h1>
+    <h2 align="right" cellpadding='0'>לחץ על הלינק על מנת לראות את המאמר</h2>
+    </td>
+</tr>
+<tr ><td><p>http://localhost:3000/blog-page/${mail.blogId}</p></td></tr>
+<tr><td>${mail.description}</td></tr>
+</table>`,
+    newUser: `<table cellpadding='0' cellspacing='0'>
+<tr>
+    <td>
+    <h1 align="right">משתמש חדש נרשם לאתר</h1>
+    <h2 align="right" cellpadding='0'>לחץ על הלינק על מנת לראות את המשתמש</h2>
+    </td>
+</tr>
+<tr ><td><p>http://localhost:3000/private-area/user/${mail.userId}</p></td></tr>
+<tr><td>${mail.description}</td></tr>
+</table>`,
   };
 }
 exports.generateTemplate = generateTemplate;

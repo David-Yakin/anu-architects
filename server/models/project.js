@@ -26,7 +26,11 @@ const schema = new mongoose.Schema({
   },
   year: { type: String, required: true, minlength: 4, maxlength: 4 },
   size: { type: String, required: true, minlength: 1, maxlength: 256 },
-  category: string256,
+  category: {
+    text: string256,
+    value: string256,
+  },
+  // category: string256,
   address: {
     country: string256R,
     city: string256R,
@@ -129,7 +133,11 @@ function validateProject(project) {
     name: Joi.string().min(2).max(256).required(),
     year: Joi.string().min(4).max(4).required(),
     size: Joi.string().min(1).max(256).required(),
-    category: Joi.string().min(2).max(256).required(),
+    category: Joi.object().keys({
+      text: Joi.string().min(2).max(256).required(),
+      value: Joi.string().min(2).max(256).required(),
+    }),
+    // category: Joi.string().min(2).max(256).required(),
     address: {
       country: Joi.string().min(2).max(256).required(),
       city: Joi.string().min(2).max(256).required(),
@@ -155,7 +163,10 @@ function validateProject(project) {
         Joi.object().keys({
           firstName: Joi.string().min(2).max(256),
           lastName: Joi.string().min(2).max(256),
-          phone: Joi.string().min(2).max(256),
+          phone: Joi.string()
+            .min(2)
+            .max(256)
+            .regex(/0[0-9]{1,2}\-?\s?[0-9]{3}\s?[0-9]{4}/),
           category: Joi.object().keys({
             text: Joi.string().min(2).max(256),
             value: Joi.string().min(2).max(256),

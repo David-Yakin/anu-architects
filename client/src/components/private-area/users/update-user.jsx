@@ -1,13 +1,8 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "../../common/form";
-import { Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  getCurrentUser,
-  getUser,
-  editUser,
-} from "../../../services/userService";
+import { getUser, editUser } from "../../../services/userService";
 
 class UpdateUser extends Form {
   state = {

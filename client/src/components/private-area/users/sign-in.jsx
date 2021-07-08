@@ -1,9 +1,8 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "../../common/form";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import { login, getCurrentUser } from "../../../services/userService";
-import { Link } from "react-router-dom";
 
 class Signin extends Form {
   state = {

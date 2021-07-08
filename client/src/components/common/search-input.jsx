@@ -10,6 +10,7 @@ const SearchInput = ({ categories, placeholder, handleChange }) => {
               <select
                 className="form-control form-control-lg p-2"
                 onChange={e => handleChange(e)}>
+                <option value="all">כולם</option>
                 {categories.map((category, i) => (
                   <option key={i} value={category.value}>
                     {category.text}

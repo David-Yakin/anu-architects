@@ -52,7 +52,10 @@ function validateUser(user) {
     firstName: Joi.string().min(2).max(255).required(),
     lastName: Joi.string().required().min(2).max(255),
     email: Joi.string().min(6).max(255).required().email(),
-    phone: Joi.string().required().min(9),
+    phone: Joi.string()
+      .required()
+      .min(9)
+      .regex(/0[0-9]{1,2}\-?\s?[0-9]{3}\s?[0-9]{4}/),
     address: {
       country: Joi.string().min(2).max(255).required(),
       city: Joi.string().min(2).max(255).required(),

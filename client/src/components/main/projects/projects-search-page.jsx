@@ -13,10 +13,7 @@ import { getUsers } from "../../../services/userService";
 class Projects extends Component {
   state = {
     unmounted: false,
-    categories: [
-      { value: "", text: "כולם" },
-      { value: "שיפוץ דירה", text: "שיפוץ דירה" },
-    ],
+    categories: [],
     users: [],
     projects: [],
   };
@@ -24,25 +21,44 @@ class Projects extends Component {
   async componentDidMount() {
     const projectsData = await (await getProjects()).data;
     const usersData = await (await getUsers()).data;
-
+    let categories = [];
+    projectsData.map(project => {
+      const array = [];
+      categories.filter(category => {
+        if (project.category.value === category.value)
+          return array.push(project.category);
+        return null;
+      });
+      if (array.length) return null;
+      return categories.push(project.category);
+    });
     if (projectsData.length && usersData)
       this.setState({
         projects: projectsData,
         users: usersData,
         unmounted: true,
+        categories,
       });
   }
 
   async handleChange(e) {
-    const { data } = await getProjects();
-    let projects = data;
-    const searchTerm = e.target.value;
-    const filertProjects = projects.filter(
-      project =>
-        project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.category.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    this.setState({ projects: filertProjects });
+    try {
+      const { data } = await getProjects();
+      let projects = data;
+      const searchTerm = e.target.value;
+      if (searchTerm === "all") return this.setState({ projects });
+      const filertProjects = projects.filter(project => {
+        if (project.isPublished)
+          return (
+            project.name.includes(searchTerm.toLowerCase()) ||
+            project.category.value.toString().includes(searchTerm)
+          );
+        return null;
+      });
+      this.setState({ projects: filertProjects });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   changeLikeStatus = async (projectId, e) => {

@@ -58,7 +58,7 @@ class EditProject extends Form {
       zip: project.address.zip,
       year: project.year,
       size: project.size,
-      category: project.category,
+      category: project.category.value,
       description: project.description,
       cardAlt: project.images.card.alt,
       altPamorama: project.images.panorama.alt,

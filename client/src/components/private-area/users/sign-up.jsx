@@ -3,7 +3,6 @@ import Joi from "joi-browser";
 import Form from "../../common/form";
 import { Link } from "react-router-dom";
 import { Redirect } from "react-router-dom";
-import { toast } from "react-toastify";
 import {
   getCurrentUser,
   login,
@@ -34,11 +33,16 @@ class Signup extends Form {
     firstName: Joi.string().required().min(2).max(255).label("firstName"),
     lastName: Joi.string().required().min(2).max(255).label("lastName"),
     email: Joi.string().required().email().label("mail"),
-    phone: Joi.string().required().min(9).max(14).label("phone"),
+    phone: Joi.string()
+      .required()
+      .min(9)
+      .max(14)
+      .regex(/0[0-9]{1,2}-?\s?[0-9]{3}\s?[0-9]{4}/g)
+      .label("phone"),
     country: Joi.string().required().min(2).max(255).label("country"),
     city: Joi.string().required().min(2).max(255).label("city"),
     street: Joi.string().required().min(2).max(255).label("street"),
-    houseNumber: Joi.string().required().min(2).max(255).label("houseNumber"),
+    houseNumber: Joi.string().required().min(1).max(255).label("houseNumber"),
     zip: Joi.string().required().min(4).max(255).label("zip"),
     password: Joi.string().required().min(9).max(1024).label("password"),
   };
@@ -48,12 +52,12 @@ class Signup extends Form {
     const passwordCheck = document.getElementById("password");
     if (passwordInput.value !== passwordCheck.value)
       return this.setState({ errors: { password: "הסיסמה לא תואמת" } });
-    const data = { ...this.state.data };
+    const user = { ...this.state.data };
+    const { email, password } = this.state.data;
     try {
-      await createUser(data);
-      toast(`${data.name} ${data.lastName} נרשמת בהצלחה!`);
-      await login(data.email, data.password);
-      window.location = "/private-area/my-projects";
+      const { data } = await createUser(user);
+      await login(email, password);
+      window.location = `/private-area/user/${data._id}`;
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         this.setState({ errors: { email: "המייל הזה תפוס" } });
@@ -86,8 +90,8 @@ class Signup extends Form {
             {this.renderInput("country", "ארץ *")}
             {this.renderInput("city", "עיר *")}
             {this.renderInput("street", "רחוב *")}
-            {this.renderInput("houseNumber", "מספר בית *")}
-            {this.renderInput("zip", "מיקוד *")}
+            {this.renderInput("houseNumber", "מספר בית *", false, "number")}
+            {this.renderInput("zip", "מיקוד *", false, "number")}
             <StrenthMeter />
 
             {this.renderInput(

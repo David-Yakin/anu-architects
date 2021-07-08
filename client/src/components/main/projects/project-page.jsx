@@ -5,34 +5,40 @@ import { url } from "../../../config.json";
 
 class Project extends Component {
   state = {
-    data: undefined,
+    data: "",
   };
 
   async componentDidMount() {
     const projectId = this.props.match.params.id;
     const { data } = await getProject(projectId);
     this.setState({ data });
-
     let { counter } = this.state.data;
     let { gallery } = this.state.data.images;
-    setInterval(() => {
+
+    this.int = setInterval(() => {
       counter = ++counter % gallery.length;
       this.setState({ data: { ...this.state.data, counter } });
     }, 4000);
   }
 
+  componentWillUnmount() {
+    clearInterval(this.int);
+  }
+
   render() {
-    if (this.state.data !== undefined) {
+    if (this.state.data.images !== undefined) {
       const { name, category, year, size, description, images, counter } =
         this.state.data;
       const { country, city } = this.state.data.address;
+      const { before, sketches, imaging, constraction, gallery, panorama } =
+        images;
 
       return (
         <div className="container-fluid p-0">
           <img
             className="img-fluid"
-            src={`${url}${images.panorama.url}`}
-            alt={images.panorama.alt}
+            src={`${url}${panorama.url}`}
+            alt={panorama.alt}
           />
 
           <div className="container pt-2">
@@ -44,7 +50,10 @@ class Project extends Component {
                   <div className="col-6 px-0">
                     <h6 className="text-right">
                       סוג הפרויקט:
-                      <span className="font-weight-lighter"> {category}</span>
+                      <span className="font-weight-lighter">
+                        {" "}
+                        {category.text}
+                      </span>
                     </h6>
 
                     <h6 className="text-right">
@@ -79,38 +88,44 @@ class Project extends Component {
               <div className="col-12 col-md-6 px-1">
                 <img
                   className="img-fluid"
-                  src={`${url}${images.before[0].url}`}
-                  alt={images.before[0].alt}
-                />
-                <p className="text-right">{images.before[0].description}</p>
-              </div>
-
-              <div className="col-12 col-md-6 px-1">
-                <img
-                  className="img-fluid"
-                  src={`${url}${images.sketches[0].url}`}
-                  alt={images.sketches[0].alt}
-                />
-                <p className="text-right">{images.sketches[0].description}</p>
-              </div>
-
-              <div className="col-12 col-md-6 px-1">
-                <img
-                  className="img-fluid"
-                  src={`${url}${images.imaging[0].url}`}
-                  alt={images.imaging[0].alt}
-                />
-                <p className="text-right">{images.imaging[0].description}</p>
-              </div>
-
-              <div className="col-12 col-md-6 px-1">
-                <img
-                  className="img-fluid"
-                  src={`${url}${images.constraction[0].url}`}
-                  alt={images.constraction[0].alt}
+                  src={`${url}${before[before.length - 1].url}`}
+                  alt={images.before[before.length - 1].alt}
                 />
                 <p className="text-right">
-                  {images.constraction[0].description}
+                  {before[before.length - 1].description}
+                </p>
+              </div>
+
+              <div className="col-12 col-md-6 px-1">
+                <img
+                  className="img-fluid"
+                  src={`${url}${sketches[sketches.length - 1].url}`}
+                  alt={sketches[sketches.length - 1].alt}
+                />
+                <p className="text-right">
+                  {sketches[sketches.length - 1].description}
+                </p>
+              </div>
+
+              <div className="col-12 col-md-6 px-1">
+                <img
+                  className="img-fluid"
+                  src={`${url}${imaging[imaging.length - 1].url}`}
+                  alt={imaging[imaging.length - 1].alt}
+                />
+                <p className="text-right">
+                  {imaging[imaging.length - 1].description}
+                </p>
+              </div>
+
+              <div className="col-12 col-md-6 px-1">
+                <img
+                  className="img-fluid"
+                  src={`${url}${constraction[constraction.length - 1].url}`}
+                  alt={constraction[constraction.length - 1].alt}
+                />
+                <p className="text-right">
+                  {constraction[constraction.length - 1].description}
                 </p>
               </div>
             </div>
@@ -119,8 +134,8 @@ class Project extends Component {
               {
                 <img
                   className="img-fluid pb-3"
-                  src={`${url}${images.gallery[counter]}`}
-                  alt="תמונה מגלריית התמונות של הפרויקט"
+                  src={`${url}${gallery[counter].url}`}
+                  alt={gallery[counter].alt}
                 />
               }
             </div>

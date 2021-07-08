@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import { getMyProject, deleteProject } from "../../../services/projectService";
 import { getDate } from "../../../services/timeService";
 import { getCurrentUser, getUser } from "../../../services/userService";
@@ -135,6 +135,7 @@ class UserInfo extends Component {
   render() {
     const { user } = this.state;
     const userCheck = getCurrentUser();
+    if (!userCheck) return <Redirect to="/private-area/sign-in" />;
     const { isAdmin } = userCheck;
     if (user) {
       return (
@@ -179,7 +180,7 @@ class UserInfo extends Component {
         </div>
       );
     }
-    return "no user!";
+    return "no user";
   }
 }
 

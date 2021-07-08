@@ -16,37 +16,58 @@ const { generateTemplate } = require("../mail-templates/mail-templates");
 const { validateMail } = require("../models/mail");
 
 router.post("/", async (req, res) => {
-  const matches = req.body.password.match(/[^A-Za-z0-9!@#$%^&*-]/g) || [];
-  if (matches.length !== 0) return res.status(400).send("Invalide Password!");
+  try {
+    const matches = req.body.password.match(/[^A-Za-z0-9!@#$%^&*-]/g) || [];
+    if (matches.length !== 0) return res.status(400).send("Invalide Password!");
 
-  let user = await User.findOne({ email: req.body.email });
-  if (user) return res.status(400).send("המשתמש קיים");
+    let user = await User.findOne({ email: req.body.email });
+    if (user) return res.status(400).send("המשתמש קיים");
 
-  user = {
-    userID: req.body.userID,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    phone: req.body.phone,
-    address: {
-      country: req.body.address.country,
-      city: req.body.address.city,
-      street: req.body.address.street,
-      houseNumber: req.body.address.houseNumber,
-      zip: req.body.address.zip,
-    },
-    password: req.body.password,
-  };
+    user = {
+      userID: req.body.userID,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      phone: req.body.phone,
+      address: {
+        country: req.body.country,
+        city: req.body.city,
+        street: req.body.street,
+        houseNumber: req.body.houseNumber,
+        zip: req.body.zip,
+      },
+      password: req.body.password,
+    };
 
-  const { error } = validateUser(user);
-  if (error) return res.status(400).send(error.details[0].message);
+    const { error } = validateUser(user);
+    if (error) {
+      console.log(error.message);
+      return res.status(400).send(error.details[0].message);
+    }
 
-  const salt = await bcrypt.genSalt(12);
-  user.password = await bcrypt.hash(user.password, salt);
+    const salt = await bcrypt.genSalt(12);
+    user.password = await bcrypt.hash(user.password, salt);
 
-  user = await new User(user);
-  await user.save();
-  return res.send(_.pick(user, ["name", "email"]));
+    user = await new User(user);
+    await user.save();
+
+    const to = "anu.arch.rl@gmail.com";
+    const subject = "A new user has been created";
+    const link = `http://localhost:3000/private-area/user/${user._id}`;
+    const mail = {
+      userId: user._id,
+      description: `${user.firstName} ${user.lastName}`,
+    };
+    const html = generateTemplate(mail).newUser;
+    return mailReq(to, subject, link, html)
+      .then(res.send(_.pick(user, ["_id"])))
+      .catch(error => {
+        console.log(error.message);
+        return res.status(404).send(error.message);
+      });
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 
 router.get("/user/:id", auth, async (req, res) => {

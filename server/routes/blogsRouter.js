@@ -5,6 +5,8 @@ const router = express.Router();
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
+const { generateTemplate } = require("../mail-templates/mail-templates");
+const { mailReq } = require("./mailRouter");
 
 const storage = multer.diskStorage({
   destination: async (req, file, storegePath) => {
@@ -114,7 +116,22 @@ router.post("/", upload.array("images", 20), auth, async (req, res) => {
 
     blog = new Blog(blog);
     await blog.save();
-    return res.send("המאמר נשמר בהצלחה!");
+
+    const to = "anu.arch.rl@gmail.com";
+    const subject = "A new article has been created";
+    const link = `http://localhost:3000/blog-page/${blog._id}`;
+    const mail = {
+      blogId: blog._id,
+      description: currectTitle,
+    };
+    const html = generateTemplate(mail).blogCreated;
+
+    return mailReq(to, subject, link, html)
+      .then(res.send("Email sent!"))
+      .catch(error => {
+        console.log(error.message);
+        return res.status(404).send(error.message);
+      });
   }
   return res.send("You are not authorized to create blogs");
 });

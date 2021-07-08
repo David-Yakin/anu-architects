@@ -4,7 +4,7 @@ const data = {
       name: "הבלונים 24 תל אביב 2017",
       year: "2017",
       size: "100",
-      category: "שיפוץ דירה",
+      category: { text: "מגורים", value: "residence" },
       address: {
         country: "ישראל",
         city: "תל אביב",
@@ -110,7 +110,7 @@ const data = {
       name: "שמואל תמיר 47 תל אביב 2016",
       year: "2016",
       size: "100",
-      category: "שיפוץ דירה",
+      category: { text: "מגורים", value: "residence" },
       address: {
         country: "ישראל",
         city: "תל אביב",
@@ -216,7 +216,7 @@ const data = {
       name: "סוקולוב 2 רמת גן 2016",
       year: "2016",
       size: "100",
-      category: "שיפוץ דירה",
+      category: { text: "מגורים", value: "residence" },
       address: {
         country: "ישראל",
         city: "רמת גן",
@@ -322,7 +322,7 @@ const data = {
       name: "הכלנית 24 הוד השרון 2016",
       year: "2020",
       size: "100",
-      category: "שיפוץ דירה",
+      category: { text: "מגורים", value: "residence" },
       address: {
         country: "ישראל",
         city: "הוד השרון",

@@ -88,6 +88,20 @@ class CreateProject extends Form {
     if (value === "duplication") return "העתקות";
     return null;
   };
+  categoryCheck = value => {
+    if (value === "residence") return "מגורים";
+    if (value === "offices") return "משרדים";
+    if (value === "public-buildings") return "מבני ציבור";
+    if (value === "hotels") return "מלונות";
+    if (value === "villas") return "וילות";
+    if (value === "complex-structures") return "מבנים מורכבים";
+    if (value === "towers") return "מגדלים";
+    if (value === "urban-renewal") return "התחדשות עירונית";
+    if (value === "master-plans") return 'תב"עות';
+    if (value === "commercial-buildings") return "מבני מסחר";
+    if (value === "urban-planning") return "תכנון עירוני";
+    if (value === "competitions") return "תחרויות";
+  };
   upload = () => {
     const {
       expertFileAtl,
@@ -144,7 +158,8 @@ class CreateProject extends Form {
     formData.append("street", street.trim());
     formData.append("year", year.trim());
     formData.append("size", size.trim());
-    formData.append("category", category.trim());
+    formData.append("category", category);
+    formData.append("categoryAlt", this.categoryCheck(category));
 
     /************************ רשות ***********************/
     const checkInput = (text, input) =>
@@ -280,11 +295,18 @@ class CreateProject extends Form {
                   "category",
                   "בחר קטגוריה *",
                   [
-                    { text: "דירה", value: "apartment" },
-                    { text: "וילה", value: "villa" },
-                    { text: "בניין מגורים", value: "Building" },
-                    { text: "קומפלקס דירות", value: "apartment-complex" },
-                    { text: "מלון", value: "hotel" },
+                    { text: "מגורים", value: "residence" },
+                    { text: "משרדים", value: "offices" },
+                    { text: "מבני ציבור", value: "public-buildings" },
+                    { text: "מלונות", value: "hotels" },
+                    { text: "וילות", value: "villas" },
+                    { text: "מבנים מורכבים", value: "complex-structures" },
+                    { text: "מגדלים", value: "towers" },
+                    { text: "התחדשות עירונית", value: "urban-renewal" },
+                    { text: 'תב"עות', value: "master-plans" },
+                    { text: "מבני מסחר", value: "commercial-buildings" },
+                    { text: "תכנון עירוני", value: "urban-planning" },
+                    { text: "תחרויות", value: "competitions" },
                   ],
                   "col-4 mb-2 px-2"
                 )}

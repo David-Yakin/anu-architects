@@ -14,7 +14,6 @@ import { Link } from "react-router-dom";
 class Users extends Component {
   state = {
     categories: [
-      { value: "", text: "כולם" },
       { value: true, text: "בלוגרים" },
       { value: false, text: "לא בלוגרים" },
     ],
@@ -30,6 +29,7 @@ class Users extends Component {
     const { data } = await getUsers();
     let users = data;
     const searchTerm = e.target.value;
+    if (searchTerm === "all") return this.setState({ users });
     const filertUsers = users.filter(
       user =>
         user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||

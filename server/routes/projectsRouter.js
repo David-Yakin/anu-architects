@@ -13,7 +13,6 @@ const path = require("path");
 const multer = require("multer");
 const { generateTemplate } = require("../mail-templates/mail-templates");
 const { mailReq } = require("./mailRouter");
-const { log } = require("console");
 
 const storage = multer.diskStorage({
   destination: async (req, file, storegePath) => {
@@ -82,7 +81,10 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
         name: checkName(req.body.name),
         year: req.body.year,
         size: req.body.size,
-        category: req.body.category,
+        category: {
+          text: req.body.categoryAlt,
+          value: req.body.category,
+        },
         address: {
           country: req.body.country,
           city: req.body.city,
@@ -216,7 +218,22 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
       );
 
       await user.save();
-      return res.send("הפרויקט נשמר בהצלחה");
+
+      const to = user.email;
+      const subject = "Anu-architects created a new project for you";
+      const link = `http://localhost:3000/private-area/user/${user._id}`;
+      const mail = {
+        userId: user._id,
+        description: req.body.name,
+      };
+      const html = generateTemplate(mail).projectCreated;
+
+      return mailReq(to, subject, link, html)
+        .then(res.send("Email sent!"))
+        .catch(error => {
+          console.log(error.message);
+          return res.status(404).send(error.message);
+        });
     } catch (err) {
       console.log(err);
       res.status(400).send(err.message);
@@ -250,7 +267,11 @@ router.put(
           name: checkName(body.name),
           year: project.year,
           size: project.size,
-          category: project.category,
+          // category: project.category,
+          category: {
+            text: project.category.text,
+            value: project.category.value,
+          },
           address: {
             country: project.address.country,
             city: project.address.city,
