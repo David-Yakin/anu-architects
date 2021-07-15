@@ -13,19 +13,50 @@ import { getCurrentUser } from "../../../services/userService";
 
 class Blogs extends Component {
   state = {
-    categories: [
-      { value: "", text: "כולם" },
-      { value: "ארכיטקטורה", text: "ארכיטקטורה" },
-      { value: "עיצוב פנים", text: "עיצוב פנים" },
-      { value: "נגרות", text: "נגרות" },
-    ],
-
+    unmounted: false,
+    categories: [],
     blogs: [],
   };
 
   async componentDidMount() {
     const { data } = await getBlogs();
-    if (data.length) this.setState({ blogs: data });
+    let categories = [];
+    data.map(blog => {
+      const array = [];
+      categories.filter(category => {
+        if (blog.category.value === category.value)
+          return array.push(blog.category);
+        return null;
+      });
+      if (array.length) return null;
+      return categories.push(blog.category);
+    });
+    if (data.length)
+      this.setState({
+        blogs: data,
+        unmounted: true,
+        categories,
+      });
+  }
+
+  async handleChange(e) {
+    try {
+      const { data } = await getBlogs();
+      let blogs = [...data];
+      const searchTerm = e.target.value;
+      if (searchTerm === "all") return this.setState({ blogs });
+      const filertblogs = blogs.filter(blog => {
+        if (blog.isPublished)
+          return (
+            blog.title.includes(searchTerm.toLowerCase()) ||
+            blog.category.value.toString().includes(searchTerm)
+          );
+        return null;
+      });
+      this.setState({ blogs: filertblogs });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   handleBlogDelete = async (blogId, e) => {
@@ -59,18 +90,6 @@ class Blogs extends Component {
     this.setState({ blog: (blog.isPublished = changeStatus) });
     return await changePublishStatus(blogId);
   };
-
-  async handleChange(e) {
-    const { data } = await getBlogs();
-    let blogs = data;
-    const searchTerm = e.target.value;
-    const filertBlogs = blogs.filter(
-      blog =>
-        blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        blog.category.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    this.setState({ blogs: filertBlogs });
-  }
 
   generateBlogs() {
     const { blogs } = this.state;
@@ -111,30 +130,6 @@ class Blogs extends Component {
     }
     return <p className="text-rtl">מצטערים לא נמצאו מאמרים במאגר המידע...</p>;
   }
-
-  // generateBlogs() {
-  //   const { blogs } = this.state;
-  //   const user = getCurrentUser();
-  //   if (blogs.length) {
-  //     return (
-  //       <div className="row px-0 mx-0">
-  //         {blogs.map(blog => {
-  //           if (blog.isPublished)
-  //             return (
-  //               <BlogCard
-  //                 key={blog._id}
-  //                 blog={blog}
-  //                 handleBlogDelete={this.handleBlogDelete}
-  //                 changePublishStatus={this.changePublishStatus}
-  //               />
-  //             );
-  //           return null;
-  //         })}
-  //       </div>
-  //     );
-  //   }
-  //   return <p className="text-rtl">מצטערים לא נמצאו מאמרים במאגר המידע...</p>;
-  // }
 
   render() {
     const { categories } = this.state;

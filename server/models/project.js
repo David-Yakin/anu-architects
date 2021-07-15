@@ -8,6 +8,7 @@ const string256R = {
   maxlength: 256,
 };
 const string256 = { type: String, minlength: 2, maxlength: 256 };
+
 const string1024R = {
   type: String,
   required: true,
@@ -30,7 +31,6 @@ const schema = new mongoose.Schema({
     text: string256,
     value: string256,
   },
-  // category: string256,
   address: {
     country: string256R,
     city: string256R,

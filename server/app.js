@@ -33,12 +33,10 @@ mongoose
   )
   .catch(error => console.error(`could not connect to mongoDb: ${error}`));
 
-// mongoose.set('useFindAndModify', false);
-
 app.use(cors()); // להוריד כשמעלים לשרת אמיתי!!!
 app.use(express.json());
 
-app.use(express.static("./public"));
+app.use(express.static("./public")); // static folder
 
 app.use("/api/users", users);
 app.use("/api/auth", auth);

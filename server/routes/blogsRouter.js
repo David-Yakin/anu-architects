@@ -7,6 +7,7 @@ const path = require("path");
 const multer = require("multer");
 const { generateTemplate } = require("../mail-templates/mail-templates");
 const { mailReq } = require("./mailRouter");
+const chalk = require("chalk");
 
 const storage = multer.diskStorage({
   destination: async (req, file, storegePath) => {
@@ -62,6 +63,8 @@ const checkTitle = title => {
   return title.replace(/-/g, " ");
 };
 
+/************* Create Blog *********************/
+
 router.post("/", upload.array("images", 20), auth, async (req, res) => {
   if (req.user && req.user.isBloger === true) {
     const title = req.body.title;
@@ -83,7 +86,10 @@ router.post("/", upload.array("images", 20), auth, async (req, res) => {
       title: currectTitle,
       subTitle: req.body.subTitle,
       author: req.body.author,
-      category: req.body.category,
+      category: {
+        text: req.body.categoryAlt,
+        value: req.body.category,
+      },
       cardUrl: cardDir,
       cardAlt: req.body.cardAlt,
       titleImgUrl: titleDir,
@@ -112,7 +118,10 @@ router.post("/", upload.array("images", 20), auth, async (req, res) => {
       ninthP: req.body.ninthP,
     };
     const { error } = validateBlog(blog);
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) {
+      console.error(chalk.redBright(error.message));
+      return res.status(400).send(error.details[0].message);
+    }
 
     blog = new Blog(blog);
     await blog.save();
@@ -158,7 +167,10 @@ router.delete("/:id", auth, async (req, res) => {
 router.put("/private-area/edit-blog-card/:id", auth, async (req, res) => {
   if (req.user && req.user.isBloger === true) {
     const { error } = validateBlog(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) {
+      console.error(chalk.redBright(error.message));
+      return res.status(400).send(error.details[0].message);
+    }
 
     let blog = await Blog.findOneAndUpdate({ _id: req.params.id }, req.body);
     if (!blog)
@@ -236,7 +248,10 @@ router.put(
         ninthP: req.body.ninthP,
       };
       const { error } = validateBlog(blog);
-      if (error) return res.status(400).send(error.details[0].message);
+      if (error) {
+        console.error(chalk.redBright(error.message));
+        return res.status(400).send(error.details[0].message);
+      }
 
       blog = await Blog.findOneAndUpdate({ _id: req.body.id }, blog);
       blog = await Blog.findOne({ _id: req.body.id });

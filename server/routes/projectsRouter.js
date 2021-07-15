@@ -1,4 +1,8 @@
 const express = require("express");
+const router = express.Router();
+const auth = require("../middleware/auth");
+const fs = require("fs");
+const path = require("path");
 const {
   Project,
   validateProject,
@@ -6,13 +10,40 @@ const {
   validateExpert,
 } = require("../models/project");
 const { User } = require("../models/user");
-const auth = require("../middleware/auth");
-const router = express.Router();
-const fs = require("fs");
-const path = require("path");
+const chalk = require("chalk");
 const multer = require("multer");
 const { generateTemplate } = require("../mail-templates/mail-templates");
 const { mailReq } = require("./mailRouter");
+
+/***** S3 aws imports ****/
+const aws = require("aws-sdk");
+const multerS3 = require("multer-s3");
+
+/*** PROFILE IMAGE STORING STARTS ***/
+// const s3 = new aws.S3({
+//   accessKeyId: "AKIAVGXOSXBBQ5RGQXTK",
+//   secretAccessKey: "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",
+//   Bucket: "anu-architects",
+// });
+
+/*** Single Upload with S3 ***/
+// const profileImgUpload = multer({
+//   storage: multerS3({
+//     s3,
+//     bucket: "anu-architects",
+//     acl: "public-read",
+//     key: function (req, file, cb) {
+//       cb(
+//         null,
+//         path.basename(file.originalname, path.extname(file.originalname))
+//       );
+//     },
+//   }),
+//   limits: { fileSize: 2000000 }, // In bytes: 2000000 bytes = 2 MB
+//   fileFilter: function (req, file, cb) {
+//     checkFileType(file, cb);
+//   },
+// }).single("profileImage");
 
 const storage = multer.diskStorage({
   destination: async (req, file, storegePath) => {
@@ -75,6 +106,7 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
 
       const checkName = name => name.replace(/-/g, " ");
       const checkReq = reqItem => (reqItem ? reqItem : "לא מוגדר");
+      const checkPhone = reqItem => (reqItem ? reqItem : "050-0000000");
       const checkPath = url => (url ? path.basename(url) : "לא מוגדר");
 
       let project = {
@@ -110,7 +142,7 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
             {
               firstName: checkReq(req.body.expertFirstName),
               lastName: checkReq(req.body.expertLastName),
-              phone: checkReq(req.body.expertPhone),
+              phone: checkPhone(req.body.expertPhone),
               category: {
                 text: req.body.expertCategory ? req.body.categoryText : "כולם",
                 value: req.body.expertCategory
@@ -197,7 +229,7 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
 
       const { error } = validateProject(project);
       if (error) {
-        console.log(error.message);
+        console.error(chalk.redBright(error.message));
         return res.status(400).send(error.details[0].message);
       }
 
@@ -231,12 +263,12 @@ router.post("/", upload.array("images", 30), auth, async (req, res) => {
       return mailReq(to, subject, link, html)
         .then(res.send("Email sent!"))
         .catch(error => {
-          console.log(error.message);
+          console.error(chalk.redBright(error.message));
           return res.status(404).send(error.message);
         });
-    } catch (err) {
-      console.log(err);
-      res.status(400).send(err.message);
+    } catch (error) {
+      console.error(chalk.redBright(error.message));
+      res.status(400).send(error.message);
     }
   }
   return res.send("You are not authorized to create projects");
@@ -267,7 +299,6 @@ router.put(
           name: checkName(body.name),
           year: project.year,
           size: project.size,
-          // category: project.category,
           category: {
             text: project.category.text,
             value: project.category.value,
@@ -421,7 +452,7 @@ router.put(
 
         const { error } = validateProject(project);
         if (error) {
-          console.log(error.details[0].message);
+          console.error(chalk.redBright(error.message));
           return res.status(400).send(error.details[0].message);
         }
 
@@ -431,7 +462,7 @@ router.put(
         );
         return res.send(project);
       } catch (error) {
-        console.log(error.message);
+        console.error(chalk.redBright(error.message));
         return res.status(400).send(error.message);
       }
     }
@@ -572,7 +603,10 @@ router.patch(
         const remarks = "לא מוגדר";
 
         const { error } = validateImage(req.body);
-        if (error) return console.log(error.message);
+        if (error) {
+          console.error(chalk.redBright(error.message));
+          return res.send(error.message);
+        }
 
         project = await Project.findOneAndUpdate(
           { _id: req.params.id },
@@ -712,7 +746,10 @@ router.patch(
         const remarks = "לא מוגדר";
 
         const { error } = validateImage(req.body);
-        if (error) return console.log(error.message);
+        if (error) {
+          console.error(chalk.redBright(error.message));
+          return res.status(400).send(error.message);
+        }
 
         project = await Project.findOneAndUpdate(
           { _id: req.params.id },
@@ -852,7 +889,10 @@ router.patch(
         const remarks = "לא מוגדר";
 
         const { error } = validateImage(req.body);
-        if (error) return console.log(error.message);
+        if (error) {
+          console.error(chalk.redBright(error.message));
+          return res.status(400).send(error.message);
+        }
 
         project = await Project.findOneAndUpdate(
           { _id: req.params.id },
@@ -1179,8 +1219,8 @@ router.patch("/delete-contracts/:id", auth, async (req, res) => {
         };
         const { error } = validateImage(obj);
         if (error) {
-          console.log(error);
-          return res.send(error.message);
+          console.error(chalk.redBright(error.message));
+          return res.status(400).send(error.message);
         }
       });
 
@@ -1276,8 +1316,8 @@ router.patch("/delete-licensing/:id", auth, async (req, res) => {
         };
         const { error } = validateImage(obj);
         if (error) {
-          console.log(error);
-          return res.send(error.message);
+          console.error(chalk.redBright(error.message));
+          return res.status(400).send(error.message);
         }
       });
 
@@ -1327,8 +1367,8 @@ router.patch(
 
         const { error } = validateExpert(req.body);
         if (error) {
-          console.log(error.message);
-          return res.send(error.message);
+          console.error(chalk.redBright(error.message));
+          return res.status(400).send(error.message);
         }
 
         project = await Project.findOneAndUpdate(
@@ -1392,8 +1432,8 @@ router.patch("/delete-expert/:id", auth, async (req, res) => {
         };
         const { error } = validateExpert(obj);
         if (error) {
-          console.log(error);
-          return res.send(error.message);
+          console.error(chalk.redBright(error.message));
+          return res.status(400).send(error.message);
         }
       });
 
@@ -1407,7 +1447,7 @@ router.patch("/delete-expert/:id", auth, async (req, res) => {
       await project.save();
       return res.send(project);
     } catch (error) {
-      console.log(error.message);
+      console.error(chalk.redBright(error.message));
       return res.status(404).send(error.message);
     }
   }
@@ -1518,7 +1558,10 @@ router.patch(
         const remarks = "לא מוגדר";
 
         const { error } = validateImage(req.body);
-        if (error) return console.log(error.message);
+        if (error) {
+          console.error(chalk.redBright(error.message));
+          return res.status(400).send(error.message);
+        }
 
         project = await Project.findOneAndUpdate(
           { _id: req.params.id },
@@ -1593,7 +1636,10 @@ router.patch(
         const remarks = "לא מוגדר";
 
         const { error } = validateImage(req.body);
-        if (error) return console.log(error.message);
+        if (error) {
+          console.error(chalk.redBright(error.message));
+          return res.status(400).send(error.message);
+        }
 
         project = await Project.findOneAndUpdate(
           { _id: req.params.id },

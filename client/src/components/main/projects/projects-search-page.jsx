@@ -8,21 +8,18 @@ import {
   changeLikeStatus,
 } from "../../../services/projectService";
 import { toast } from "react-toastify";
-import { getUsers } from "../../../services/userService";
 
 class Projects extends Component {
   state = {
     unmounted: false,
     categories: [],
-    users: [],
     projects: [],
   };
 
   async componentDidMount() {
-    const projectsData = await (await getProjects()).data;
-    const usersData = await (await getUsers()).data;
+    const { data } = await getProjects();
     let categories = [];
-    projectsData.map(project => {
+    data.map(project => {
       const array = [];
       categories.filter(category => {
         if (project.category.value === category.value)
@@ -32,10 +29,9 @@ class Projects extends Component {
       if (array.length) return null;
       return categories.push(project.category);
     });
-    if (projectsData.length && usersData)
+    if (data.length)
       this.setState({
-        projects: projectsData,
-        users: usersData,
+        projects: data,
         unmounted: true,
         categories,
       });

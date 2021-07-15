@@ -14,6 +14,7 @@ const config = require("config");
 const { mailReq } = require("./mailRouter");
 const { generateTemplate } = require("../mail-templates/mail-templates");
 const { validateMail } = require("../models/mail");
+const chalk = require("chalk");
 
 router.post("/", async (req, res) => {
   try {
@@ -41,7 +42,7 @@ router.post("/", async (req, res) => {
 
     const { error } = validateUser(user);
     if (error) {
-      console.log(error.message);
+      console.error(chalk.redBright(error.message));
       return res.status(400).send(error.details[0].message);
     }
 
@@ -133,7 +134,10 @@ router.patch("/user/:id", auth, async (req, res) => {
 
 router.post("/forgot-password", async (req, res) => {
   const { error } = validateEmail(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) {
+    console.error(chalk.redBright(error.message));
+    return res.status(400).send(error.details[0].message);
+  }
 
   const { email } = req.body;
   let user = await User.findOne({ email });
@@ -187,7 +191,10 @@ router.post("/reset-password/:id/:token", async (req, res) => {
 
 router.post("/send-mail", async (req, res) => {
   const { error } = validateMail(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) {
+    console.error(chalk.redBright(error.message));
+    return res.status(400).send(error.details[0].message);
+  }
   const { email, subject, message, name, lastName, phone } = req.body;
 
   const to = "anu.arch.rl@gmail.com";
