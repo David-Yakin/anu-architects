@@ -31,7 +31,7 @@ const data = {
           {
             firstName: "לא מוגדר",
             lastName: "לא מוגדר",
-            phone: "לא מוגדר",
+            phone: "050-0000000",
             category: { text: "כולם", value: "all" },
             file: {
               name: "לא מוגדר",
@@ -137,7 +137,7 @@ const data = {
           {
             firstName: "לא מוגדר",
             lastName: "לא מוגדר",
-            phone: "לא מוגדר",
+            phone: "050-0000000",
             category: { text: "כולם", value: "all" },
             file: {
               name: "לא מוגדר",
@@ -243,7 +243,7 @@ const data = {
           {
             firstName: "לא מוגדר",
             lastName: "לא מוגדר",
-            phone: "לא מוגדר",
+            phone: "050-0000000",
             category: { text: "כולם", value: "all" },
             file: {
               name: "לא מוגדר",
@@ -349,7 +349,7 @@ const data = {
           {
             firstName: "לא מוגדר",
             lastName: "לא מוגדר",
-            phone: "לא מוגדר",
+            phone: "050-0000000",
             category: { text: "כולם", value: "all" },
             file: {
               name: "לא מוגדר",

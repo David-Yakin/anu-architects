@@ -133,35 +133,38 @@ class CeateBlog extends Form {
   };
 
   categoryCheck = value => {
-    if (value === "urban-renewal") return "התחדשות עירונית";
-    if (value === "mixing-uses") return "עירוב שימושים";
-    if (value === "residencet-ways") return "צורות מגורים";
-    if (value === "interior-design") return "עיצוב פנים";
-    if (value === "space-dressing") return "הלבשת החלל";
-    if (value === "do-it-yourself") return "עשה זאת בעצמך";
-    if (value === "society-community") return "חברה וקהילה";
-    if (value === "micro-unit") return "מיקרו יוניט";
-    if (value === "structural-engineering") return "הנדסת בניין";
-    if (value === "plumbing") return "אינסטלציה";
-    if (value === "electricity") return "חשמל";
-    if (value === "lighting") return "תאורה";
-    if (value === "concept") return "קונספט";
-    if (value === "we-live") return "We live";
-    if (value === "urban-planning") return "תכנון עירוני";
-    if (value === "construction-evacuation") return "פינוי בינוי";
-    if (value === "tenants") return "דיירים";
-    if (value === "house-committee") return "ועד בית";
-    if (value === "sealing") return "איטום";
-    if (value === "insulation") return "בידוד";
-    if (value === "cover") return "חיפוי";
-    if (value === "tourism-architecture") return "תיירות וארכיטקטורה";
-    if (value === "construction-methods") return "שיטות בניה";
-    if (value === "timeless-architecture") return "אדריכלות אל זמנית";
-    if (value === "architecture-music") return "אדריכלות ומוסיקה";
-    if (value === "engineering-innovations") return "חידושים הנדסיים";
-    if (value === "materials") return "חומרים";
-    if (value === "planning-flexibility") return "גמישות תכנונית";
-    if (value === "construction-law") return "חוקים ובניה";
+    if (value === "architecture") return "ארכיטקטורה";
+    if (value === "Interior-design") return "עיצוב פנים";
+    if (value === "construction") return "פרויקט בנייה";
+
+    // if (value === "mixing-uses") return "עירוב שימושים";
+    // if (value === "residencet-ways") return "צורות מגורים";
+    // if (value === "interior-design") return "עיצוב פנים";
+    // if (value === "space-dressing") return "הלבשת החלל";
+    // if (value === "do-it-yourself") return "עשה זאת בעצמך";
+    // if (value === "society-community") return "חברה וקהילה";
+    // if (value === "micro-unit") return "מיקרו יוניט";
+    // if (value === "structural-engineering") return "הנדסת בניין";
+    // if (value === "plumbing") return "אינסטלציה";
+    // if (value === "electricity") return "חשמל";
+    // if (value === "lighting") return "תאורה";
+    // if (value === "concept") return "קונספט";
+    // if (value === "we-live") return "We live";
+    // if (value === "urban-planning") return "תכנון עירוני";
+    // if (value === "construction-evacuation") return "פינוי בינוי";
+    // if (value === "tenants") return "דיירים";
+    // if (value === "house-committee") return "ועד בית";
+    // if (value === "sealing") return "איטום";
+    // if (value === "insulation") return "בידוד";
+    // if (value === "cover") return "חיפוי";
+    // if (value === "tourism-architecture") return "תיירות וארכיטקטורה";
+    // if (value === "construction-methods") return "שיטות בניה";
+    // if (value === "timeless-architecture") return "אדריכלות אל זמנית";
+    // if (value === "architecture-music") return "אדריכלות ומוסיקה";
+    // if (value === "engineering-innovations") return "חידושים הנדסיים";
+    // if (value === "materials") return "חומרים";
+    // if (value === "planning-flexibility") return "גמישות תכנונית";
+    // if (value === "construction-law") return "חוקים ובניה";
   };
 
   upload = () => {
@@ -278,36 +281,9 @@ class CeateBlog extends Form {
               {this.renderInput("subTitle", " כותרת משנה של המאמר *")}
               {this.renderInput("author", "כותב המאמר *")}
               {this.renderSelectBox("category", "בחר קטגוריה", [
-                { text: "התחדשות עירונית", value: "urban-renewal" },
-                { text: "עירוב שימושים", value: "mixing-uses" },
-                { text: "צורות מגורים", value: "residencet-ways" },
-                { text: "עיצוב פנים", value: "interior-design" },
-                { text: "הלבשת החלל", value: "space-dressing" },
-                { text: "עשה זאת בעצמך", value: "do-it-yourself" },
-                { text: "חברה וקהילה", value: "society-community" },
-                { text: "מיקרו יוניט", value: "micro-unit" },
-                { text: "הנדסת בניין", value: "structural-engineering" },
-                { text: "אינסטלציה", value: "plumbing" },
-                { text: "חשמל", value: "electricity" },
-                { text: "תאורה", value: "lighting" },
-                { text: "קונספט", value: "concept" },
-                { text: "We live", value: "we-live" },
-                { text: "תכנון עירוני", value: "urban-planning" },
-                { text: "פינוי בינוי", value: "construction-evacuation" },
-                { text: "דיירים", value: "tenants" },
-                { text: "ועד בית", value: "house-committee" },
-                { text: "איטום", value: "sealing" },
-                { text: "בידוד", value: "insulation" },
-                { text: "חיפוי", value: "cover" },
-                { text: "תיירות וארכיטקטורה", value: "tourism-architecture" },
-                { text: "שיטות בניה", value: "construction-methods" },
-                { text: "אדריכלות אל זמנית", value: "timeless-architecture" },
-                { text: "אדריכלות ומוסיקה", value: "architecture-music" },
-                { text: "חידושים הנדסיים", value: "engineering-innovations" },
-                { text: "חומרים", value: "materials" },
-                { text: "גמישות תכנונית", value: "planning-flexibility" },
-                { text: "חוקים ובניה", value: "construction-law" },
-                "col-4 mb-2 px-2",
+                { text: "ארכיטקטורה", value: "architecture" },
+                { text: "פרויקט בנייה", value: "construction" },
+                { text: "עיצוב פנים", value: "Interior-design" },
               ])}
               {this.renderFileInput(
                 "cardUrl",
