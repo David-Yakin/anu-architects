@@ -9,17 +9,30 @@ const BlogCard = ({ blog, handleBlogDelete, changePublishStatus }) => {
     <div className="col-12 post horizontal_article shadow mb-4 zoom">
       <div className="row">
         <div className="col-4 center px-0">
-          <img
-            className="img-fluid"
-            src={`${url}${blog.cardUrl}`}
-            alt={blog.cardAlt}
-          />
+          <Link to={`/blog-page/${blog._id}`}>
+            <img
+              className="img-fluid"
+              src={`${url}${blog.cardUrl}`}
+              alt={blog.cardAlt}
+            />
+          </Link>
         </div>
         <div className="post_text col-8 text-right">
           <div className="p-2">
-            <h2 className="">{blog.title}</h2>
-            <hr />
-            <h6>{blog.subTitle}</h6>
+            <Link
+              to={`/blog-page/${blog._id}`}
+              className="text-dark text-decoration-none">
+              <h2 className="">{blog.title}</h2>
+            </Link>
+            <Link className="a-herf text-rtl" to={`/blog-page/${blog._id}`}>
+              {" "}
+              <hr />
+            </Link>
+            <Link
+              to={`/blog-page/${blog._id}`}
+              className="text-dark text-decoration-none">
+              <h6>{blog.subTitle}</h6>
+            </Link>
             <Link className="a-herf text-rtl" to={`/blog-page/${blog._id}`}>
               ...פרטים נוספים
             </Link>
